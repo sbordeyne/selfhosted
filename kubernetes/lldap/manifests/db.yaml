@@ -1,0 +1,23 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: lldap-db
+  namespace: lldap
+
+spec:
+  instances: 1
+  primaryUpdateStrategy: unsupervised
+
+  superuserSecret:
+    name: superuser-secret
+
+  bootstrap:
+    initdb:
+      database: lldap
+      owner: lldap
+      secret:
+        name: lldap-db-creds
+
+  storage:
+    storageClass: nfs-client
+    size: 1Gi

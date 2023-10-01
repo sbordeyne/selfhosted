@@ -1,0 +1,18 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: traefik
+
+resources:
+  - ./manifests/namespace.yaml
+  - ./manifests/service-account.yaml
+  - ./manifests/acme-pvc.yaml
+  - ./manifests/cluster-role.yaml
+  - ./manifests/cluster-role-binding.yaml
+  - ./manifests/deployment.yaml
+  - ./manifests/dashboard.service.yaml
+  - ./manifests/web.service.yaml
+  - ./manifests/ingress.yaml
+  - ./manifests/metrics.service.yaml
+  - ./manifests/middleware.yaml

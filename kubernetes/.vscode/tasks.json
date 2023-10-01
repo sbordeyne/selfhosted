@@ -1,0 +1,32 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "bootstrap",
+      "type": "shell",
+      "command": "python3",
+      "args": [
+        "bootstrap",
+        "${input:bootstrap_app_name}"
+      ],
+    },
+    {
+      "label": "deploy",
+      "type": "shell",
+      "command": "kubectl apply -k ${input:deploy_app_name}",
+      "problemMatcher": []
+    },
+  ],
+  "inputs": [
+    {
+      "id": "bootstrap_app_name",
+      "type": "promptString",
+      "description": "Enter the name of the app to bootstrap"
+    },
+    {
+      "id": "deploy_app_name",
+      "type": "promptString",
+      "description": "Enter the name of the app to deploy",
+    }
+  ]
+}

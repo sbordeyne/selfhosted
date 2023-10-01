@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+kubectl apply -k cert-manager
+kubectl apply -k external-dns
+kubectl apply -k traefik
+# kubectl apply -k cloudflare-ddns
+kubectl apply -k keycloak

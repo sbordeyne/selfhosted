@@ -1,0 +1,43 @@
+#!/usr/bin/env python3
+
+from pathlib import Path
+import json
+
+
+ROOT = Path(__file__).parent
+KUSTOMIZATION_TEMPLATE = '''
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: {}
+
+resources:
+  - ./manifests/namespace.yaml
+
+'''
+NAMESPACE_TEMPLATE = '''
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {}
+'''
+
+
+def bootstrap_app(app_name: str):
+    # Make a directory in the tree
+    # Initialize the kustomization.yaml, and namespace manifests
+    (ROOT / app_name).mkdir()
+    (ROOT / app_name / 'manifests').mkdir()
+    (ROOT / app_name / 'kustomization.yaml').write_text(
+        KUSTOMIZATION_TEMPLATE.format(app_name)
+    )
+    (ROOT / app_name / 'manifests' / 'namespace.yaml').write_text(
+        NAMESPACE_TEMPLATE.format(app_name)
+    )
+
+if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('app_name')
+    args = parser.parse_args()
+    bootstrap_app(args.app_name)

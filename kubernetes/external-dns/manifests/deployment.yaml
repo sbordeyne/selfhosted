@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: external-dns
+  namespace: external-dns
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: external-dns
+  template:
+    metadata:
+      namespace: external-dns
+      labels:
+        app: external-dns
+    spec:
+      serviceAccountName: external-dns
+      containers:
+      - name: external-dns
+        image: registry.k8s.io/external-dns/external-dns:v0.13.5
+        args:
+        - --source=ingress # ingress is also possible
+        - --domain-filter=dogeek.me # (optional) limit to only example.com domains; change to match the zone created above.
+        - --provider=cloudflare
+        - --cloudflare-dns-records-per-page=5000 # (optional) configure how many DNS records to fetch per request
+        - --txt-owner-id=external-dns-nas
+        - --registry=txt
+        - --txt-prefix=k8s-nas-%{record_type}-
+        resources:
+          limits:
+            cpu: 200m
+            memory: 100Mi
+          requests:
+            cpu: 100m
+            memory: 50Mi
+        env:
+          - name:  CF_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name:  api-key
+                key:  CLOUDFLARE_API_KEY
+          - name: CF_API_EMAIL
+            value: "simon.bordeyne@gmail.com"
+          - name: TXT_ENCRYPT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: api-key
+                key: TXT_ENCRYPT_SECRET

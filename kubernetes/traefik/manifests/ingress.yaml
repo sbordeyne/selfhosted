@@ -1,0 +1,29 @@
+# https://kubernetes.io/docs/concepts/services-networking/ingress/#the-ingress-resource
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: traefik-dashboard-ingress
+  namespace: traefik
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: traefik.nas.dogeek.me
+    external-dns.alpha.kubernetes.io/target: nas.dogeek.me
+    cert-manager.io/cluster-issuer: cluster-issuer
+  labels:
+    app: traefik
+spec:
+  tls:
+  - hosts:
+    - traefik.nas.dogeek.me
+    secretName: traefik-cert-prod
+  rules:
+  - host: traefik.nas.dogeek.me
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: traefik-dashboard-service
+            port:
+              number: 8080

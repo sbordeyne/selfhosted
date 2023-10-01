@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+sudo rm -rf $HOME/.kube/config
+sudo rm -rf $HOME/.kube/cache
+sudo apt-get remove kubeadm kubectl kubelet containerd
+sudo apt-get autoremove
