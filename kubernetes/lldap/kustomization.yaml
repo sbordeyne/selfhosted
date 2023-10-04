@@ -8,6 +8,7 @@ resources:
   - ./manifests/namespace.yaml
   - ./manifests/service.yaml
   - ./manifests/db.yaml
+  - ./manifests/pvc.yaml
   - ./manifests/deployment.yaml
   - ./manifests/ingress.yaml
 
@@ -32,3 +33,5 @@ secretGenerator:
 configMapGenerator:
   - name: lldap-config
     env: config.env
+  - name: lldaps-config
+    env: ldaps.config.env

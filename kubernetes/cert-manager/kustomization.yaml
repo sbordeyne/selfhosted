@@ -8,6 +8,9 @@ resources:
 
 namespace: cert-manager
 
+generatorOptions:
+  disableNameSuffixHash: true
+
 secretGenerator:
   - name: cloudflare-api-key
     type: Opaque

@@ -3,26 +3,13 @@ kind: Service
 metadata:
   labels:
     app: lldap
-  name: lldap-http
+  name: lldap
+  namespace: lldap
 spec:
   ports:
     - name: "http"
       port: 17170
       targetPort: 17170
-      nodePort: 30640
-  type: ExternalName
-  externalName: "92.170.32.207"
-  selector:
-    app: lldap
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: lldap
-  name: lldap-ldap
-spec:
-  ports:
     - name: "ldap"
       port: 3890
       targetPort: 3890

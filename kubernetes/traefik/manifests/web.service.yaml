@@ -3,16 +3,18 @@ kind: Service
 metadata:
   name: traefik-web-service
   namespace: traefik
-  annotations:
-    metallb.universe.tf/address-pool: public
+  # annotations:
+    # metallb.universe.tf/address-pool: public
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
     - name: web
       port: 80
       targetPort: web
+      nodePort: 30080
     - name: websecure
       port: 443
+      nodePort: 30443
       targetPort: websecure
   selector:
     app: traefik

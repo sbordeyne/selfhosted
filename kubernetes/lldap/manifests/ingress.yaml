@@ -1,5 +1,3 @@
-# https://kubernetes.io/docs/concepts/services-networking/ingress/#the-ingress-resource
-
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -9,21 +7,19 @@ metadata:
     external-dns.alpha.kubernetes.io/hostname: ldap.nas.dogeek.me
     external-dns.alpha.kubernetes.io/target: nas.dogeek.me
     cert-manager.io/cluster-issuer: cluster-issuer
-  labels:
-    app: lldap
 spec:
   tls:
   - hosts:
-    - ldap.nas.dogeek.me
+      - ldap.nas.dogeek.me
     secretName: ldap-cert-prod
   rules:
-  - host: ldap.nas.dogeek.me
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: lldap
-            port:
-              name: http
+    - host: ldap.nas.dogeek.me
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: lldap
+                port:
+                  number: 17170

@@ -4,6 +4,7 @@ metadata:
   labels:
     app: lldap
   name: lldap
+  namespace: lldap
 spec:
   replicas: 1
   selector:
@@ -42,4 +43,4 @@ spec:
       volumes:
         - name: lldap-data
           hostPath:
-            path: /apps/lldap/data
+            path: /apps/config/lldap
