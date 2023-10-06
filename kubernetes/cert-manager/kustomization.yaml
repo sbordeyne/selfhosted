@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./manifests/namespace.yaml
   - ./manifests/cluster-issuer.yaml
+  - ./manifests/podmonitor.yaml
 
 namespace: cert-manager
 
@@ -16,3 +17,10 @@ secretGenerator:
     type: Opaque
     namespace: cert-manager
     env: .env
+
+patches:
+  - path: ./patch-monitoring.yaml
+    target:
+      kind: Deployment
+      name: cert-manager
+      namespace: cert-manager

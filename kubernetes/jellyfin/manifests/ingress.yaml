@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: jellyfin-ingress
+  namespace: jellyfin
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: jellyfin.nas.dogeek.me
+    external-dns.alpha.kubernetes.io/target: nas.dogeek.me
+    cert-manager.io/cluster-issuer: cluster-issuer
+spec:
+  tls:
+    - hosts:
+        - jellyfin.nas.dogeek.me
+      secretName: jellyfin-cert-prod
+  rules:
+  - host: jellyfin.nas.dogeek.me
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: jellyfin
+            port:
+              name: http

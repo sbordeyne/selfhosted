@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pihole
+  labels:
+    app: pihole
+spec:
+  storageClassName: nfs-client
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 200Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dnsmasq
+  labels:
+    app: pihole
+spec:
+  storageClassName: nfs-client
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Mi

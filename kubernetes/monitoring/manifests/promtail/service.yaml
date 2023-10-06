@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: loki-promtail-metrics
+  labels:
+    app.kubernetes.io/name: promtail
+spec:
+  clusterIP: None
+  ports:
+    - name: http-metrics
+      port: 3101
+      targetPort: http-metrics
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: promtail

@@ -1,0 +1,104 @@
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: monitoring
+
+resources:
+  # in order: namespace, service accounts,
+  # roles, bindings, policies and then the rest
+  - ./manifests/namespace.yaml
+  - ./manifests/alert-manager/service-account.yaml
+  - ./manifests/blackbox-exporter/service-account.yaml
+  - ./manifests/grafana/service-account.yaml
+  - ./manifests/kube-state-metrics/service-account.yaml
+  - ./manifests/node-exporter/service-account.yaml
+  - ./manifests/prometheus/service-account.yaml
+  - ./manifests/prometheus-adapter/service-account.yaml
+  - ./manifests/prometheus-operator/service-account.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+
+configMapGenerator:
+  - name: adapter-config
+    namespace: monitoring
+    options:
+      labels:
+        app.kubernetes.io/component: metrics-adapter
+        app.kubernetes.io/name: prometheus-adapter
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 0.11.1
+    files:
+      - ./config/prometheus-adapter/config.yaml
+  - name: grafana-dashboards
+    namespace: monitoring
+    options:
+      labels:
+        app.kubernetes.io/component: grafana
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 9.5.3
+    files:
+      - ./config/grafana/dashboards.yaml
+  - name: blackbox-exporter-configuration
+    namespace: monitoring
+    options:
+      labels:
+        app.kubernetes.io/component: exporter
+        app.kubernetes.io/name: blackbox-exporter
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 0.24.0
+    files:
+      - ./config/blackbox-exporter/config.yml
+  - name: loki-promtail
+    files:
+      - ./config/promtail/promtail.yaml
+  - name: loki-promtail-dashboard
+    options:
+      labels:
+        grafana_dashboard: "1"
+    files:
+      - ./config/promtail/loki-promtail-dashboard.json
+
+secretGenerator:
+  - name: grafana-config
+    namespace: monitoring
+    type: Opaque
+    options:
+      labels:
+        app.kubernetes.io/component: grafana
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 9.5.3
+    files:
+      - ./config/grafana/grafana.ini
+  - name: grafana-datasources
+    namespace: monitoring
+    type: Opaque
+    options:
+      labels:
+        app.kubernetes.io/component: grafana
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 9.5.3
+    files:
+      - ./config/grafana/datasources.yaml
+  - name: alertmanager-main
+    namespace: monitoring
+    type: Opaque
+    options:
+      labels:
+        app.kubernetes.io/component: alert-router
+        app.kubernetes.io/instance: main
+        app.kubernetes.io/name: alertmanager
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 0.26.0
+    files:
+      - ./config/alert-manager/alertmanager.yaml
+
+images:
+  - name: grafana/promtail
+    newTag: 2.8.4
+    digest: sha256:67f60160f2d65f37f0a457109bfb5bd456ec630b7c29a399cd3ef6ae80048469
