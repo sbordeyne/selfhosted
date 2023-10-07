@@ -61,6 +61,242 @@ configMapGenerator:
         grafana_dashboard: "1"
     files:
       - ./config/promtail/loki-promtail-dashboard.json
+  - name: grafana-dashboard-alertmanager-overview
+    options:
+      labels:
+        app.kubernetes.io/component: grafana
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 9.5.3
+    files:
+      - ./config/grafana/dashboards/alertmanager-overview.json
+  - name: grafana-dashboard-apiserver
+    options:
+      labels:
+        app.kubernetes.io/component: grafana
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 9.5.3
+    files:
+      - ./config/grafana/dashboards/apiserver.json
+  - name: grafana-dashboard-cluster-total
+    options:
+      labels:
+        app.kubernetes.io/component: grafana
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 9.5.3
+    files:
+      - ./config/grafana/dashboards/cluster-total.json
+  - name: grafana-dashboard-controller-manager
+    options:
+      labels:
+        app.kubernetes.io/component: grafana
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 9.5.3
+    files:
+      - ./config/grafana/dashboards/controller-manager.json
+  - name: grafana-dashboard-grafana-overview
+    options:
+      labels:
+        app.kubernetes.io/component: grafana
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 9.5.3
+    files:
+      - ./config/grafana/dashboards/grafana-overview.json
+  - name: grafana-dashboard-k8s-resources-cluster
+    options:
+      labels:
+        app.kubernetes.io/component: grafana
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 9.5.3
+    files:
+      - ./config/grafana/dashboards/k8s-resources-cluster.json
+  - name: grafana-dashboard-k8s-resources-multicluster
+    options:
+      labels:
+        app.kubernetes.io/component: grafana
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 9.5.3
+    files:
+      - ./config/grafana/dashboards/k8s-resources-multicluster.json
+  - name: grafana-dashboard-k8s-resources-namespace
+    options:
+      labels:
+        app.kubernetes.io/component: grafana
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 9.5.3
+    files:
+      - ./config/grafana/dashboards/k8s-resources-namespace.json
+  - name: grafana-dashboard-k8s-resources-node
+    options:
+      labels:
+        app.kubernetes.io/component: grafana
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 9.5.3
+    files:
+      - ./config/grafana/dashboards/k8s-resources-node.json
+  - name: grafana-dashboard-k8s-resources-pod
+    options:
+      labels:
+        app.kubernetes.io/component: grafana
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 9.5.3
+    files:
+      - ./config/grafana/dashboards/k8s-resources-pod.json
+  - name: grafana-dashboard-k8s-resources-workload
+    options:
+      labels:
+        app.kubernetes.io/component: grafana
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 9.5.3
+    files:
+      - ./config/grafana/dashboards/k8s-resources-workload.json
+  - name: grafana-dashboard-k8s-resources-workloads-namespace
+    options:
+      labels:
+        app.kubernetes.io/component: grafana
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 9.5.3
+    files:
+      - ./config/grafana/dashboards/k8s-resources-workloads-namespace.json
+  - name: grafana-dashboard-kubelet
+    options:
+      labels:
+        app.kubernetes.io/component: grafana
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 9.5.3
+    files:
+      - ./config/grafana/dashboards/kubelet.json
+  - name: grafana-dashboard-namespace-by-pod
+    options:
+      labels:
+        app.kubernetes.io/component: grafana
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 9.5.3
+    files:
+      - ./config/grafana/dashboards/namespace-by-pod.json
+  - name: grafana-dashboard-namespace-by-workload
+    options:
+      labels:
+        app.kubernetes.io/component: grafana
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 9.5.3
+    files:
+      - ./config/grafana/dashboards/namespace-by-workload.json
+  - name: grafana-dashboard-node-cluster-rsrc-use
+    options:
+      labels:
+        app.kubernetes.io/component: grafana
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 9.5.3
+    files:
+      - ./config/grafana/dashboards/node-cluster-rsrc-use.json
+  - name: grafana-dashboard-node-rsrc-use
+    options:
+      labels:
+        app.kubernetes.io/component: grafana
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 9.5.3
+    files:
+      - ./config/grafana/dashboards/node-rsrc-use.json
+  - name: grafana-dashboard-nodes-darwin
+    options:
+      labels:
+        app.kubernetes.io/component: grafana
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 9.5.3
+    files:
+      - ./config/grafana/dashboards/nodes.json
+  - name: grafana-dashboard-nodes
+    options:
+      labels:
+        app.kubernetes.io/component: grafana
+        app.kubernetes.io/name: grafana
+        multicluster: "true"
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 9.5.3
+        os: linux
+    files:
+      - ./config/grafana/dashboards/nodes.json
+  - name: grafana-dashboard-persistentvolumesusage
+    options:
+      labels:
+        app.kubernetes.io/component: grafana
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 9.5.3
+    files:
+      - ./config/grafana/dashboards/persistentvolumesusage.json
+  - name: grafana-dashboard-pod-total
+    options:
+      labels:
+        app.kubernetes.io/component: grafana
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 9.5.3
+    files:
+      - ./config/grafana/dashboards/pod-total.json
+  - name: grafana-dashboard-prometheus-remote-write
+    options:
+      labels:
+        app.kubernetes.io/component: grafana
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 9.5.3
+    files:
+      - ./config/grafana/dashboards/prometheus-remote-write.json
+  - name: grafana-dashboard-prometheus
+    options:
+      labels:
+        app.kubernetes.io/component: grafana
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 9.5.3
+    files:
+      - ./config/grafana/dashboards/prometheus.json
+  - name: grafana-dashboard-proxy
+    options:
+      labels:
+        app.kubernetes.io/component: grafana
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 9.5.3
+    files:
+      - ./config/grafana-proxy/dashboards.yaml
+  - name: grafana-dashboard-scheduler
+    options:
+      labels:
+        app.kubernetes.io/component: grafana
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 9.5.3
+    files:
+      - ./config/grafana/dashboards/scheduler.json
+  - name: grafana-dashboard-workload-total
+    options:
+      labels:
+        app.kubernetes.io/component: grafana
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 9.5.3
+    files:
+      - ./config/grafana/dashboards/workload-total.json
 
 secretGenerator:
   - name: grafana-config
