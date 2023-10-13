@@ -2,24 +2,113 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: monitoring
-
 resources:
   # in order: namespace, service accounts,
-  # roles, bindings, policies and then the rest
-  - ./manifests/namespace.yaml
-  - ./manifests/alert-manager/service-account.yaml
-  - ./manifests/blackbox-exporter/service-account.yaml
-  - ./manifests/grafana/service-account.yaml
-  - ./manifests/kube-state-metrics/service-account.yaml
-  - ./manifests/node-exporter/service-account.yaml
-  - ./manifests/prometheus/service-account.yaml
-  - ./manifests/prometheus-adapter/service-account.yaml
-  - ./manifests/prometheus-operator/service-account.yaml
+  # roles, bindings, policies, deployments,
+  # services, monitoring and then the rest
+  - manifests/namespace.yaml
+  # service accounts
+  - manifests/alert-manager/service-account.yaml
+  - manifests/blackbox-exporter/service-account.yaml
+  - manifests/grafana/service-account.yaml
+  - manifests/kube-state-metrics/service-account.yaml
+  - manifests/node-exporter/service-account.yaml
+  - manifests/prometheus/service-account.yaml
+  - manifests/prometheus-adapter/service-account.yaml
+  - manifests/prometheus-operator/service-account.yaml
+  - manifests/promtail/service-account.yaml
+  # roles
+  - manifests/kube-state-metrics/cluster-role.yaml
+  - manifests/prometheus-operator/cluster-role.yaml
+  - manifests/prometheus-adapter/cluster-role.yaml
+  - manifests/prometheus-adapter/aggregated-metrics-reader.cluster-role.yaml
+  - manifests/prometheus-adapter/server-resources.cluster-role.yaml
+  - manifests/prometheus/role-namespaces.yaml
+  - manifests/prometheus/role.yaml
+  - manifests/prometheus/cluster-role.yaml
+  - manifests/blackbox-exporter/cluster-role.yaml
+  - manifests/promtail/cluster-role.yaml
+  - manifests/node-exporter/cluster-role.yaml
+  # role bindings
+  - manifests/kube-state-metrics/cluster-role-binding.yaml
+  - manifests/prometheus-operator/cluster-role-binding.yaml
+  - manifests/prometheus-adapter/auth-reader.role-binding.yaml
+  - manifests/prometheus-adapter/cluster-role-binding.yaml
+  - manifests/prometheus-adapter/delegator.cluster-role-binding.yaml
+  - manifests/prometheus/cluster-role-binding.yaml
+  - manifests/prometheus/role-binding.yaml
+  - manifests/prometheus/role-namespaces-binding.yaml
+  - manifests/blackbox-exporter/cluster-role-binding.yaml
+  - manifests/promtail/cluster-role-binding.yaml
+  - manifests/node-exporter/cluster-role-binding.yaml
+  # policies
+  # - manifests/kube-state-metrics/network-policy.yaml
+  # - manifests/prometheus-operator/network-policy.yaml
+  # - manifests/prometheus-adapter/network-policy.yaml
+  - manifests/prometheus-adapter/pod-disruption-budget.yaml
+  # - manifests/prometheus/network-policy.yaml
+  - manifests/prometheus/pod-disruption-budget.yaml
+  # - manifests/blackbox-exporter/network-policy.yaml
+  # - manifests/alert-manager/network-policy.yaml
+  - manifests/alert-manager/pod-disruption-budget.yaml
+  # - manifests/grafana/network-policy.yaml
+  # - manifests/node-exporter/network-policy.yaml
+  # deployments / daemonsets
+  - manifests/loki-canary/daemonset.yaml
+  - manifests/kube-state-metrics/deployment.yaml
+  - manifests/prometheus-operator/deployment.yaml
+  - manifests/prometheus-adapter/deployment.yaml
+  - manifests/blackbox-exporter/deployment.yaml
+  - manifests/grafana/deployment.yaml
+  - manifests/promtail/daemonset.yaml
+  - manifests/node-exporter/daemonset.yaml
+  # services
+  - manifests/loki-canary/service.yaml
+  - manifests/kube-state-metrics/service.yaml
+  - manifests/prometheus-operator/service.yaml
+  - manifests/prometheus-adapter/service.yaml
+  - manifests/prometheus-adapter/api-service.yaml
+  - manifests/prometheus/service.yaml
+  - manifests/blackbox-exporter/service.yaml
+  - manifests/alert-manager/service.yaml
+  - manifests/grafana/service.yaml
+  - manifests/promtail/service.yaml
+  - manifests/node-exporter/service.yaml
+  # service monitors
+  - manifests/loki-canary/service-monitor.yaml
+  - manifests/kube-state-metrics/service-monitor.yaml
+  - manifests/prometheus-operator/service-monitor.yaml
+  - manifests/prometheus-adapter/service-monitor.yaml
+  - manifests/prometheus/service-monitor.yaml
+  - manifests/blackbox-exporter/service-monitor.yaml
+  - manifests/alert-manager/service-monitor.yaml
+  - manifests/grafana/service-monitor.yaml
+  - manifests/promtail/service-monitor.yaml
+  - manifests/node-exporter/service-monitor.yaml
+  - manifests/kube-control-plane/core-dns.service-monitor.yaml
+  - manifests/kube-control-plane/kube-scheduler.service-monitor.yaml
+  - manifests/kube-control-plane/kubelet.service-monitor.yaml
+  - manifests/kube-control-plane/kube-controller-manager.service-monitor.yaml
+  - manifests/kube-control-plane/api-service.service-monitor.yaml
+  # prometheus rules
+  - manifests/prometheus-rule.yaml
+  - manifests/kube-state-metrics/prometheus-rule.yaml
+  - manifests/prometheus-operator/prometheus-rule.yaml
+  - manifests/prometheus/prometheus-rule.yaml
+  - manifests/alert-manager/prometheus-rule.yaml
+  - manifests/grafana/prometheus-rule.yaml
+  - manifests/promtail/recording.prometheus-rule.yaml
+  - manifests/promtail/alerting.prometheus-rule.yaml
+  - manifests/node-exporter/prometheus-rule.yaml
+  - manifests/kube-control-plane/prometheus-rule.yaml
+  # other manifests
+  - manifests/prometheus/prometheus.yaml
+  - manifests/alert-manager/alert-manager.yaml
+  - manifests/grafana/ingress.yaml
+  - manifests/loki
 
 generatorOptions:
   disableNameSuffixHash: true
-
 
 configMapGenerator:
   - name: adapter-config
@@ -278,7 +367,7 @@ configMapGenerator:
         app.kubernetes.io/part-of: kube-prometheus
         app.kubernetes.io/version: 9.5.3
     files:
-      - ./config/grafana-proxy/dashboards.yaml
+      - ./config/grafana/dashboards.yaml
   - name: grafana-dashboard-scheduler
     options:
       labels:
@@ -297,6 +386,16 @@ configMapGenerator:
         app.kubernetes.io/version: 9.5.3
     files:
       - ./config/grafana/dashboards/workload-total.json
+  - name: smart-exporter-config
+    options:
+      disableNameSuffixHash: true
+      labels:
+        app.kubernetes.io/component: smart-exporter
+        app.kubernetes.io/name: smart-exporter
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: "294"
+    files:
+      - ./config/smart-exporter/smartexporter.json
 
 secretGenerator:
   - name: grafana-config
