@@ -4,8 +4,31 @@ kind: Kustomization
 
 resources:
   - ./manifests/namespace.yaml
+  - ./manifests/db.yaml
   - ./manifests/deployment.yaml
   - ./manifests/service.yaml
   - ./manifests/ingress.yaml
+  - ./manifests/service-monitor.yaml
 
 namespace: keycloak
+
+configMapGenerator:
+  - name: keycloak-config
+    namespace: keycloak
+    env:
+      .env
+
+secretGenerator:
+  - name: keycloak-credentials
+    type: Opaque
+    env: secret.env
+  - name: keycloak-db-creds
+    type: Opaque
+    literals:
+      - username=keycloak
+      - password=keycloak
+  - name: superuser-secret
+    type: Opaque
+    literals:
+      - username=postgres
+      - password=postgres

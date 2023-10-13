@@ -3,16 +3,16 @@ kind: Deployment
 metadata:
   name: keycloak
   labels:
-    app: keycloak
+    app.kubernetes.io/name: keycloak
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: keycloak
+      app.kubernetes.io/name: keycloak
   template:
     metadata:
       labels:
-        app: keycloak
+        app.kubernetes.io/name: keycloak
     spec:
       containers:
         - name: keycloak
@@ -24,14 +24,32 @@ spec:
               memory: '256Mi'
               cpu: '250m'
           image: quay.io/keycloak/keycloak:22.0.3
-          args: ["start-dev"]
+          args: [
+            "start",
+            "--metrics-enabled=true",
+            "--db postgres",
+            "--db-url-host $(DB_HOST)",
+            "--db-username $(DB_USER)",
+            "--db-password $(DB_PASSWORD)"
+          ]
+          envFrom:
+            configMapRef:
+              name: keycloak-config
+            secretRef:
+              name: keycloak-credentials
           env:
-            - name: KEYCLOAK_ADMIN
-              value: "admin"
-            - name: KEYCLOAK_ADMIN_PASSWORD
-              value: "admin"
-            - name: KC_PROXY
-              value: "edge"
+            - name: DB_HOST
+              value: keycloak-rw
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-db-creds
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-db-creds
+                  key: password
           ports:
             - name: http
               containerPort: 8080

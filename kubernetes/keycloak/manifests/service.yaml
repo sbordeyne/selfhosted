@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: keycloak
   labels:
-    app: keycloak
+    app.kubernetes.io/name: keycloak
   namespace: keycloak
 spec:
   ports:
@@ -11,5 +11,5 @@ spec:
       port: 8080
       targetPort: 8080
   selector:
-    app: keycloak
+    app.kubernetes.io/name: keycloak
   type: ClusterIP
