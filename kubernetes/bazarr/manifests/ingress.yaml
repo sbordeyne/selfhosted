@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bazarr
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: bazarr.nas.dogeek.me
+    external-dns.alpha.kubernetes.io/target: nas.dogeek.me
+    cert-manager.io/cluster-issuer: cluster-issuer
+spec:
+  tls:
+  - hosts:
+    - bazarr.nas.dogeek.me
+    secretName: bazarr-cert-prod
+  rules:
+  - host: bazarr.nas.dogeek.me
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: bazarr
+            port:
+              name: http
