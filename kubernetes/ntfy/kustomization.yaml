@@ -1,0 +1,36 @@
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: ntfy
+
+resources:
+  - ./manifests/namespace.yaml
+  - ./manifests/pvc.yaml
+  - ./manifests/deployment.yaml
+  - ./manifests/service.yaml
+  - ./manifests/ingress.yaml
+  - ./manifests/service-monitor.yaml
+
+commonLabels:
+  app.kubernetes.io/name: ntfy
+  app.kubernetes.io/part-of: ntfy
+  app.kubernetes.io/managed-by: kustomize
+  app.kubernetes.io/instance: ntfy
+  app.kubernetes.io/component: ntfy
+  app.kubernetes.io/version: 1.28.0
+
+configMapGenerator:
+  - name: ntfy-config
+    namespace: ntfy
+    options:
+      disableNameSuffixHash: true
+      labels:
+        app.kubernetes.io/name: ntfy
+        app.kubernetes.io/part-of: ntfy
+        app.kubernetes.io/managed-by: kustomize
+        app.kubernetes.io/instance: ntfy
+        app.kubernetes.io/component: ntfy
+        app.kubernetes.io/version: 1.28.0
+    files:
+      - config/server.yml
