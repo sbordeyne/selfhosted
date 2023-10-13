@@ -1,0 +1,23 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: jellystat-db
+  namespace: jellystat
+
+spec:
+  instances: 1
+  primaryUpdateStrategy: unsupervised
+
+  superuserSecret:
+    name: superuser-secret
+
+  bootstrap:
+    initdb:
+      database: jellystat
+      owner: jellystat
+      secret:
+        name: jellystat-db-creds
+
+  storage:
+    storageClass: nfs-client
+    size: 1Gi
