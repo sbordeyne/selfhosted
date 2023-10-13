@@ -1,0 +1,22 @@
+title: "NAS | Home"
+backgroundOpacity: 0.5
+theme: "dark"
+color: "slate"
+target: "_blank"
+language: "fr"
+quickLaunch:
+  searchDescriptions: true
+layout:
+  Quick Access:
+    style: "row"
+    columns: 3
+  Download Managers:
+    style: "row"
+    columns: 4
+  Admin:
+    style: "row"
+    columns: 3
+
+providers:
+  openweathermap: openweathermapapikey
+  weatherapi: weatherapiapikey

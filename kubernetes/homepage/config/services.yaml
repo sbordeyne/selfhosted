@@ -1,0 +1,72 @@
+- Quick Access:
+  - JellySeerr:
+      icon: jellyseerr.png
+      href: https://jellyseer.nas.dogeek.me/
+      description: Request new media
+      namespace: jellyseerr
+      app: jellyseerr
+  - Jellyfin:
+      icon: jellyfin.png
+      href: https://jellyfin.nas.dogeek.me/
+      description: Watch movies & TV shows
+      namespace: jellyfin
+      app: jellyfin
+  - NextCloud:
+      icon: nextcloud.png
+      href: https://cloud.nas.dogeek.me/
+      description: Personal cloud
+  - Gitea:
+      icon: gitea
+      href: https://git.nas.dogeek.me/
+
+- Admin:
+  - Grafana:
+      icon: grafana
+      href: https://grafana.nas.dogeek.me/
+  - PgAdmin:
+      icon: postgres
+      href: https://db.nas.dogeek.me/
+  - LDAP:
+      icon: lldap
+      href: https://ldap.nas.dogeek.me/
+  - PiHole:
+      icon: pihole
+      href: https://pihole.nas.dogeek.me/
+  - HomeAssistant:
+      icon: home-assistant-circle
+      href: https://domotic.nas.dogeek.me/
+  - FoundryVTT:
+      icon: foundry-vtt
+      href: https://vtt.nas.dogeek.me/
+  - Jenkins:
+      icon: jenkins
+      href: https://build.nas.dogeek.me/
+
+- Download Managers:
+  - Sonarr:
+      icon: sonarr
+      href: https://sonarr.nas.dogeek.me/
+  - Radarr:
+      icon: radarr
+      href: https://radarr.nas.dogeek.me/
+  - Lidarr:
+      icon: lidarr
+      href: https://lidarr.nas.dogeek.me/
+  - Readarr:
+      icon: readarr
+      href: https://readarr.nas.dogeek.me/
+  - Prowlarr:
+      icon: prowlarr
+      href: https://prowlarr.nas.dogeek.me/
+  - Mylar:
+      icon: mylar
+      href: https://mylar.nas.dogeek.me/
+  - Whisparr:
+      icon: whisparr
+      href: https://whisparr.nas.dogeek.me/
+  - Bazarr:
+      icon: bazarr
+      href: https://bazarr.nas.dogeek.me/
+  - QBittorrent:
+      icon: qbittorrent
+      href: https://torrent.nas.dogeek.me/
