@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: transmission
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: torrent.nas.dogeek.me
+    external-dns.alpha.kubernetes.io/target: nas.dogeek.me
+    cert-manager.io/cluster-issuer: cluster-issuer
+spec:
+  tls:
+  - hosts:
+    - torrent.nas.dogeek.me
+    secretName: transmission-cert-prod
+  rules:
+  - host: torrent.nas.dogeek.me
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: transmission
+            port:
+              name: http

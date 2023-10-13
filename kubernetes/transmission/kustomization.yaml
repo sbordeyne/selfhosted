@@ -1,0 +1,69 @@
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: transmission
+
+commonLabels:
+  app.kubernetes.io/name: transmission
+  app.kubernetes.io/part-of: transmission
+  app.kubernetes.io/managed-by: kustomize
+  app.kubernetes.io/instance: transmission
+  app.kubernetes.io/component: transmission
+
+resources:
+  - ./manifests/namespace.yaml
+  - ./manifests/deployment.yaml
+  - ./manifests/service.yaml
+  - ./manifests/ingress.yaml
+
+configMapGenerator:
+  - name: transmission-env
+    namespace: transmission
+    options:
+      disableNameSuffixHash: true
+      labels:
+        app.kubernetes.io/name: transmission
+        app.kubernetes.io/part-of: transmission
+        app.kubernetes.io/managed-by: kustomize
+        app.kubernetes.io/instance: transmission
+        app.kubernetes.io/component: transmission
+    literals:
+      # - PUID=1000
+      # - PGID=1000
+      # - UID=1000
+      # - GID=1000
+      - TZ=Europe/Paris
+      - USER=sbordeyne
+      # - PEERPORT=6881
+  - name: transmission-settings
+    namespace: transmission
+    options:
+      disableNameSuffixHash: true
+      labels:
+        app.kubernetes.io/name: transmission
+        app.kubernetes.io/part-of: transmission
+        app.kubernetes.io/managed-by: kustomize
+        app.kubernetes.io/instance: transmission
+        app.kubernetes.io/component: transmission
+    files:
+      - config/settings.json
+
+secretGenerator:
+  - name: transmission-pass
+    namespace: transmission
+    options:
+      disableNameSuffixHash: true
+      labels:
+        app.kubernetes.io/name: transmission
+        app.kubernetes.io/part-of: transmission
+        app.kubernetes.io/managed-by: kustomize
+        app.kubernetes.io/instance: transmission
+        app.kubernetes.io/component: transmission
+    env:
+      .env
+
+images:
+  - name: transmission
+    newName: jaymoulin/transmission
+    newTag: latest
