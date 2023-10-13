@@ -1,0 +1,30 @@
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: flaresolverr
+
+resources:
+  - ./manifests/namespace.yaml
+  - ./manifests/deployment.yaml
+  - ./manifests/service.yaml
+  - ./manifests/service-monitor.yaml
+
+configMapGenerator:
+  - name: flaresolverr-env
+    namespace: flaresolverr
+    options:
+      disableNameSuffixHash: true
+      labels:
+        app.kubernetes.io/name: flaresolverr
+        app.kubernetes.io/part-of: flaresolverr
+        app.kubernetes.io/managed-by: kustomize
+        app.kubernetes.io/instance: flaresolverr
+        app.kubernetes.io/component: flaresolverr
+    literals:
+      - LOG_LEVEL=info
+      - LOG_HTML=false
+      # - CAPTCHA_SOLVER=
+      - PORT=8191
+      - PROMETHEUS_ENABLED=true
+      - PROMETHEUS_PORT=8192

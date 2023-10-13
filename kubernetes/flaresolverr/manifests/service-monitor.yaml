@@ -1,0 +1,21 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/component: exporter
+    app.kubernetes.io/name: flaresolverr
+    app.kubernetes.io/part-of: flaresolverr
+  name: flaresolverr-exporter
+  namespace: flaresolverr
+spec:
+  endpoints:
+  - interval: 30s
+    path: /metrics
+    port: metrics
+    scheme: http
+    tlsConfig:
+      insecureSkipVerify: true
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: flaresolverr-metrics
+      app.kubernetes.io/part-of: flaresolverr
