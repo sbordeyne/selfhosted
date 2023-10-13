@@ -6,7 +6,7 @@ Repository including all of the kubernetes manifests I wrote to deploy my self h
 
 ### Media Server
 
-- [ ] Jellyfin
+- [x] Jellyfin
 - [ ] Jellyseerr
 - [ ] Sonarr
 - [ ] Radarr
@@ -16,29 +16,29 @@ Repository including all of the kubernetes manifests I wrote to deploy my self h
 - [ ] Lidarr
 - [ ] QBittorrent
 - [ ] Flaresolverr
-- [ ] Jellystat
+- [x] Jellystat
 
 ### Infra
 
 - [x] Cert-manager
 - [x] External DNS
-- [ ] cloudflare-ddns
-- [ ] Grafana
-- [ ] Prometheus
-- [ ] Loki
-- [ ] Promtail
-- [ ] Tempo
+- [x] Grafana
+- [x] Prometheus
+- [ ] Grafana Loki
+- [ ] MinIO (S3 like storage)
+- [ ] Grafana Mimir (long term metrics storage)
+- [x] Promtail
+- [ ] Grafana Tempo
 - [x] cloud native postgresql
 - [x] nfs-provisioner
 - [x] metallb
 - [x] keycloak
 - [x] lldap
 - [x] traefik
-- [ ] homepage
+- [x] homepage
 
 ### Code
 
 - [ ] gitea
 - [ ] jenkins
 - [ ] MinIO
-
