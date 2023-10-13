@@ -1,0 +1,40 @@
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: sonarr
+
+commonLabels:
+  app.kubernetes.io/name: sonarr
+  app.kubernetes.io/part-of: arrstack
+  app.kubernetes.io/managed-by: kustomize
+  app.kubernetes.io/instance: sonarr
+  app.kubernetes.io/component: sonarr
+
+resources:
+  - ./manifests/namespace.yaml
+  - ./manifests/pvc.yaml
+  - ./manifests/deployment.yaml
+  - ./manifests/service.yaml
+  - ./manifests/ingress.yaml
+
+configMapGenerator:
+  - name: sonarr-env
+    namespace: sonarr
+    options:
+      disableNameSuffixHash: true
+      labels:
+        app.kubernetes.io/name: sonarr
+        app.kubernetes.io/part-of: arrstack
+        app.kubernetes.io/managed-by: kustomize
+        app.kubernetes.io/instance: sonarr
+        app.kubernetes.io/component: sonarr
+    literals:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Paris
+
+images:
+  - name: sonarr
+    newName: lscr.io/linuxserver/sonarr
+    newTag: latest

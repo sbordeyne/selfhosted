@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  sonarr
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sonarr
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: sonarr
+    spec:
+      containers:
+      - image: lscr.io/linuxserver/sonarr:latest
+        name: sonarr
+        resources:
+          limits:
+            cpu: "100m"
+            memory: "256M"
+          requests:
+            cpu: "20m"
+            memory: "55M"
+        envFrom:
+          - configMapRef:
+              name: sonarr-env
+              optional: false
+        ports:
+        - containerPort:  8989
+          name:  http
+        volumeMounts:
+        - mountPath: /media
+          name: media
+        - mountPath: /config
+          name: config
+      volumes:
+        - name: media
+          nfs:
+            path: /tank/media
+            server: "192.168.1.42"
+        - name: config
+          persistentVolumeClaim:
+            claimName: sonarr-config
