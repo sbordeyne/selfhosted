@@ -1,0 +1,40 @@
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: prowlarr
+
+commonLabels:
+  app.kubernetes.io/name: prowlarr
+  app.kubernetes.io/part-of: arrstack
+  app.kubernetes.io/managed-by: kustomize
+  app.kubernetes.io/instance: prowlarr
+  app.kubernetes.io/component: prowlarr
+
+resources:
+  - ./manifests/namespace.yaml
+  - ./manifests/pvc.yaml
+  - ./manifests/deployment.yaml
+  - ./manifests/service.yaml
+  - ./manifests/ingress.yaml
+
+configMapGenerator:
+  - name: prowlarr-env
+    namespace: prowlarr
+    options:
+      disableNameSuffixHash: true
+      labels:
+        app.kubernetes.io/name: prowlarr
+        app.kubernetes.io/part-of: arrstack
+        app.kubernetes.io/managed-by: kustomize
+        app.kubernetes.io/instance: prowlarr
+        app.kubernetes.io/component: prowlarr
+    literals:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Paris
+
+images:
+  - name: prowlarr
+    newName: lscr.io/linuxserver/prowlarr
+    newTag: latest
