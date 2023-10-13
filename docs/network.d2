@@ -1,0 +1,43 @@
+Internet {
+    shape: cloud
+}
+
+Home {
+    LiveBox {
+    }
+
+    nas-master\.local {
+
+    }
+
+    nas-worker\.local {
+    }
+
+    PC-games {
+
+    }
+
+    Macbook {}
+    Phone {}
+    Switch {}
+    Router {}
+    LiveBox -> Router -> Switch -> PC-games
+    Switch -> nas-master\.local
+    Switch -> nas-worker\.local
+    Router -> Macbook: wifi
+    Router -> Phone: wifi
+}
+
+OVH {
+    ovh-gra
+
+    ovh-stg
+}
+
+BorgBase {
+    shape: cloud
+}
+
+Internet <-> BorgBase
+Internet <-> OVH
+Home.LiveBox <-> Internet
