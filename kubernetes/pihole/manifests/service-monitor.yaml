@@ -1,0 +1,24 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: pihole
+  labels:
+    app.kubernetes.io/component: pihole-exporter-monitor
+    app.kubernetes.io/instance: pihole-exporter
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: pihole-exporter-monitor
+    app.kubernetes.io/part-of: pihole
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: pihole-exporter
+  endpoints:
+  - port: metrics
+    interval: 30s
+    path: /
+    scheme: http
+    tlsConfig:
+      insecureSkipVerify: true
+  namespaceSelector:
+    matchNames:
+    - pihole

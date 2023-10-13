@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name:  pihole-exporter
+spec:
+  selector:
+    app.kubernetes.io/name: pihole-exporter
+  type: ClusterIP
+  ports:
+  - name:  metrics
+    port:  9617
+    targetPort:  9617

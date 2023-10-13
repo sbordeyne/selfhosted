@@ -4,6 +4,11 @@ metadata:
   name:  pihole
   labels:
     app:  pihole
+    app.kubernetes.io/component: pihole
+    app.kubernetes.io/instance: pihole
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: pihole
+    app.kubernetes.io/part-of: pihole
 spec:
   selector:
     matchLabels:

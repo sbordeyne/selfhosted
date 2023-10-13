@@ -10,6 +10,9 @@ resources:
   - ./manifests/deployment.yaml
   - ./manifests/service.yaml
   - ./manifests/ingress.yaml
+  - ./manifests/exporter.deployment.yaml
+  - ./manifests/exporter.service.yaml
+  - ./manifests/service-monitor.yaml
 
 secretGenerator:
   - name: password
@@ -17,4 +20,3 @@ secretGenerator:
     type: Opaque
     envs:
       - .env
-
