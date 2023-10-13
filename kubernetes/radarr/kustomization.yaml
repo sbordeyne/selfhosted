@@ -1,0 +1,40 @@
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: radarr
+
+commonLabels:
+  app.kubernetes.io/name: radarr
+  app.kubernetes.io/part-of: arrstack
+  app.kubernetes.io/managed-by: kustomize
+  app.kubernetes.io/instance: radarr
+  app.kubernetes.io/component: radarr
+
+resources:
+  - ./manifests/namespace.yaml
+  - ./manifests/pvc.yaml
+  - ./manifests/deployment.yaml
+  - ./manifests/service.yaml
+  - ./manifests/ingress.yaml
+
+configMapGenerator:
+  - name: radarr-env
+    namespace: radarr
+    options:
+      disableNameSuffixHash: true
+      labels:
+        app.kubernetes.io/name: radarr
+        app.kubernetes.io/part-of: arrstack
+        app.kubernetes.io/managed-by: kustomize
+        app.kubernetes.io/instance: radarr
+        app.kubernetes.io/component: radarr
+    literals:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Paris
+
+images:
+  - name: radarr
+    newName: lscr.io/linuxserver/radarr
+    newTag: latest
