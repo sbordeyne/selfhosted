@@ -4,22 +4,22 @@ metadata:
   name: keycloak
   namespace: keycloak
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: auth.nas.dogeek.me
-    external-dns.alpha.kubernetes.io/target: nas.dogeek.me
+    external-dns.alpha.kubernetes.io/hostname: auth.slfhst.io
+    external-dns.alpha.kubernetes.io/target: slfhst.io
     cert-manager.io/cluster-issuer: cluster-issuer
 spec:
   tls:
-    - hosts:
-        - auth.nas.dogeek.me
-      secretName: keycloak-cert-prod
+  - hosts:
+    - auth.slfhst.io
+    secretName: keycloak-cert-prod
   rules:
-    - host: auth.nas.dogeek.me
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: keycloak
-                port:
-                  number: 8080
+  - host: auth.slfhst.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: keycloak
+            port:
+              number: 8080

@@ -12,22 +12,28 @@ resources:
 
 namespace: keycloak
 
+generatorOptions:
+  disableNameSuffixHash: true
+
 configMapGenerator:
   - name: keycloak-config
     namespace: keycloak
-    env:
-      .env
+    files:
+      - config/keycloak.conf
 
 secretGenerator:
   - name: keycloak-credentials
     type: Opaque
+    namespace: keycloak
     env: secret.env
   - name: keycloak-db-creds
     type: Opaque
+    namespace: keycloak
     literals:
       - username=keycloak
       - password=keycloak
   - name: superuser-secret
+    namespace: keycloak
     type: Opaque
     literals:
       - username=postgres
