@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: smtptest
+spec:
+  failedJobsHistoryLimit: 1
+  successfulJobsHistoryLimit: 1
+  concurrencyPolicy: Forbid
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    metadata:
+      name: smtptest-job
+    spec:
+      template:
+        spec:
+          containers:
+          - name: smtp-test
+            image: sbordeyne/smtptest:latest-alpine
+            imagePullPolicy: Always
+            env:
+              - name: SMTP_SERVER
+                value: "smtp-relay.smtp-relay.svc.cluster.local:25"
+              - name: SENDER_MAIL
+                value: "noreply@dogeek.me"
+              - name: TO_MAIL
+                value: "simon.bordeyne@gmail.com"
+              - name: SUBJECT
+                value: "Test mail"
+              - name: CONTENT
+                value: "This is a test mail"
+              - name: LOG_LEVEL
+                value: "debug"
+          restartPolicy: Never

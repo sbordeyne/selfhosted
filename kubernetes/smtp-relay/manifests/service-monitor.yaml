@@ -1,0 +1,16 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: smtp-relay-monitor
+spec:
+  namespaceSelector:
+    matchNames:
+    - smtp-relay
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: smtp-relay
+      app.kubernetes.io/instance: smtp-relay
+  endpoints:
+  - port: metrics
+    path: /metrics
+    interval: 30s
