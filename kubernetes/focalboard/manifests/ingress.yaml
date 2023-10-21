@@ -1,0 +1,25 @@
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: focalboard
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: board.slfhst.io
+    external-dns.alpha.kubernetes.io/target: slfhst.io
+    cert-manager.io/cluster-issuer: cluster-issuer
+spec:
+  tls:
+  - hosts:
+    - board.slfhst.io
+    secretName: focalboard-cert-prod
+  rules:
+  - host: board.slfhst.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: focalboard
+            port:
+              name: http

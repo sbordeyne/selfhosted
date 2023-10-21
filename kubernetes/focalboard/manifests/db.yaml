@@ -1,0 +1,29 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: focalboard-db
+  namespace: focalboard
+  labels:
+    app.kubernetes.io/name: focalboard
+    app.kubernetes.io/instance: focalboard
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/component: db
+    app.kubernetes.io/part-of: focalboard
+
+spec:
+  instances: 1
+  primaryUpdateStrategy: unsupervised
+
+  superuserSecret:
+    name: superuser-secret
+
+  bootstrap:
+    initdb:
+      database: boards
+      owner: boardsuser
+      secret:
+        name: focalboard-db-creds
+
+  storage:
+    storageClass: nfs-client
+    size: 1Gi

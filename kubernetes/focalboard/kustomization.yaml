@@ -1,0 +1,44 @@
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: focalboard
+
+resources:
+  - ./manifests/namespace.yaml
+  - ./manifests/db.yaml
+  - ./manifests/pvc.yaml
+  - ./manifests/deployment.yaml
+  - ./manifests/service.yaml
+  - ./manifests/ingress.yaml
+
+commonLabels:
+  app.kubernetes.io/name: focalboard
+  app.kubernetes.io/instance: focalboard
+  app.kubernetes.io/managed-by: kustomize
+  app.kubernetes.io/component: focalboard
+  app.kubernetes.io/part-of: focalboard
+  app.kubernetes.io/version: 0.6.7
+
+configMapGenerator:
+  - name: focalboard-config
+    files:
+      - config/config.json
+
+secretGenerator:
+  - name: focalboard-db-creds
+    type: Opaque
+    namespace: focalboard
+    options:
+      disableNameSuffixHash: true
+    literals:
+      - username=boardsuser
+      - password=boardspassword
+  - name: superuser-secret
+    namespace: focalboard
+    type: Opaque
+    options:
+      disableNameSuffixHash: true
+    literals:
+      - username=postgres
+      - password=postgres

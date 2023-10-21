@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: focalboard
+spec:
+  selector:
+    app.kubernetes.io/name: focalboard
+  type: ClusterIP
+  sessionAffinity: None
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10800
+  ports:
+  - name: http
+    protocol: TCP
+    port: 8000
+    targetPort: 8000
+  - name: metrics
+    protocol: TCP
+    port: 9090
+    targetPort: 9090

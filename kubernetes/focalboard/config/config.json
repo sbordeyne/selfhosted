@@ -1,0 +1,23 @@
+{
+  "serverRoot": "https://board.slfhst.io",
+  "port": 8000,
+  "dbtype": "postgres",
+  "dbtableprefix": "",
+  "dbconfig": "postgres://boardsuser:boardspassword@focalboard-db-rw/boards?sslmode=disable&connect_timeout=10",
+  "useSSL": false,
+  "webpath": "/opt/focalboard/pack",
+  "filesdriver": "local",
+  "filespath": "/files",
+  "telemetry": false,
+  "prometheusaddress": ":9090",
+  "webhook_update": [],
+  "session_expire_time": 2592000,
+  "session_refresh_time": 18000,
+  "localOnly": false,
+  "enableLocalMode": true,
+  "localModeSocketLocation": "/var/tmp/focalboard_local.socket",
+  "authMode": "native",
+  "logging_cfg_file": "",
+  "audit_cfg_file": "",
+  "enablePublicSharedBoards": false
+}
