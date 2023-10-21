@@ -18,9 +18,9 @@ secretGenerator:
     namespace: cert-manager
     env: .env
 
-patches:
-  - path: ./patch-monitoring.yaml
-    target:
-      kind: Deployment
-      name: cert-manager
-      namespace: cert-manager
+# patches:
+#   - path: ./patch-monitoring.yaml
+#     target:
+#       kind: Deployment
+#       name: cert-manager
+#       namespace: cert-manager

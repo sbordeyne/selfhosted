@@ -21,7 +21,7 @@ spec:
         image: registry.k8s.io/external-dns/external-dns:v0.13.5
         args:
         - --source=ingress # ingress is also possible
-        - --domain-filter=dogeek.me # (optional) limit to only example.com domains; change to match the zone created above.
+        - --domain-filter=slfhst.io # (optional) limit to only example.com domains; change to match the zone created above.
         - --provider=cloudflare
         - --cloudflare-dns-records-per-page=5000 # (optional) configure how many DNS records to fetch per request
         - --txt-owner-id=external-dns-nas
