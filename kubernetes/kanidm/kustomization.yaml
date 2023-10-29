@@ -1,0 +1,32 @@
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: kanidm
+
+resources:
+  - manifests/namespace.yaml
+  - manifests/pvc.yaml
+  - manifests/certificate.yaml
+  - manifests/service.yaml
+  - manifests/deployment.yaml
+  # - manifests/ingress.yaml
+  - manifests/ingress-route.yaml
+
+commonLabels:
+  app.kubernetes.io/name: kanidm
+  app.kubernetes.io/instance: kanidm
+  app.kubernetes.io/version: 1.1.0-beta.13
+  app.kubernetes.io/component: kanidm
+  app.kubernetes.io/managed-by: kustomize
+
+configMapGenerator:
+  - name: kanidm-config
+    namespace: kanidm
+    files:
+      - config/server.toml
+
+images:
+  - name: kanidm
+    newName: kanidm/server
+    newTag: 1.1.0-beta.13

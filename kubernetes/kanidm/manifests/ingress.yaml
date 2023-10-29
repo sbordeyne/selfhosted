@@ -1,8 +1,8 @@
+
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: keycloak
-  namespace: keycloak
+  name: kanidm
   annotations:
     external-dns.alpha.kubernetes.io/hostname: auth.slfhst.io
     external-dns.alpha.kubernetes.io/target: slfhst.io
@@ -11,7 +11,7 @@ spec:
   tls:
   - hosts:
     - auth.slfhst.io
-    secretName: keycloak-cert-prod
+    secretName: kanidm-cert-prod
   rules:
   - host: auth.slfhst.io
     http:
@@ -20,6 +20,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: keycloak-http
+            name: kanidm
             port:
-              number: 8080
+              number: 8443

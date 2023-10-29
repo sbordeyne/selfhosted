@@ -1,0 +1,17 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: kanidm
+  namespace: kanidm
+  labels:
+    app.kubernetes.io/name: kanidm
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - match: HostSNI(`auth.slfhst.io`)
+    services:
+    - name: kanidm
+      port: 8443
+  tls:
+    passthrough: true
