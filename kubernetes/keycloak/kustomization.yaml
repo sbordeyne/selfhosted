@@ -3,12 +3,13 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - ./manifests/namespace.yaml
-  - ./manifests/db.yaml
-  - ./manifests/deployment.yaml
-  - ./manifests/service.yaml
-  - ./manifests/ingress.yaml
-  - ./manifests/service-monitor.yaml
+  - manifests/namespace.yaml
+  - manifests/db.yaml
+  - manifests/deployment.yaml
+  - manifests/service.yaml
+  - manifests/ingress.yaml
+  # - manifests/keycloak.yaml
+  - manifests/service-monitor.yaml
 
 namespace: keycloak
 
@@ -20,6 +21,14 @@ configMapGenerator:
     namespace: keycloak
     files:
       - config/keycloak.conf
+  - name: keycloak-env
+    namespace: keycloak
+    literals:
+      - KC_DB=postgres
+      - KC_DB_PASSWORD=keycloak
+      - KC_DB_USERNAME=keycloak
+      - KC_DB_URL_HOST=keycloak-db-rw
+      - KC_DB_URL_PORT=5432
 
 secretGenerator:
   - name: keycloak-credentials

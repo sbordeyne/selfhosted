@@ -26,10 +26,10 @@ spec:
           resources:
             limits:
               memory: '512Mi'
-              cpu: '500m'
+              cpu: '100m'
             requests:
               memory: '256Mi'
-              cpu: '250m'
+              cpu: '50m'
           image: sbordeyne/keycloak:latest
           imagePullPolicy: Always
           args: [
@@ -40,10 +40,13 @@ spec:
           envFrom:
             - secretRef:
                 name: keycloak-credentials
+            - configMapRef:
+                name: keycloak-env
           volumeMounts:
             - name: keycloak-config
               mountPath: /config/keycloak.conf
               subPath: keycloak.conf
+              readOnly: true
             - name: keycloak-certs
               mountPath: /certs
               readOnly: true
