@@ -1,8 +1,8 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: lldap-db
-  namespace: lldap
+  name: paperless-ngx-db
+  namespace: paperless-ngx
 
 spec:
   instances: 1
@@ -13,10 +13,10 @@ spec:
 
   bootstrap:
     initdb:
-      database: lldap
-      owner: lldap
+      database: paperless
+      owner: paperless
       secret:
-        name: lldap-db-creds
+        name: paperless-db-creds
 
   storage:
     storageClass: nfs-client

@@ -4,16 +4,16 @@ metadata:
   name: jellyfin-ingress
   namespace: jellyfin
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: jellyfin.nas.dogeek.me
-    external-dns.alpha.kubernetes.io/target: nas.dogeek.me
+    external-dns.alpha.kubernetes.io/hostname: jellyfin.slfhst.io
+    external-dns.alpha.kubernetes.io/target: slfhst.io
     cert-manager.io/cluster-issuer: cluster-issuer
 spec:
   tls:
-    - hosts:
-        - jellyfin.nas.dogeek.me
-      secretName: jellyfin-cert-prod
+  - hosts:
+    - jellyfin.slfhst.io
+    secretName: jellyfin-cert-prod
   rules:
-  - host: jellyfin.nas.dogeek.me
+  - host: jellyfin.slfhst.io
     http:
       paths:
       - path: /

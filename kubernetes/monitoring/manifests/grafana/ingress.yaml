@@ -4,16 +4,16 @@ metadata:
   name: grafana-ingress
   namespace: monitoring
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: grafana.nas.dogeek.me
-    external-dns.alpha.kubernetes.io/target: nas.dogeek.me
+    external-dns.alpha.kubernetes.io/hostname: grafana.slfhst.io
+    external-dns.alpha.kubernetes.io/target: slfhst.io
     cert-manager.io/cluster-issuer: cluster-issuer
 spec:
   tls:
   - hosts:
-      - grafana.nas.dogeek.me
+    - grafana.slfhst.io
     secretName: grafana-cert-prod
   rules:
-  - host: grafana.nas.dogeek.me
+  - host: grafana.slfhst.io
     http:
       paths:
       - path: /

@@ -33,45 +33,45 @@ spec:
       #         - mountPath: /var/lib/ntfy
       #           name: ntfy
       containers:
-        - name: ntfy
-          image: binwiederhier/ntfy:v1.28.0 # set deployed version
-          args: ["serve"]
-          env:
-            - name: TZ # set timezone
-              value: Europe/Paris
-            - name: NTFY_DEBUG # enable/disable debug
-              value: "false"
-            - name: NTFY_LOG_LEVEL # adjust log level
-              value: INFO
-            - name: NTFY_BASE_URL # add base url
-              value: https://ntfy.nas.dogeek.me
-          ports:
-            - containerPort: 80
-              name: http
-            - containerPort: 443
-              name: https
-          resources:
-            limits:
-              memory: 300Mi
-              cpu:  200m
-            requests:
-                  cpu: 150m
-                  memory: 150Mi
-          volumeMounts:
-              - mountPath: /etc/ntfy/server.yml
-                subPath: server.yml
-                name: config
-              - mountPath: /var/cache/ntfy
-                name: cache
-              - mountPath: /var/lib/ntfy
-                name: ntfy
+      - name: ntfy
+        image: binwiederhier/ntfy:v1.28.0 # set deployed version
+        args: ["serve"]
+        env:
+        - name: TZ # set timezone
+          value: Europe/Paris
+        - name: NTFY_DEBUG # enable/disable debug
+          value: "false"
+        - name: NTFY_LOG_LEVEL # adjust log level
+          value: INFO
+        - name: NTFY_BASE_URL # add base url
+          value: https://ntfy.slfhst.io
+        ports:
+        - containerPort: 80
+          name: http
+        - containerPort: 443
+          name: https
+        resources:
+          limits:
+            memory: 300Mi
+            cpu: 200m
+          requests:
+            cpu: 150m
+            memory: 150Mi
+        volumeMounts:
+        - mountPath: /etc/ntfy/server.yml
+          subPath: server.yml
+          name: config
+        - mountPath: /var/cache/ntfy
+          name: cache
+        - mountPath: /var/lib/ntfy
+          name: ntfy
       volumes:
-        - name: config
-          configMap:
-            name: ntfy-config
-        - name: cache
-          persistentVolumeClaim:
-            claimName: ntfy-cache
-        - name: ntfy
-          persistentVolumeClaim:
-            claimName: ntfy
+      - name: config
+        configMap:
+          name: ntfy-config
+      - name: cache
+        persistentVolumeClaim:
+          claimName: ntfy-cache
+      - name: ntfy
+        persistentVolumeClaim:
+          claimName: ntfy

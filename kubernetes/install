@@ -62,3 +62,7 @@ sudo kubeadm init phase certs all --config ./kubeadm.yaml
 kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.26.1/manifests/calico.yaml
 kubectl taint node nas-master.local node-role.kubernetes.io/control-plane-
 kubectl config rename-context kubernetes-admin@kubernetes main
+
+sudo sysctl -w fs.inotify.max_user_watches=2099999999
+sudo sysctl -w fs.inotify.max_user_instances=2099999999
+sudo sysctl -w fs.inotify.max_queued_events=2099999999

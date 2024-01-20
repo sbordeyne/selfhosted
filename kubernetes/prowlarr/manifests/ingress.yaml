@@ -3,16 +3,16 @@ kind: Ingress
 metadata:
   name: prowlarr
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: prowlarr.nas.dogeek.me
-    external-dns.alpha.kubernetes.io/target: nas.dogeek.me
+    external-dns.alpha.kubernetes.io/hostname: prowlarr.slfhst.io
+    external-dns.alpha.kubernetes.io/target: slfhst.io
     cert-manager.io/cluster-issuer: cluster-issuer
 spec:
   tls:
   - hosts:
-    - prowlarr.nas.dogeek.me
+    - prowlarr.slfhst.io
     secretName: prowlarr-cert-prod
   rules:
-  - host: prowlarr.nas.dogeek.me
+  - host: prowlarr.slfhst.io
     http:
       paths:
       - path: /

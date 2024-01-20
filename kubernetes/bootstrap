@@ -9,7 +9,14 @@ KUSTOMIZATION_TEMPLATE = '''
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: {}
+namespace: {app_name}
+
+commonLabels:
+  app.kubernetes.io/name: {app_name}
+  app.kubernetes.io/instance: {app_name}
+  app.kubernetes.io/version: "1.0"
+  app.kubernetes.io/managed-by: kustomize
+  app.kubernetes.io/component: {app_name}
 
 resources:
   - ./manifests/namespace.yaml
@@ -29,7 +36,7 @@ def bootstrap_app(app_name: str):
     (ROOT / app_name).mkdir()
     (ROOT / app_name / 'manifests').mkdir()
     (ROOT / app_name / 'kustomization.yaml').write_text(
-        KUSTOMIZATION_TEMPLATE.format(app_name)
+        KUSTOMIZATION_TEMPLATE.format(app_name=app_name)
     )
     (ROOT / app_name / 'manifests' / 'namespace.yaml').write_text(
         NAMESPACE_TEMPLATE.format(app_name)

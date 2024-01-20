@@ -1,0 +1,16 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: keycloak-tls
+  namespace: keycloak
+spec:
+  dnsNames:
+  - login.slfhst.io
+  issuerRef:
+    group: cert-manager.io
+    kind: ClusterIssuer
+    name: cluster-issuer
+  secretName: keycloak-tls
+  usages:
+  - digital signature
+  - key encipherment

@@ -17,6 +17,4 @@ layout:
     style: "row"
     columns: 3
 
-providers:
-  openweathermap: openweathermapapikey
-  weatherapi: weatherapiapikey
+providers: {}

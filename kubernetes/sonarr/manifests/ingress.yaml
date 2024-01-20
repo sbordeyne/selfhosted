@@ -3,16 +3,16 @@ kind: Ingress
 metadata:
   name: sonarr
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: sonarr.nas.dogeek.me
-    external-dns.alpha.kubernetes.io/target: nas.dogeek.me
+    external-dns.alpha.kubernetes.io/hostname: sonarr.slfhst.io
+    external-dns.alpha.kubernetes.io/target: slfhst.io
     cert-manager.io/cluster-issuer: cluster-issuer
 spec:
   tls:
   - hosts:
-    - sonarr.nas.dogeek.me
+    - sonarr.slfhst.io
     secretName: sonarr-cert-prod
   rules:
-  - host: sonarr.nas.dogeek.me
+  - host: sonarr.slfhst.io
     http:
       paths:
       - path: /

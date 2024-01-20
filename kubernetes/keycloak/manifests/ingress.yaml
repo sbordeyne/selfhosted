@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: keycloak
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: login.slfhst.io
+    external-dns.alpha.kubernetes.io/target: slfhst.io
+    external-dns.alpha.kubernetes.io/ttl: "300"
+    cert-manager.io/cluster-issuer: cluster-issuer
+spec:
+  tls:
+  - hosts:
+    - login.slfhst.io
+    secretName: keycloak-cert-prod
+  rules:
+  - host: login.slfhst.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: keycloak
+            port:
+              number: 8080

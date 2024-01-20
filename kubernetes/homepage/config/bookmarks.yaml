@@ -3,18 +3,21 @@
 
 - Developer:
     - Github:
-        - abbr: GH
-          href: https://github.com/
-    - OVH:
-      - abbr: OVH
-        href: https://www.ovh.com/manager/#/web/zone/dogeek.me
+      - abbr: GH
+        href: https://github.com/notifications
 
 - Social:
     - Reddit:
-        - abbr: RE
-          href: https://reddit.com/
+      - abbr: RE
+        href: https://reddit.com/
 
 - Entertainment:
     - YouTube:
-        - abbr: YT
-          href: https://youtube.com/
+      - abbr: YT
+        href: https://youtube.com/subscriptions
+    - Crunchyroll:
+      - abbr: CR
+        href: https://crunchyroll.com/fr/simulcastcalendar
+    - AnimationDigitalNetwork:
+      - abbr: ADN
+        href: https://animationdigitalnetwork.fr/

@@ -1,3 +1,10 @@
 *.env
 kubernetes/cloudflare-ddns/config/config.json
 .venv
+private_key
+*.crt
+*.key
+*.pem
+values.yaml
+bundle.yaml
+kubernetes/smtp-relay/credentials.json

@@ -5,7 +5,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: flaresolverr
+      app.kubernetes.io/name: flaresolverr
   replicas: 1
   strategy:
     rollingUpdate:
@@ -15,18 +15,24 @@ spec:
   template:
     metadata:
       labels:
-        app:  flaresolverr
+        app.kubernetes.io/name:  flaresolverr
     spec:
+      hostNetwork: false
+      hostPID: false
+      shareProcessNamespace: false
+      enableServiceLinks: false
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst
       containers:
       - name: flaresolverr
         image: ghcr.io/flaresolverr/flaresolverr:latest
         resources:
           requests:
-            cpu: 100m
-            memory: 100Mi
+            cpu: 10m
+            memory: 50Mi
           limits:
-            cpu: 100m
-            memory: 100Mi
+            cpu: 1000m
+            memory: 8Gi
         envFrom:
           - configMapRef:
               name: flaresolverr-env
@@ -37,4 +43,3 @@ spec:
         ports:
         - containerPort:  8191
           name:  http
-      restartPolicy: Always

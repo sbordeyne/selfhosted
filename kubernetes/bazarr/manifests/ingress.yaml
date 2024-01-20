@@ -3,16 +3,16 @@ kind: Ingress
 metadata:
   name: bazarr
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: bazarr.nas.dogeek.me
-    external-dns.alpha.kubernetes.io/target: nas.dogeek.me
+    external-dns.alpha.kubernetes.io/hostname: bazarr.slfhst.io
+    external-dns.alpha.kubernetes.io/target: slfhst.io
     cert-manager.io/cluster-issuer: cluster-issuer
 spec:
   tls:
   - hosts:
-    - bazarr.nas.dogeek.me
+    - bazarr.slfhst.io
     secretName: bazarr-cert-prod
   rules:
-  - host: bazarr.nas.dogeek.me
+  - host: bazarr.slfhst.io
     http:
       paths:
       - path: /

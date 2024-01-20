@@ -5,8 +5,8 @@ kind: Kustomization
 namespace: jellyfin
 
 resources:
-  - ./manifests/namespace.yaml
-  - ./manifests/pvc.yaml
-  - ./manifests/service.yaml
-  - ./manifests/ingress.yaml
-  - ./manifests/deployment.yaml
+  - manifests/namespace.yaml
+  - manifests/pvc.yaml
+  - manifests/service.yaml
+  - manifests/ingress.yaml
+  - manifests/deployment.yaml

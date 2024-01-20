@@ -3,16 +3,16 @@ kind: Ingress
 metadata:
   name: radarr
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: radarr.nas.dogeek.me
-    external-dns.alpha.kubernetes.io/target: nas.dogeek.me
+    external-dns.alpha.kubernetes.io/hostname: radarr.slfhst.io
+    external-dns.alpha.kubernetes.io/target: slfhst.io
     cert-manager.io/cluster-issuer: cluster-issuer
 spec:
   tls:
   - hosts:
-    - radarr.nas.dogeek.me
+    - radarr.slfhst.io
     secretName: radarr-cert-prod
   rules:
-  - host: radarr.nas.dogeek.me
+  - host: radarr.slfhst.io
     http:
       paths:
       - path: /

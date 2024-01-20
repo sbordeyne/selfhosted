@@ -1,4 +1,4 @@
-base-url: "http://ntfy.nas.dogeek.me"
+base-url: "http://ntfy.slfhst.io"
 listen-http: ":80"
 
 cache-file: "/var/cache/ntfy/cache.db"

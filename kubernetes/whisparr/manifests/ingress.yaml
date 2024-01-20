@@ -3,16 +3,16 @@ kind: Ingress
 metadata:
   name: whisparr
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: whisparr.nas.dogeek.me
-    external-dns.alpha.kubernetes.io/target: nas.dogeek.me
+    external-dns.alpha.kubernetes.io/hostname: whisparr.slfhst.io
+    external-dns.alpha.kubernetes.io/target: slfhst.io
     cert-manager.io/cluster-issuer: cluster-issuer
 spec:
   tls:
   - hosts:
-    - whisparr.nas.dogeek.me
+    - whisparr.slfhst.io
     secretName: whisparr-cert-prod
   rules:
-  - host: whisparr.nas.dogeek.me
+  - host: whisparr.slfhst.io
     http:
       paths:
       - path: /

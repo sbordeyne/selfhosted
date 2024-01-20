@@ -6,18 +6,18 @@ metadata:
   name: traefik-dashboard-ingress
   namespace: traefik
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: traefik.nas.dogeek.me
-    external-dns.alpha.kubernetes.io/target: nas.dogeek.me
+    external-dns.alpha.kubernetes.io/hostname: traefik.slfhst.io
+    external-dns.alpha.kubernetes.io/target: slfhst.io
     cert-manager.io/cluster-issuer: cluster-issuer
   labels:
     app: traefik
 spec:
   tls:
   - hosts:
-    - traefik.nas.dogeek.me
+    - traefik.slfhst.io
     secretName: traefik-cert-prod
   rules:
-  - host: traefik.nas.dogeek.me
+  - host: traefik.slfhst.io
     http:
       paths:
       - path: /

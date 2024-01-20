@@ -35,9 +35,12 @@ spec:
           - --entryPoints.metrics.address=:8082
           - --metrics.prometheus.entryPoint=metrics
           - --entrypoints.web.Address=:80
+          - --entryPoints.web.forwardedHeaders.insecure
           - --entrypoints.websecure.Address=:443
+          - --entrypoints.websecure.forwardedHeaders.insecure
           - --entrypoints.websecure.http.tls=true
-          - --log.level=DEBUG
+          - --entrypoints.warsow.address=:44400/udp
+          - --log.level=INFO
           - --ping
           - --providers.kubernetescrd=true
           - --providers.kubernetesIngress=true

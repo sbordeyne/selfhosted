@@ -6,7 +6,7 @@ metadata:
   name: pihole
 spec:
   rules:
-  - host: pihole.nas.dogeek.me
+  - host: pihole.slfhst.io
     http:
       paths:
       - path: /

@@ -14,3 +14,13 @@ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.11/config/manifests/metallb-native.yaml
 kubectl apply -f https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-1.16/releases/cnpg-1.16.5.yaml
 kubectl apply -f https://raw.githubusercontent.com/traefik/traefik/v2.10/docs/content/reference/dynamic-configuration/kubernetes-crd-definition-v1.yml
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+kubectl create -f https://github.com/operator-framework/operator-lifecycle-manager/raw/master/deploy/upstream/quickstart/crds.yaml
+kubectl create -f https://github.com/operator-framework/operator-lifecycle-manager/raw/master/deploy/upstream/quickstart/olm.yaml
+
+kubectl apply -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/22.0.4/kubernetes/keycloaks.k8s.keycloak.org-v1.yml
+kubectl apply -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/22.0.4/kubernetes/keycloakrealmimports.k8s.keycloak.org-v1.yml
+kubectl apply -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/22.0.4/kubernetes/kubernetes.yml
+
+
+kubectl krew install resource-capacity

@@ -17,6 +17,10 @@ spec:
       containers:
       - name:  kanidm
         image:  kanidm
+        # imagePullPolicy: Always
+        # securityContext:
+        #   runAsUser: 1000
+        #   runAsGroup: 1000
         resources:
           requests:
             cpu: 100m

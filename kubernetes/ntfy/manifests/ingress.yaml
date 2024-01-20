@@ -4,16 +4,16 @@ kind: Ingress
 metadata:
   name: ntfy
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: ntfy.nas.dogeek.me
-    external-dns.alpha.kubernetes.io/target: nas.dogeek.me
+    external-dns.alpha.kubernetes.io/hostname: ntfy.slfhst.io
+    external-dns.alpha.kubernetes.io/target: slfhst.io
     cert-manager.io/cluster-issuer: cluster-issuer
 spec:
   tls:
   - hosts:
-    - ntfy.nas.dogeek.me
+    - ntfy.slfhst.io
     secretName: ntfy-cert-prod
   rules:
-  - host: ntfy.nas.dogeek.me
+  - host: ntfy.slfhst.io
     http:
       paths:
       - path: /

@@ -11,16 +11,16 @@ kind: Ingress
 metadata:
   name: {app_name}
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: {app_name}.nas.dogeek.me
-    external-dns.alpha.kubernetes.io/target: nas.dogeek.me
+    external-dns.alpha.kubernetes.io/hostname: {app_name}.slfhst.io
+    external-dns.alpha.kubernetes.io/target: slfhst.io
     cert-manager.io/cluster-issuer: cluster-issuer
 spec:
   tls:
   - hosts:
-    - {app_name}.nas.dogeek.me
+    - {app_name}.slfhst.io
     secretName: {app_name}-cert-prod
   rules:
-  - host: {app_name}.nas.dogeek.me
+  - host: {app_name}.slfhst.io
     http:
       paths:
       - path: /
