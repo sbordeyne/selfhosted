@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: openldap
+spec:
+  selector:
+    app.kubernetes.io/name: openldap
+  type: ClusterIP
+  sessionAffinity: None
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10800
+  ports:
+  - name: openldap
+    protocol: TCP
+    port: 1389
+    targetPort: 1389
+  - name: openldaps
+    protocol: TCP
+    port: 1636
+    targetPort: 1636

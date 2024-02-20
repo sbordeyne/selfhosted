@@ -1,0 +1,57 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- manifests/namespace.yaml
+- manifests/persistent-volume-claim.yaml
+- manifests/certificate.yaml
+- manifests/deployment.yaml
+- manifests/service.yaml
+
+commonLabels:
+  app.kubernetes.io/name: openldap
+  app.kubernetes.io/instance: openldap
+  app.kubernetes.io/managed-by: kustomize
+  app.kubernetes.io/component: openldap
+  app.kubernetes.io/part-of: slfhst
+  app.kubernetes.io/version: 2.6.7
+
+namespace: openldap
+
+configMapGenerator:
+- name: config
+  options:
+    disableNameSuffixHash: true
+  literals:
+  # Base options
+  - LDAP_PORT_NUMBER=1389
+  - LDAP_ROOT=dc=slfhst,dc=io
+  - LDAP_ADMIN_USERNAME=admin
+  - LDAP_CONFIG_ADMIN_ENABLED=yes
+  - LDAP_CONFIG_ADMIN_USERNAME=config
+  - LDAP_LOGLEVEL=256
+  - LDAP_PASSWORD_HASH=SSHA
+  - LDAP_USERS=readonly
+  - LDAP_USER_DC=users
+  - LDAP_GROUP=readers
+  # Access log options
+  - LDAP_ENABLE_ACCESSLOG=yes
+  - LDAP_ACCESSLOG_ADMIN_USERNAME=admin
+  - LDAP_ACCESSLOG_DB=cn=accesslog
+  - LDAP_ACCESSLOG_LOGSUCCESS=yes
+  # TLS options
+  - LDAP_ENABLE_TLS=yes
+  - LDAP_REQUIRE_TLS=no
+  - LDAP_LDAPS_PORT_NUMBER=1636
+  - LDAP_TLS_CERT_FILE=/container/service/slapd/assets/certs/tls.crt
+  - LDAP_TLS_KEY_FILE=/container/service/slapd/assets/certs/tls.key
+  - LDAP_TLS_CA_FILE=/container/service/slapd/assets/certs/tls.ca.crt
+
+secretGenerator:
+- name: openldap-secrets
+  env: .env
+
+images:
+- name: openldap
+  newName: bitnami/openldap
+  newTag: 2.6.7

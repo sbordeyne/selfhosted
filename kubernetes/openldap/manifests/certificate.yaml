@@ -1,0 +1,42 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: ldap-ca
+  namespace: openldap
+spec:
+  isCA: true
+  commonName: ldap-ca
+  secretName: root-tls-secret
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    name: selfsigned-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: ldap-issuer
+  namespace: openldap
+spec:
+  ca:
+    secretName: root-tls-secret
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: openldap-tls
+  namespace: openldap
+spec:
+  dnsNames:
+  - ldap.slfhst.io
+  issuerRef:
+    group: cert-manager.io
+    kind: Issuer
+    name: ldap-issuer
+  secretName: openldap-tls
+  usages:
+  - digital signature
+  - key encipherment
