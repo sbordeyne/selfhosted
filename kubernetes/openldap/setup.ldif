@@ -1,0 +1,20 @@
+dn: dc=slfhst,dc=io
+objectClass: domain
+dc: slfhst
+
+dn: ou=People,dc=slfhst,dc=io
+objectClass: organizationalUnit
+ou: People
+
+dn: ou=Groups,dc=slfhst,dc=io
+objectClass: organizationalUnit
+ou: Groups
+
+dn: cn=admins,ou=Groups,dc=slfhst,dc=io
+objectClass: posixGroup
+cn: admins
+
+dn: cn=users,ou=Groups,dc=slfhst,dc=io
+objectClass: posixGroup
+cn: users
+
