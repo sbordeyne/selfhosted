@@ -20,6 +20,7 @@ spec:
       containers:
       - name:  keycloak
         image:  keycloak
+        imagePullPolicy: Always
         args:
           - start --optimized --hostname-strict=false
         resources:

@@ -21,8 +21,8 @@ spec:
         name: bazarr
         resources:
           limits:
-            cpu: "100m"
-            memory: "256M"
+            cpu: "50m"
+            memory: "110M"
           requests:
             cpu: "20m"
             memory: "55M"
