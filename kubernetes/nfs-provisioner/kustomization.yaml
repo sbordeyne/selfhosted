@@ -11,3 +11,6 @@ patches:
   - path: ./patch_nfs_details.yaml
     target:
       kind: Deployment
+  - path: patch_allow_volume_expansion.yaml
+    target:
+      kind: StorageClass
