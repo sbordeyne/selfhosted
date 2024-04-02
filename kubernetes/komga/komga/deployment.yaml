@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  komga
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: komga
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name:  komga
+    spec:
+      containers:
+      - name:  komga
+        image:  komga
+        resources:
+          requests:
+            cpu: 10m
+            memory: 10Mi
+          limits:
+            cpu: 100m
+            memory: 1Gi
+        env:
+          - name:  TZ
+            value: Europe/Paris
+        envFrom:
+          - secretRef:
+              name:  komga-env
+        ports:
+          - containerPort:  25600
+            name:  komga
+        volumeMounts:
+          - name: config
+            subPath: application.yaml
+            mountPath: /config/application.yaml
+          - name: data
+            mountPath: /data
+          - name: db
+            mountPath: /db
+          - name: logs
+            mountPath: /logs
+      volumes:
+        - name: config
+          configMap:
+            name:  komga-config
+        - name: data
+          persistentVolumeClaim:
+            claimName:  data
+        - name: db
+          persistentVolumeClaim:
+            claimName:  komga-db
+        - name: logs
+          persistentVolumeClaim:
+            claimName:  komga-logs
+      restartPolicy: Always

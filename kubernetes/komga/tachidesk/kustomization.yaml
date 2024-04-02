@@ -1,0 +1,34 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: komga
+
+resources:
+  - deployment.yaml
+  - service.yaml
+  - ingress.yaml
+
+commonLabels:
+  app.kubernetes.io/name: tachidesk
+  app.kubernetes.io/version: latest
+  app.kubernetes.io/instance: tachidesk
+  app.kubernetes.io/part-of: komga
+  app.kubernetes.io/managed-by: kustomize
+
+images:
+  - name: tachidesk
+    newName: ghcr.io/suwayomi/tachidesk
+    newTag: latest
+
+configMapGenerator:
+  - name: tachidesk-config
+    options:
+      disableNameSuffixHash: true
+    env: config
+
+secretGenerator:
+  - name: tachidesk-env
+    env: .env
+    options:
+      disableNameSuffixHash: true
+    type: Opaque

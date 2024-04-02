@@ -1,0 +1,33 @@
+komga:
+  database:
+    file: /db/komga.db
+  delete-empty-collections: true
+  delete-empty-read-lists: true
+logging:
+  file:
+    name: /logs/komga.log
+server:
+  port: 25600
+  servlet:
+    session.timeout: 7d # session timeout, here 7 days
+    context-path: /
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            provider: keycloak # this must match the provider below
+            client-id: komga
+            client-name: Keycloak
+            scope: openid,email
+            authorization-grant-type: authorization_code
+            # the placeholders in {} will be replaced automatically, you don't need to change this line
+            redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+        provider:
+          keycloak: # this must match the provider above
+            user-name-attribute: sub
+            authorization-uri: https://login.slfhst.io/realms/master/protocol/openid-connect/auth
+            token-uri: https://login.slfhst.io/realms/master/protocol/openid-connect/token
+            jwk-set-uri: https://login.slfhst.io/realms/master/protocol/openid-connect/certs
+            user-info-uri: https://login.slfhst.io/realms/master/protocol/openid-connect/userinfo

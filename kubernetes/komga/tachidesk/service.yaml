@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tachidesk
+spec:
+  selector:
+    app.kubernetes.io/name: tachidesk
+  type: ClusterIP
+  sessionAffinity: None
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10800
+  ports:
+  - name: tachidesk
+    protocol: TCP
+    port: 4567
+    targetPort: 4567

@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tachidesk
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: tachidesk.slfhst.io
+    external-dns.alpha.kubernetes.io/target: slfhst.io
+    cert-manager.io/cluster-issuer: cluster-issuer
+spec:
+  tls:
+  - hosts:
+    - tachidesk.slfhst.io
+    secretName: tachidesk-cert-prod
+  rules:
+  - host: tachidesk.slfhst.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: tachidesk
+            port:
+              number: 4567

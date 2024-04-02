@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tranga-api
+  namespace: komga
+  labels:
+    app.kubernetes.io/component: api
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: tranga-api.slfhst.io
+    external-dns.alpha.kubernetes.io/target: slfhst.io
+    cert-manager.io/cluster-issuer: cluster-issuer
+spec:
+  tls:
+  - hosts:
+    - tranga-api.slfhst.io
+    secretName: tranga-api-cert-prod
+  rules:
+  - host: tranga-api.slfhst.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: tranga-api
+            port:
+              number: 6531

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tranga-settings
+  namespace: komga
+  labels:
+    app.kubernetes.io/name: tranga
+spec:
+  storageClassName: nfs-client
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
