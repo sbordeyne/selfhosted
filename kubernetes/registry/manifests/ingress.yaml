@@ -1,0 +1,23 @@
+# https://kubernetes.io/docs/concepts/services-networking/ingress/#the-ingress-resource
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: registry
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: registry.slfhst.io
+    external-dns.alpha.kubernetes.io/target: slfhst.io
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+
+spec:
+  rules:
+  - host: registry.slfhst.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: registry
+            port:
+              number: 5000

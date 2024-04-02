@@ -1,0 +1,48 @@
+apiVersion: databases.spotahome.com/v1
+kind: RedisFailover
+metadata:
+  name: redisfailover
+  namespace: registry
+spec:
+  sentinel:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 100m
+      limits:
+        memory: 100Mi
+    exporter:
+      enabled: true
+      image: leominov/redis_sentinel_exporter:1.3.0
+  redis:
+    replicas: 1
+    port: 6379
+    resources:
+      requests:
+        cpu: 10m
+        memory: 100Mi
+      limits:
+        cpu: 100m
+        memory: 500Mi
+        storage: 1Gi
+    storage:
+      keepAfterDeletion: true
+      persistentVolumeClaim:
+        metadata:
+          name: registry-redis
+        spec:
+          storageClassName: nfs-client
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
+    exporter:
+      enabled: true
+      image: oliver006/redis_exporter:v1.3.5-alpine
+      args:
+        - --web.telemetry-path
+        - /metrics
+      env:
+        - name: REDIS_EXPORTER_LOG_FORMAT
+          value: txt
