@@ -1,0 +1,16 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: cachesecure
+  namespace: traefik
+spec:
+  chain:
+    middlewares:
+    - name: cloudflarewarp
+    - name: log4shell
+    # - name: fail2ban
+    - name: redirecthttps
+    - name: retry
+    - name: compress
+    - name: simplecache
+    - name: keycloakopenid

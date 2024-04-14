@@ -1,0 +1,58 @@
+[global]
+    checkNewVersion = true
+    sendAnonymousUsage = false
+
+[api]
+    insecure = true
+    dashboard = true
+    debug = false
+
+[metrics]
+    [metrics.prometheus]
+        addEntryPointsLabels = true
+        addServicesLabels = true
+        entryPoint = "metrics"
+
+[entryPoints]
+    [entryPoints.web]
+        address = ":80"
+        [entryPoints.web.forwardedHeaders]
+            insecure = true
+    [entryPoints.websecure]
+        address = ":443"
+        [entryPoints.websecure.forwardedHeaders]
+            insecure = true
+        [entryPoints.websecure.http]
+            [entryPoints.websecure.http.tls]
+    [entryPoints.metrics]
+        address = ":8082"
+
+[providers]
+    [providers.kubernetesIngress]
+    [providers.kubernetesCRD]
+
+[ping]
+
+[log]
+    level = "INFO"
+    format = "json"
+
+[accessLog]
+    format = "json"
+
+[experimental]
+    [experimental.plugins.keycloakopenid]
+        moduleName = "github.com/Gwojda/keycloakopenid"
+        version = "v0.1.35"
+    [experimental.plugins.fail2ban]
+        moduleName = "github.com/tomMoulard/fail2ban"
+        version = "v0.7.1"
+    [experimental.plugins.cloudflarewarp]
+        moduleName = "github.com/BetterCorp/cloudflarewarp"
+        version = "v1.3.3"
+    [experimental.plugins.plugin-simplecache]
+        moduleName = "github.com/traefik/plugin-simplecache"
+        version = "v0.2.1"
+    [experimental.plugins.plugin-log4shell]
+        moduleName = "github.com/traefik/plugin-log4shell"
+        version = "v0.1.2"

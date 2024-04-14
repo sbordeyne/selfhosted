@@ -22,28 +22,18 @@ spec:
         - name: acme-storage-volume
           persistentVolumeClaim:
             claimName: acme-storage-claim
+        - name: traefik-config
+          configMap:
+            name: traefik-config
+        - name: simple-cache
+          persistentVolumeClaim:
+            claimName: simple-cache-claim
       containers:
         - name: traefik
           image: traefik:v2.10
-          args:
-          - --api.insecure=true
-          - --api.dashboard=true
-          - --accesslog
-          - --metrics.prometheus=true
-          - --metrics.prometheus.addEntryPointsLabels=true
-          - --metrics.prometheus.addServicesLabels=true
-          - --entryPoints.metrics.address=:8082
-          - --metrics.prometheus.entryPoint=metrics
-          - --entrypoints.web.Address=:80
-          - --entryPoints.web.forwardedHeaders.insecure
-          - --entrypoints.websecure.Address=:443
-          - --entrypoints.websecure.forwardedHeaders.insecure
-          - --entrypoints.websecure.http.tls=true
-          - --entrypoints.warsow.address=:44400/udp
-          - --log.level=INFO
-          - --ping
-          - --providers.kubernetescrd=true
-          - --providers.kubernetesIngress=true
+          envFrom:
+            - secretRef:
+                name: traefik-secrets
           resources:
             limits:
               cpu: 200m
@@ -64,3 +54,8 @@ spec:
             - name: acme-storage-volume
               mountPath: /acme
               subPath: ""
+            - name: simple-cache
+              mountPath: /simple-cache
+            - name: traefik-config
+              mountPath: /etc/traefik/traefik.toml
+              subPath: traefik.toml

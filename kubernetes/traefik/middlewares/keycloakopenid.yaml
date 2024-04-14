@@ -1,0 +1,15 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+    name: keycloakopenid
+    namespace: traefik
+spec:
+    plugin:
+        keycloakopenid:
+            ClientID: traefik
+            ClientSecretEnv: KEYCLOAK_CLIENT_SECRET
+            KeycloakRealm: master
+            KeycloakURL: https://login.slfhst.io
+            Scope: openid profile email
+            TokenCookieName: AUTH_TOKEN
+            UseAuthHeader: "false"

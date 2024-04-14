@@ -1,0 +1,9 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: log4shell
+  namespace: traefik
+spec:
+  plugin:
+    log4shell:
+      errorCode: 200

@@ -5,15 +5,44 @@ kind: Kustomization
 namespace: traefik
 
 resources:
-  - ./manifests/namespace.yaml
-  - ./manifests/service-account.yaml
-  - ./manifests/acme-pvc.yaml
-  - ./manifests/cluster-role.yaml
-  - ./manifests/cluster-role-binding.yaml
-  - ./manifests/deployment.yaml
-  - ./manifests/dashboard.service.yaml
-  - ./manifests/web.service.yaml
-  - ./manifests/ingress.yaml
-  - ./manifests/metrics.service.yaml
-  - ./manifests/middleware.yaml
-  - ./manifests/service-monitor.yaml
+  - manifests/namespace.yaml
+  - manifests/service-account.yaml
+  - manifests/acme-pvc.yaml
+  - manifests/cache-pvc.yaml
+  - manifests/cluster-role.yaml
+  - manifests/cluster-role-binding.yaml
+  - manifests/deployment.yaml
+  - manifests/dashboard.service.yaml
+  - manifests/web.service.yaml
+  - manifests/ingress.yaml
+  - manifests/metrics.service.yaml
+  - manifests/service-monitor.yaml
+  # Middlewares
+  - middlewares/fail2ban.yaml
+  - middlewares/keycloakopenid.yaml
+  - middlewares/simplecache.yaml
+  - middlewares/redirect-https.yaml
+  - middlewares/cloudflarewarp.yaml
+  - middlewares/log4shell.yaml
+  - middlewares/compress.yaml
+  - middlewares/retry.yaml
+  # Middleware chains
+  - middlewares/cache-no-auth.chain.yaml
+  - middlewares/cache-secure.chain.yaml
+
+images:
+  - name: traefik
+    newName: traefik
+    newTag: v2.10
+
+configMapGenerator:
+  - name: traefik-config
+    files:
+      - ./config/traefik.toml
+
+secretGenerator:
+  - name: traefik-secrets
+    type: Opaque
+    env: .env
+    options:
+      disableNameSuffixHash: true

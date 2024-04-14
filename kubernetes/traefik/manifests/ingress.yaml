@@ -9,6 +9,9 @@ metadata:
     external-dns.alpha.kubernetes.io/hostname: traefik.slfhst.io
     external-dns.alpha.kubernetes.io/target: slfhst.io
     cert-manager.io/cluster-issuer: cluster-issuer
+    traefik.ingress.kubernetes.io/router.middlewares: traefik-cachesecured@kubernetescrd
+    # referencing a middleware from Kubernetes CRD provider:
+    # <middleware-namespace>-<middleware-name>@kubernetescrd
   labels:
     app: traefik
 spec:

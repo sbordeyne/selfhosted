@@ -1,0 +1,12 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: simplecache
+  namespace: traefik
+spec:
+  plugin:
+    plugin-simplecache:
+      path: /simple-cache
+      addStatusHeader: "true"
+      cleanup: "600"
+      maxExpiry: "300"
