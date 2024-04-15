@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grafana
+  namespace: monitoring
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: grafana.slfhst.io
+    external-dns.alpha.kubernetes.io/target: slfhst.io
+    cert-manager.io/cluster-issuer: cluster-issuer
+    # traefik.ingress.kubernetes.io/router.middlewares: traefik-chain@kubernetescrd
+spec:
+  tls:
+  - hosts:
+    - grafana.slfhst.io
+    secretName: grafana-cert-prod
+  rules:
+  - host: grafana.slfhst.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: grafana
+            port:
+              name: http-grafana
