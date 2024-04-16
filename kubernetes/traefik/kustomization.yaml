@@ -27,8 +27,7 @@ resources:
   - middlewares/compress.yaml
   - middlewares/retry.yaml
   # Middleware chains
-  - middlewares/cache-no-auth.chain.yaml
-  - middlewares/cache-secure.chain.yaml
+  - middlewares/chain.yaml
 
 images:
   - name: traefik
@@ -44,5 +43,3 @@ secretGenerator:
   - name: traefik-secrets
     type: Opaque
     env: .env
-    options:
-      disableNameSuffixHash: true
