@@ -7,7 +7,7 @@ metadata:
     external-dns.alpha.kubernetes.io/hostname: grafana.slfhst.io
     external-dns.alpha.kubernetes.io/target: slfhst.io
     cert-manager.io/cluster-issuer: cluster-issuer
-    # traefik.ingress.kubernetes.io/router.middlewares: traefik-chain@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: traefik-log4shell@kubernetescrd,traefik-cloudflarewarp@kubernetescrd,traefik-redirecthttps@kubernetescrd
 spec:
   tls:
   - hosts:
