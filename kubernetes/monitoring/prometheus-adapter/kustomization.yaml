@@ -1,0 +1,24 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - service-account.yaml
+  - aggregated-metrics-reader.cluster-role.yaml
+  - server-resources.cluster-role.yaml
+  - cluster-role.yaml
+  - auth-reader.role-binding.yaml
+  - cluster-role-binding.yaml
+  - delegator.cluster-role-binding.yaml
+  - api-service.yaml
+  - network-policy.yaml
+  - pod-disruption-budget.yaml
+  - deployment.yaml
+  - service.yaml
+  - service-monitor.yaml
+
+
+commonLabels:
+  app.kubernetes.io/component: metrics-adapter
+  app.kubernetes.io/name: prometheus-adapter
+  app.kubernetes.io/managed-by: kustomize
