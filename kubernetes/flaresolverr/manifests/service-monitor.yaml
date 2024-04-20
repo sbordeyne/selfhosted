@@ -19,3 +19,6 @@ spec:
     matchLabels:
       app.kubernetes.io/name: flaresolverr-metrics
       app.kubernetes.io/part-of: flaresolverr
+  namespaceSelector:
+    matchNames:
+    - flaresolverr
