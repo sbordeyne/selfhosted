@@ -87,8 +87,8 @@ spec:
           httpGet:
             path: /
             port: http
-          initialDelaySeconds: 120
-          timeoutSeconds: 30
+          initialDelaySeconds: 240
+          timeoutSeconds: 600
         volumeMounts:
           - mountPath: /certs/tls.key
             name: certs
