@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: alertmanager-main
+spec:
+  ports:
+  - name: web
+    port: 9093
+    targetPort: web
+  - name: reloader-web
+    port: 8080
+    targetPort: reloader-web
+  selector:
+    app.kubernetes.io/name: alertmanager
+  sessionAffinity: ClientIP
