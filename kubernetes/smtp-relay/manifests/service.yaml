@@ -11,4 +11,17 @@ spec:
       name: smtp
   selector:
     app.kubernetes.io/name: smtp-relay
-    app.kubernetes.io/instance: smtp-relay
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: smtp-relay-metrics
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: metrics
+  selector:
+    app.kubernetes.io/name: smtp-relay-metrics

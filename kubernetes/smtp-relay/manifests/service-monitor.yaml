@@ -12,5 +12,5 @@ spec:
       app.kubernetes.io/instance: smtp-relay
   endpoints:
   - port: metrics
-    path: /metrics
+    path: /
     interval: 30s

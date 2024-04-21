@@ -26,10 +26,8 @@ spec:
                 fieldRef:
                   fieldPath: metadata.namespace
           envFrom:
-          - configMapRef:
-              name: smtp-relay-env
           - secretRef:
-              name: smtp-relay-secret
+              name: smtp-relay-env
           ports:
             - name: smtp
               containerPort: 8025
@@ -54,4 +52,4 @@ spec:
               memory: 50Mi
             limits:
               cpu: 50m
-              memory: 200Mi
+              memory: 100Mi
