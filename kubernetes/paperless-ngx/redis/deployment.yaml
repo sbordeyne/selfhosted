@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: redis
+  template:
+    spec:
+      containers:
+        - image: redis
+          name: redis
+          ports:
+            - containerPort: 6379
+              name: redis
+          resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          # volumeMounts:
+          #   - name:  redis-data
+          #     mountPath: /data
+      restartPolicy: Always
+      # volumes:
+      #   - name: redis-data
+      #     persistentVolumeClaim:
+      #       claimName: redis-data

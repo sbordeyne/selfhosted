@@ -5,42 +5,9 @@ kind: Kustomization
 namespace: paperless-ngx
 
 resources:
-  - ./manifests/namespace.yaml
-
-commonLabels:
-  app.kubernetes.io/name: paperless-ngx
-  app.kubernetes.io/instance: paperless-ngx
-  app.kubernetes.io/managed-by: kustomize
-  app.kubernetes.io/component: paperless-ngx
-  app.kubernetes.io/version: v1.0.0
-
-generatorOptions:
-  disableNameSuffixHash: true
-
-configMapGenerator:
-  - name: paperless-ngx-env
-    literals:
-      - USERMAP_UID=1000
-      - USERMAP_GID=1000
-      - PAPERLESS_OCR_LANGUAGES=eng
-      - PAPERLESS_URL=https://docs.slfhst.io
-      - PAPERLESS_TIME_ZONE=Europe/Paris
-      - PAPERLESS_OCR_LANGUAGE=fra
-
-
-secretGenerator:
-  - name: paperless-ngx-secret
-    type: Opaque
-    env: .env
-  - name: paperless-db-creds
-    type: Opaque
-    namespace: paperless-ngx
-    literals:
-      - username=paperless
-      - password=paperless
-  - name: superuser-secret
-    namespace: paperless-ngx
-    type: Opaque
-    literals:
-      - username=postgres
-      - password=postgres
+  - namespace.yaml
+  - redis
+  - db.yaml
+  - gotenberg
+  - tika
+  - paperless-ngx

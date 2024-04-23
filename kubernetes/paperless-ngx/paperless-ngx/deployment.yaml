@@ -1,0 +1,117 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  paperless-ngx
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: paperless-ngx
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+      - name:  paperless-ngx
+        image:  paperless-ngx
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+          allowPrivilegeEscalation: true
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 1000m
+            memory: 1000Mi
+        livenessProbe:
+          exec:
+            command:
+              - curl
+              - -f
+              - http://localhost:8000
+          failureThreshold: 5
+          periodSeconds: 30
+          timeoutSeconds: 10
+        env:
+        - name:  PAPERLESS_DBHOST
+          valueFrom:
+            secretKeyRef:
+              name: db-app
+              key: host
+        - name:  PAPERLESS_DBPORT
+          valueFrom:
+            secretKeyRef:
+              name: db-app
+              key: port
+        - name:  PAPERLESS_DBNAME
+          valueFrom:
+            secretKeyRef:
+              name: db-app
+              key: dbname
+        - name:  PAPERLESS_DBUSER
+          valueFrom:
+            secretKeyRef:
+              name: db-app
+              key: user
+        - name:  PAPERLESS_DBPASS
+          valueFrom:
+            secretKeyRef:
+              name: db-app
+              key: password
+        - name: PAPERLESS_DBSSLROOTCERT
+          value: /certs/db-ca/ca.crt
+        - name: PAPERLESS_DBSSLCERT
+          value: /certs/db-server/tls.crt
+        - name: PAPERLESS_DBSSLKEY
+          value: /certs/db-server/tls.key
+        envFrom:
+          - configMapRef:
+              name: paperless-ngx-env
+          - secretRef:
+              name: paperless-ngx-secret
+        ports:
+        - containerPort:  8000
+          name:  paperless-ngx
+        volumeMounts:
+        - name: db-server-certs
+          mountPath: /certs/db-server
+        - name: db-ca-certs
+          mountPath: /certs/db-ca
+        - name: consume-volume
+          mountPath: /paths/consume
+        - name: data-volume
+          mountPath: /paths/data
+        - name: trash-volume
+          mountPath: /paths/trash
+        - name: media-volume
+          mountPath: /paths/media
+      volumes:
+        - name: db-server-certs
+          secret:
+            secretName: db-server
+        - name: db-ca-certs
+          secret:
+            secretName: db-ca
+        - name: consume-volume
+          nfs:
+            path: /tank/documents/consume
+            server: "192.168.1.42"
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: paperless-ngx-data
+        - name: trash-volume
+          nfs:
+            path: /tank/documents/trash
+            server: "192.168.1.42"
+        - name: media-volume
+          nfs:
+            path: /tank/documents/media
+            server: "192.168.1.42"
+      restartPolicy: Always

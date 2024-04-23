@@ -1,22 +1,16 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: paperless-ngx-db
+  name: db
   namespace: paperless-ngx
 
 spec:
   instances: 1
   primaryUpdateStrategy: unsupervised
 
-  superuserSecret:
-    name: superuser-secret
-
   bootstrap:
     initdb:
       database: paperless
-      owner: paperless
-      secret:
-        name: paperless-db-creds
 
   storage:
     storageClass: nfs-client
