@@ -2,6 +2,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: Prometheus
 metadata:
   name: prometheus
+  namespace: monitoring
 spec:
   serviceAccountName: prometheus
   podMonitorNamespaceSelector: {}
@@ -12,6 +13,7 @@ spec:
   ruleSelector: {}
   serviceMonitorNamespaceSelector: {}
   serviceMonitorSelector: {}
+  replicas: 2
   alerting:
     alertmanagers:
     - apiVersion: v2
