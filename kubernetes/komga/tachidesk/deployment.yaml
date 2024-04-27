@@ -26,8 +26,8 @@ spec:
             cpu: 20m
             memory: 50Mi
           limits:
-            cpu: 300m
-            memory: 1G
+            cpu: 500m
+            memory: 1.5G
         envFrom:
           - secretRef:
               name:  tachidesk-env
@@ -39,8 +39,14 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /home/suwayomi/.local/share/Tachidesk
+        - name: downloads
+          mountPath: /home/suwayomi/.local/share/Tachidesk/downloads
       volumes:
         - name: data
           persistentVolumeClaim:
             claimName:  data
+        - name: downloads
+          nfs:
+            server: "192.168.1.42"
+            path: /tank/media/manga-scans
       restartPolicy: Always
