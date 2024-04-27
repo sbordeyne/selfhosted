@@ -26,6 +26,12 @@
             [entryPoints.websecure.http.tls]
     [entryPoints.metrics]
         address = ":8082"
+    [entryPoints.torrent]
+        address = ":6881"
+    [entryPoints.docker]
+        address = ":5000"
+    [entryPoints.ftp]
+        address = ":21"
 
 [providers]
     [providers.kubernetesIngress]
