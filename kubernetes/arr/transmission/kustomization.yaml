@@ -15,6 +15,7 @@ resources:
   - manifests/pvc.yaml
   - manifests/deployment.yaml
   - manifests/service.yaml
+  # Disable ingress, no need it is all managed through sonarr/lidarr/radarr etc
   # - manifests/ingress.yaml
   - manifests/service-monitor.yaml
 

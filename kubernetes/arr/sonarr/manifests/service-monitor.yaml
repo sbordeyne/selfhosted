@@ -1,12 +1,12 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: prowlarr-monitor
+  name: sonarr-monitor
   namespace: arr
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: prowlarr
+      app.kubernetes.io/name: sonarr
   endpoints:
   - port: exportarr
     interval: 4m
@@ -20,7 +20,7 @@ spec:
       sourceLabels: [__name__]
       targetLabel: job
       regex: (.*)
-      replacement: prowlarr_${1}
+      replacement: sonarr_${1}
   namespaceSelector:
     matchNames:
     - arr

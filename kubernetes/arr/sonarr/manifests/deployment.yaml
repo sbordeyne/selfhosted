@@ -17,7 +17,7 @@ spec:
         app.kubernetes.io/name: sonarr
     spec:
       containers:
-      - image: lscr.io/linuxserver/sonarr:latest
+      - image: sonarr
         name: sonarr
         resources:
           limits:
@@ -38,6 +38,38 @@ spec:
           name: media
         - mountPath: /config
           name: config
+      - name: sonarr-exportarr
+        image: exportarr
+        imagePullPolicy: IfNotPresent
+        args: [sonarr]
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: exportarr
+          failureThreshold: 5
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: exportarr
+          failureThreshold: 5
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 10m
+            memory: 20Mi
+          limits:
+            cpu: 20m
+            memory: 40Mi
+        envFrom:
+        - configMapRef:
+            name:  exportarr-env
+        ports:
+        - containerPort:  9707
+          name:  exportarr
+        volumeMounts:
+        - name: config
+          mountPath: /config
       volumes:
         - name: media
           nfs:

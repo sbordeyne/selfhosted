@@ -22,6 +22,25 @@ spec:
         runAsGroup: 0
         fsGroup: 1000
       containers:
+      - name:  prowlarr
+        image:  prowlarr
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 10m
+            memory: 20Mi
+          limits:
+            cpu: 100m
+            memory: 200Mi
+        envFrom:
+        - configMapRef:
+            name:  prowlarr-env
+        ports:
+        - containerPort:  9696
+          name:  prowlarr
+        volumeMounts:
+        - name: config
+          mountPath: /config
       - name: prowlarr-exportarr
         image: exportarr
         imagePullPolicy: IfNotPresent
@@ -47,29 +66,10 @@ spec:
             memory: 40Mi
         envFrom:
         - configMapRef:
-            name:  exportarr-env
+            name:  prowlarr-exportarr-env
         ports:
         - containerPort:  9707
           name:  exportarr
-        volumeMounts:
-        - name: config
-          mountPath: /config
-      - name:  prowlarr
-        image:  prowlarr
-        imagePullPolicy: Always
-        resources:
-          requests:
-            cpu: 10m
-            memory: 20Mi
-          limits:
-            cpu: 100m
-            memory: 200Mi
-        envFrom:
-        - configMapRef:
-            name:  prowlarr-env
-        ports:
-        - containerPort:  9696
-          name:  prowlarr
         volumeMounts:
         - name: config
           mountPath: /config
