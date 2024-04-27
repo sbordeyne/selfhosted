@@ -17,9 +17,46 @@ spec:
       labels:
         app.kubernetes.io/name:  prowlarr
     spec:
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+        fsGroup: 1000
       containers:
+      - name: prowlarr-exportarr
+        image: exportarr
+        imagePullPolicy: IfNotPresent
+        args: [prowlarr]
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: exportarr
+          failureThreshold: 5
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: exportarr
+          failureThreshold: 5
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 10m
+            memory: 20Mi
+          limits:
+            cpu: 20m
+            memory: 40Mi
+        envFrom:
+        - configMapRef:
+            name:  exportarr-env
+        ports:
+        - containerPort:  9707
+          name:  exportarr
+        volumeMounts:
+        - name: config
+          mountPath: /config
       - name:  prowlarr
         image:  prowlarr
+        imagePullPolicy: Always
         resources:
           requests:
             cpu: 10m
@@ -28,11 +65,11 @@ spec:
             cpu: 100m
             memory: 200Mi
         envFrom:
-        - secretRef:
+        - configMapRef:
             name:  prowlarr-env
         ports:
         - containerPort:  9696
-          name:  http
+          name:  prowlarr
         volumeMounts:
         - name: config
           mountPath: /config

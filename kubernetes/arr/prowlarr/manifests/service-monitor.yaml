@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: prowlarr-monitor
+  namespace: arr
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: prowlarr
+  endpoints:
+  - port: exportarr
+    interval: 4m
+    scrapeTimeout: 90s
+    path: /metrics
+    scheme: http
+    tlsConfig:
+      insecureSkipVerify: true
+  namespaceSelector:
+    matchNames:
+    - arr

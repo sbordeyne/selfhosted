@@ -16,10 +16,10 @@ resources:
   - manifests/deployment.yaml
   - manifests/service.yaml
   - manifests/ingress.yaml
+  - manifests/service-monitor.yaml
 
 configMapGenerator:
   - name: prowlarr-env
-    namespace: prowlarr
     options:
       disableNameSuffixHash: true
       labels:
@@ -32,8 +32,20 @@ configMapGenerator:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Paris
+  - name: exportarr-env
+    options:
+      disableNameSuffixHash: true
+    literals:
+      - PORT=9707
+      - URL=http://prowlarr:9696
+      - CONFIG=/config/config.xml
+      - DISABLE_SSL_VERIFY=true
+      - PROWLARR__BACKFILL=true
 
 images:
   - name: prowlarr
-    newName: lscr.io/linuxserver/prowlarr
-    newTag: latest
+    newName: hotio/prowlarr
+    newTag: release
+  - name: exportarr
+    newName: ghcr.io/onedr0p/exportarr
+    newTag: v1.5.3
