@@ -1,0 +1,25 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: transmission
+  namespace: arr
+  labels:
+    app.kubernetes.io/component: transmission
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: transmission
+    app.kubernetes.io/part-of: arrstack
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: transmission
+  endpoints:
+  - port: metrics
+    interval: 5m
+    scrapeTimeout: 90s
+    path: /metrics
+    scheme: http
+    tlsConfig:
+      insecureSkipVerify: true
+  namespaceSelector:
+    matchNames:
+    - arr

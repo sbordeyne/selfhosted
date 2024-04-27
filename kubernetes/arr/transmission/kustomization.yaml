@@ -2,20 +2,21 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: transmission
+namespace: arr
 
 commonLabels:
   app.kubernetes.io/name: transmission
-  app.kubernetes.io/part-of: transmission
+  app.kubernetes.io/part-of: arrstack
   app.kubernetes.io/managed-by: kustomize
   app.kubernetes.io/instance: transmission
   app.kubernetes.io/component: transmission
 
 resources:
-  - ./manifests/namespace.yaml
-  - ./manifests/deployment.yaml
-  - ./manifests/service.yaml
-  - ./manifests/ingress.yaml
+  - manifests/pvc.yaml
+  - manifests/deployment.yaml
+  - manifests/service.yaml
+  # - manifests/ingress.yaml
+  - manifests/service-monitor.yaml
 
 configMapGenerator:
   - name: transmission-env
@@ -29,13 +30,11 @@ configMapGenerator:
         app.kubernetes.io/instance: transmission
         app.kubernetes.io/component: transmission
     literals:
-      # - PUID=1000
-      # - PGID=1000
-      # - UID=1000
-      # - GID=1000
       - TZ=Europe/Paris
-      - USER=sbordeyne
-      # - PEERPORT=6881
+      - PUID=1000
+      - PGID=1000
+      - PEERPORT=51413
+
   - name: transmission-settings
     namespace: transmission
     options:
@@ -50,8 +49,9 @@ configMapGenerator:
       - config/settings.json
 
 secretGenerator:
-  - name: transmission-pass
+  - name: transmission
     namespace: transmission
+    type: kubernetes.io/basic-auth
     options:
       disableNameSuffixHash: true
       labels:
@@ -60,10 +60,12 @@ secretGenerator:
         app.kubernetes.io/managed-by: kustomize
         app.kubernetes.io/instance: transmission
         app.kubernetes.io/component: transmission
-    env:
-      .env
+    env: .env
 
 images:
   - name: transmission
     newName: jaymoulin/transmission
+    newTag: latest
+  - name: transmission-exporter
+    newName: evanofslack/transmission-exporter
     newTag: latest

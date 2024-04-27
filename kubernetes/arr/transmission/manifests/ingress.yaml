@@ -6,6 +6,7 @@ metadata:
     external-dns.alpha.kubernetes.io/hostname: torrent.slfhst.io
     external-dns.alpha.kubernetes.io/target: slfhst.io
     cert-manager.io/cluster-issuer: cluster-issuer
+    traefik.ingress.kubernetes.io/router.middlewares: traefik-chain@kubernetescrd
 spec:
   tls:
   - hosts:
@@ -21,4 +22,4 @@ spec:
           service:
             name: transmission
             port:
-              name: http
+              name: web
