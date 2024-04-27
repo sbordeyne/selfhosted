@@ -10,7 +10,7 @@ metadata:
 spec:
   endpoints:
   - interval: 30s
-    path: /metrics
+    path: /
     port: metrics
     scheme: http
     tlsConfig:
