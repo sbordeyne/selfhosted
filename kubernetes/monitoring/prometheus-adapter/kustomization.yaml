@@ -22,3 +22,10 @@ commonLabels:
   app.kubernetes.io/component: metrics-adapter
   app.kubernetes.io/name: prometheus-adapter
   app.kubernetes.io/managed-by: kustomize
+
+configMapGenerator:
+  - name: adapter-config
+    options:
+      disableNameSuffixHash: true
+    files:
+      - config.yaml
