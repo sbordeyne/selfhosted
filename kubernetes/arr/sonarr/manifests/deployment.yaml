@@ -32,7 +32,7 @@ spec:
               optional: false
         ports:
         - containerPort:  8989
-          name:  http
+          name:  sonarr
         volumeMounts:
         - mountPath: /media
           name: media
