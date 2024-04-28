@@ -12,11 +12,11 @@ commonLabels:
   app.kubernetes.io/component: radarr
 
 resources:
-  - manifests/pvc.yaml
-  - manifests/deployment.yaml
-  - manifests/service.yaml
-  - manifests/ingress.yaml
-  - manifests/service-monitor.yaml
+  - pvc.yaml
+  - deployment.yaml
+  - service.yaml
+  - ingress.yaml
+  - service-monitor.yaml
 
 configMapGenerator:
   - name: radarr-env
