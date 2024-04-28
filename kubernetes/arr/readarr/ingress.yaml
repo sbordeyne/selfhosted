@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: readarr
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: readarr.slfhst.io
+    external-dns.alpha.kubernetes.io/target: slfhst.io
+    cert-manager.io/cluster-issuer: cluster-issuer
+    traefik.ingress.kubernetes.io/router.middlewares: traefik-chain@kubernetescrd
+spec:
+  tls:
+  - hosts:
+    - readarr.slfhst.io
+    secretName: readarr-cert-prod
+  rules:
+  - host: readarr.slfhst.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: radarr
+            port:
+              name: readarr

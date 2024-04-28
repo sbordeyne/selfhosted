@@ -1,0 +1,43 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - pvc.yaml
+  - deployment.yaml
+  - service.yaml
+  - ingress.yaml
+  - service-monitor.yaml
+
+namespace: arr
+
+commonLabels:
+  app.kubernetes.io/name: readarr
+  app.kubernetes.io/part-of: arrstack
+  app.kubernetes.io/managed-by: kustomize
+  app.kubernetes.io/instance: readarr
+  app.kubernetes.io/component: readarr
+
+configMapGenerator:
+  - name: readarr-env
+    options:
+      disableNameSuffixHash: true
+    literals:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Paris
+  - name: readarr-exportarr-env
+    options:
+      disableNameSuffixHash: true
+    literals:
+      - PORT=9707
+      - URL=http://readarr:8787
+      - CONFIG=/config/config.xml
+      - DISABLE_SSL_VERIFY=true
+
+images:
+  - name: readarr
+    newName: ghcr.io/hotio/readarr
+    newTag: latest
+  - name: exportarr
+    newName: ghcr.io/onedr0p/exportarr
+    newTag: v1.5.3

@@ -1,0 +1,26 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: readarr-monitor
+  namespace: arr
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: readarr
+  endpoints:
+  - port: exportarr
+    interval: 4m
+    scrapeTimeout: 90s
+    path: /metrics
+    scheme: http
+    tlsConfig:
+      insecureSkipVerify: true
+    metricRelabelings:
+    - action: replace
+      sourceLabels: [__name__]
+      targetLabel: job
+      regex: (.*)
+      replacement: readarr_${1}
+  namespaceSelector:
+    matchNames:
+    - arr
