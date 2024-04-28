@@ -11,7 +11,11 @@ spec:
     clientIP:
       timeoutSeconds: 10800
   ports:
-  - name: http
+  - name: whisparr
     protocol: TCP
     port: 6969
     targetPort: 6969
+  - name: exportarr
+    protocol: TCP
+    port: 9707
+    targetPort: 9707

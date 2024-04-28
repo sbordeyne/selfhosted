@@ -17,7 +17,7 @@ spec:
         app.kubernetes.io/name: whisparr
     spec:
       containers:
-      - image: ghcr.io/hotio/whisparr:latest
+      - image: whisparr
         name: whisparr
         resources:
           limits:
@@ -32,26 +32,49 @@ spec:
               optional: false
         ports:
         - containerPort:  6969
-          name:  http
+          name:  whisparr
         volumeMounts:
         - mountPath: /media
           name: media
         - mountPath: /config
           name: config
-        # securityContext:
-        #   runAsUser: 1000
-        #   runAsGroup: 1000
-        #   allowPrivilegeEscalation: true
+      - name: whisparr-exportarr
+        image: exportarr
+        imagePullPolicy: IfNotPresent
+        args: [whisparr]
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: exportarr
+          failureThreshold: 5
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: exportarr
+          failureThreshold: 5
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 10m
+            memory: 20Mi
+          limits:
+            cpu: 20m
+            memory: 40Mi
+        envFrom:
+        - configMapRef:
+            name:  whisparr-exportarr-env
+        ports:
+        - containerPort:  9707
+          name:  exportarr
+        volumeMounts:
+        - name: config
+          mountPath: /config
       volumes:
         - name: media
           nfs:
             path: /tank/media
             server: "192.168.1.42"
         - name: config
-          hostPath:
-            path: /apps/config/whisparr
-            type: DirectoryOrCreate
-      # securityContext:
-      #   runAsUser: 1000
-      #   runAsGroup: 1000
-      #   fsGroup: 1000
+          persistentVolumeClaim:
+            claimName: whisparr-config
