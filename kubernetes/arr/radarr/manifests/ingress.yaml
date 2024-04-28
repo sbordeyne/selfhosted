@@ -6,7 +6,7 @@ metadata:
     external-dns.alpha.kubernetes.io/hostname: radarr.slfhst.io
     external-dns.alpha.kubernetes.io/target: slfhst.io
     cert-manager.io/cluster-issuer: cluster-issuer
-    traefik.ingress.kubernetes.io/router.middlewares: traefik-chain@kubernetescrd,traefik-radarroidc@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: traefik-chain@kubernetescrd
 spec:
   tls:
   - hosts:

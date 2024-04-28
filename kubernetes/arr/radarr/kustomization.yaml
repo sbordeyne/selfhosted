@@ -16,6 +16,7 @@ resources:
   - manifests/deployment.yaml
   - manifests/service.yaml
   - manifests/ingress.yaml
+  - manifests/service-monitor.yaml
 
 configMapGenerator:
   - name: radarr-env
@@ -32,8 +33,19 @@ configMapGenerator:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Paris
+  - name: radarr-exportarr-env
+    options:
+      disableNameSuffixHash: true
+    literals:
+      - PORT=9707
+      - URL=http://radarr:7878
+      - CONFIG=/config/config.xml
+      - DISABLE_SSL_VERIFY=true
 
 images:
   - name: radarr
-    newName: lscr.io/linuxserver/radarr
-    newTag: latest
+    newName: hotio/radarr
+    newTag: release
+  - name: exportarr
+    newName: ghcr.io/onedr0p/exportarr
+    newTag: v1.5.3

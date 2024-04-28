@@ -63,7 +63,7 @@ spec:
             memory: 40Mi
         envFrom:
         - configMapRef:
-            name:  exportarr-env
+            name:  sonarr-exportarr-env
         ports:
         - containerPort:  9707
           name:  exportarr

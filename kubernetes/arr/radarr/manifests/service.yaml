@@ -15,3 +15,7 @@ spec:
     protocol: TCP
     port: 7878
     targetPort: 7878
+  - name: exportarr
+    protocol: TCP
+    port: 9707
+    targetPort: 9707

@@ -6,6 +6,6 @@ resources:
   - bazarr
   - prowlarr
   - radarr
-  # - readarr
+  - readarr
   - sonarr
   - whisparr
