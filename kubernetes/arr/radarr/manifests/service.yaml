@@ -11,7 +11,7 @@ spec:
     clientIP:
       timeoutSeconds: 10800
   ports:
-  - name: http
+  - name: radarr
     protocol: TCP
     port: 7878
     targetPort: 7878

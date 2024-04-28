@@ -20,15 +20,8 @@ resources:
 
 configMapGenerator:
   - name: radarr-env
-    namespace: radarr
     options:
       disableNameSuffixHash: true
-      labels:
-        app.kubernetes.io/name: radarr
-        app.kubernetes.io/part-of: arrstack
-        app.kubernetes.io/managed-by: kustomize
-        app.kubernetes.io/instance: radarr
-        app.kubernetes.io/component: radarr
     literals:
       - PUID=1000
       - PGID=1000
@@ -44,7 +37,7 @@ configMapGenerator:
 
 images:
   - name: radarr
-    newName: hotio/radarr
+    newName: ghcr.io/hotio/radarr
     newTag: release
   - name: exportarr
     newName: ghcr.io/onedr0p/exportarr

@@ -32,7 +32,7 @@ spec:
               optional: false
         ports:
         - containerPort:  7878
-          name:  http
+          name:  radarr
         volumeMounts:
         - mountPath: /media
           name: media
