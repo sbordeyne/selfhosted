@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: speedtest-exporter
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: speedtest-exporter
+  template:
+    spec:
+      tolerations:
+      # this toleration is to have the daemonset runnable on master nodes
+      # remove it if your masters can't run pods
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+      containers:
+      - name: speedtest-exporter
+        image: speedtest-exporter
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 9469
+          name: metrics
+        resources:
+          limits:
+            cpu: 20m
+            memory: 20Mi
+          requests:
+            cpu: 5m
+            memory: 10Mi
+      terminationGracePeriodSeconds: 30
