@@ -2,13 +2,12 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - ./manifests/namespace.yaml
-  - ./manifests/service-account.yaml
-  - ./manifests/cluster-role.yaml
-  - ./manifests/cluster-role-binding.yaml
-  - ./manifests/deployment.yaml
+  - manifests/service-account.yaml
+  - manifests/cluster-role.yaml
+  - manifests/cluster-role-binding.yaml
+  - manifests/deployment.yaml
 
-namespace: external-dns
+namespace: kube-system
 
 secretGenerator:
   - name: api-key

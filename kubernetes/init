@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# This script is used to initialize the master node of the cluster.
+
