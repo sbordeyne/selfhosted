@@ -3,3 +3,5 @@ kind: Kustomization
 resources:
 - gotk-components.yaml
 - gotk-sync.yaml
+# Flux OpenTofu controller
+- https://raw.githubusercontent.com/flux-iac/tofu-controller/refs/tags/v0.15.1/docs/release.yaml
