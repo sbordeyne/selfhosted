@@ -6,4 +6,6 @@ namespace: vault
 
 resources:
   - Namespace-vault.yaml
+  - ServiceAccount-vault-auth.yaml
+  - ClusterRoleBinding-vault-auth-delegator.yaml
   - HelmRelease-vault.yaml
