@@ -9,3 +9,12 @@ resources:
   - ServiceAccount-vault-auth.yaml
   - ClusterRoleBinding-vault-auth-delegator.yaml
   - HelmRelease-vault.yaml
+
+secretGenerator:
+  - name: vault-auth-token
+    options:
+      disableNameSuffixHash: true
+      annotations:
+        kubernetes.io/service-account.name: vault-auth
+    type: kubernetes.io/service-account-token
+    literals: []
