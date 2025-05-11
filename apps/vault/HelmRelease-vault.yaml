@@ -26,4 +26,4 @@ spec:
     server:
       service:
         type: NodePort
-        nodePort: 8200
+        nodePort: 30000
