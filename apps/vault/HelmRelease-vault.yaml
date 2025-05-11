@@ -22,3 +22,8 @@ spec:
     remediation:
       retries: 3
     timeout: 5m
+  values:
+    server:
+      service:
+        type: NodePort
+        nodePort: 8200
