@@ -17,6 +17,9 @@ spec:
   values:
     crds:
       enabled: true
+    global:
+      leaderElection:
+        namespace: operators
   install:
     remediation:
       retries: 3
