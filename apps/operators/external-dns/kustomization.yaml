@@ -7,6 +7,6 @@ namespace: operators
 resources:
   - Namespace-operators.yaml
   - ServiceAccount-external-dns.yaml
-  - ClusterRole-external-dns-viewer.yaml
-  - ClusterRoleBinding-external-dns.yaml
+  - ClusterRole-external-dns.yaml
+  - ClusterRoleBinding-external-dns-viewer.yaml
   - SecretStore-external-dns.yaml
