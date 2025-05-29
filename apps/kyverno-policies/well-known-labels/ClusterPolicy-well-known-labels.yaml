@@ -1,0 +1,70 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: well-known-labels
+spec:
+  validationFailureAction: Audit
+  rules:
+    - name: check-for-app-kubernetes-io-name-label
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      validate:
+        message: "label 'app.kubernetes.io/name' is required"
+        pattern:
+          metadata:
+            labels:
+              app.kubernetes.io/name: "?*"
+    - name: check-for-app-kubernetes-io-managed-by-label
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      validate:
+        message: "label 'app.kubernetes.io/managed-by' is required"
+        pattern:
+          metadata:
+            labels:
+              app.kubernetes.io/managed-by: "?*"
+    - name: check-for-app-kubernetes-io-part-of-label
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      validate:
+        message: "label 'app.kubernetes.io/part-of' is required"
+        pattern:
+          metadata:
+            labels:
+              app.kubernetes.io/part-of: "?*"
+    - name: check-for-app-kubernetes-io-component-label
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      validate:
+        message: "label 'app.kubernetes.io/component' is required"
+        pattern:
+          metadata:
+            labels:
+              app.kubernetes.io/component: "?*"
+    - name: generate-app-kubernetes-io-instance-label
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      generate:
+        kind: Pod
+        name: "{{request.object.metadata.name}}"
+        namespace: "{{request.object.metadata.namespace}}"
+        synchronize: true
+        data:
+          metadata:
+            labels:
+              app.kubernetes.io/instance: '{{request.object.metadata.labels."app.kubernetes.io/part-of"}}-{{request.object.metadata.labels."app.kubernetes.io/name"}}-{{request.object.metadata.labels."app.kubernetes.io/component"}}'
