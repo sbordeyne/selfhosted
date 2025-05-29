@@ -6,4 +6,4 @@ namespace: operators
 
 resources:
   - Namespace-operators.yaml
-  - HelmRelease-cert-manager.yaml
+  - https://github.com/cert-manager/cert-manager/releases/download/v1.17.2/cert-manager.yaml
