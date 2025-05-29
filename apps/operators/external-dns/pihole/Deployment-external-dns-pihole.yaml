@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: external-dns-pihole
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: external-dns
+      app.kubernetes.io/component: pihole
+      app.kubernetes.io/part-of: homelab
+  template:
+    metadata:
+      labels:
+        app: external-dns
+        app.kubernetes.io/name: external-dns
+        app.kubernetes.io/component: pihole
+        app.kubernetes.io/part-of: homelab
+        app.kubernetes.io/managed-by: kustomize
+    spec:
+      serviceAccountName: external-dns
+      containers:
+      - name: external-dns
+        image: external-dns
+        args:
+        - --source=ingress
+        - --provider=pihole
+        - --registry=noop
+        - --policy=upsert-only
+        - --pihole-server=http://pihole.pihole.svc.cluster.local:80
+        - --pihole-tls-skip-verify=true
+        securityContext:
+          fsGroup: 65534
+        resources:
+          limits:
+            cpu: 200m
+            memory: 100Mi
+          requests:
+            cpu: 100m
+            memory: 50Mi

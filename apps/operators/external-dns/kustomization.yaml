@@ -1,0 +1,12 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: operators
+
+resources:
+  - Namespace-operators.yaml
+  - ServiceAccount-external-dns.yaml
+  - ClusterRole-external-dns-viewer.yaml
+  - ClusterRoleBinding-external-dns.yaml
+  - SecretStore-external-dns.yaml
