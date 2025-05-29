@@ -1,0 +1,35 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: kyverno
+  namespace: operators
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: kyverno
+      version: "3.3.6"
+      sourceRef:
+        kind: HelmRepository
+        name: kyverno
+        namespace: flux-system
+  install:
+    crds: Create
+  upgrade:
+    crds: CreateReplace
+    remediation:
+      remediateLastFailure: true
+  values:
+    admissionController:
+      replicas: 1
+    backgroundController:
+      replicas: 1
+    cleanupController:
+      replicas: 1
+    reportsController:
+      replicas: 1
+    config:
+      resourceFiltersExclude: [
+        "[Pod/binding,*,*]",
+      ]  # Allow certain resources to be excluded from Kyverno processing
