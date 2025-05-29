@@ -7,4 +7,3 @@ resources:
 - https://raw.githubusercontent.com/flux-iac/tofu-controller/refs/tags/v0.15.1/docs/release.yaml
 - receiver.yaml
 - webhook-ingress.yaml
-- helm-repositories
