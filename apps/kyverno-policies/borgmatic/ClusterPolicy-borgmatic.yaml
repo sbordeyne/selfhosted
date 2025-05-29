@@ -1,0 +1,452 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: borgmatic
+spec:
+  validationFailureAction: Audit
+  rules:
+    - name: create-borgmatic-service-account
+      match:
+        any:
+          - resources:
+              kinds:
+                - PersistentVolumeClaim
+                - Service
+      preconditions:
+        all:
+          - key: '{{request.object.metadata.annotations."borgmatic.torsion.org/ssh-key-secret" || null}}'
+            operator: NotEquals
+            value: null
+          - key: '{{request.object.metadata.annotations."borgmatic.torsion.org/schedule" || null}}'
+            operator: NotEquals
+            value: null
+          - key: '{{request.object.metadata.annotations."borgmatic.torsion.org/repository-path" || null}}'
+            operator: NotEquals
+            value: null
+          - key: "{{([(request.object.spec.accessModes[?@ == 'ReadWriteMany'])[0], request.object.kind][?@ != null])[0]}}"
+            operator: In
+            value: [ "ReadWriteMany", "Service" ]
+      generate:
+        apiVersion: v1
+        kind: ServiceAccount
+        name: borgmatic
+        namespace: "{{request.object.metadata.namespace}}"
+        data:
+          imagePullSecret: '{{request.object.metadata.annotations."borgmatic.torsion.org/image-pull-secret" || null}}'
+    - name: create-borgmatic-default-extra-config
+      match:
+        any:
+          - resources:
+              kinds:
+                - PersistentVolumeClaim
+                - Service
+      preconditions:
+        all:
+          - key: '{{request.object.metadata.annotations."borgmatic.torsion.org/ssh-key-secret" || null}}'
+            operator: NotEquals
+            value: null
+          - key: '{{request.object.metadata.annotations."borgmatic.torsion.org/schedule" || null}}'
+            operator: NotEquals
+            value: null
+          - key: '{{request.object.metadata.annotations."borgmatic.torsion.org/repository-path" || null}}'
+            operator: NotEquals
+            value: null
+          - key: "{{([(request.object.spec.accessModes[?@ == 'ReadWriteMany'])[0], request.object.kind][?@ != null])[0]}}"
+            operator: In
+            value: [ "ReadWriteMany", "Service" ]
+      generate:
+        apiVersion: v1
+        kind: ConfigMap
+        name: borgmatic-default-extra-config
+        namespace: "{{request.object.metadata.namespace}}"
+        data:
+          data: ""
+
+    - name: create-borgmatic-config-pvc
+      match:
+        any:
+          - resources:
+              kinds:
+                - PersistentVolumeClaim
+      preconditions:
+        all:
+          - key: '{{request.object.metadata.annotations."borgmatic.torsion.org/ssh-key-secret" || null}}'
+            operator: NotEquals
+            value: null
+          - key: '{{request.object.metadata.annotations."borgmatic.torsion.org/schedule" || null}}'
+            operator: NotEquals
+            value: null
+          - key: '{{request.object.metadata.annotations."borgmatic.torsion.org/repository-path" || null}}'
+            operator: NotEquals
+            value: null
+          - key: "{{[(request.object.spec.accessModes[?@ == 'ReadWriteMany'])[0], request.object.kind]}}"
+            operator: In
+            value: [ "ReadWriteMany" ]
+      generate:
+        apiVersion: v1
+        kind: ConfigMap
+        name: "borgmatic-{{request.object.metadata.name}}-config"
+        namespace: "{{request.object.metadata.namespace}}"
+        synchronize: true
+        data:
+          data:
+            borgmatic.yml: |-
+              source_directories:
+                - /data
+              repositories:
+                - path: '{{request.object.metadata.annotations."borgmatic.torsion.org/repository-path"}}'
+                  encryption: repokey-blake2
+              archive_name_format: 'archive-{{request.object.metadata.name}}-{now}'
+              keep_daily: 7
+              ssh_command: 'ssh -i /run/secrets/ssh-key'
+              encryption_passphrase: credential container encryption-passphrase
+              borg_base_directory: /borg
+              borg_config_directory: /borg/config
+              borg_cache_directory: /borg/cache
+              borg_security_directory: /borg/security
+              borg_keys_directory: /borg/keys
+              checks:
+                - name: repository
+                  frequency: 2 weeks
+                  only_run_on:
+                    - Saturday
+                    - Sunday
+                  max_duration: 3600
+                - name: archives
+                  frequency: 4 weeks
+                  only_run_on:
+                    - Saturday
+                    - Sunday
+                  max_duration: 3600
+                - name: spot
+                  frequency: 1 week
+                  only_run_on:
+                    - Saturday
+                    - Sunday
+                  max_duration: 3600
+                  count_tolerance_percentage: 10
+                  data_sample_percentage: 1
+                  data_tolerance_percentage: 0.5
+                - name: extract
+                  frequency: 1 month
+                  only_run_on:
+                    - Monday
+              check_last: 3
+              verbosity: 1
+              log_json: true
+              statistics: true
+              list_details: true
+              default_actions: true
+
+    - name: create-borgmatic-cronjob
+      match:
+        any:
+          - resources:
+              kinds:
+                - PersistentVolumeClaim
+
+      preconditions:
+        all:
+          - key: '{{request.object.metadata.annotations."borgmatic.torsion.org/ssh-key-secret" || null}}'
+            operator: NotEquals
+            value: null
+          - key: '{{request.object.metadata.annotations."borgmatic.torsion.org/schedule" || null}}'
+            operator: NotEquals
+            value: null
+          - key: '{{request.object.metadata.annotations."borgmatic.torsion.org/repository-path" || null}}'
+            operator: NotEquals
+            value: null
+          - key: "{{[(request.object.spec.accessModes[?@ == 'ReadWriteMany'])[0], request.object.kind]}}"
+            operator: In
+            value: [ "ReadWriteMany" ]
+      generate:
+        apiVersion: batch/v1
+        kind: CronJob
+        name: "backup-{{request.object.metadata.name}}"
+        namespace: "{{request.object.metadata.namespace}}"
+        synchronize: true
+        data:
+          schedule: '{{request.object.metadata.annotations."borgmatic.torsion.org/schedule"}}'
+          concurencyPolicy: Replace
+          startingDeadlineSeconds: 10
+          jobTemplate:
+            spec:
+              completions: 1
+              template:
+                spec:
+                  serviceAccountName: borgmatic
+                  initContainers:
+                    - name: borgmatic
+                      image: |-
+                        {{request.object.metadata.annotations."borgmatic.torsion.org/image" || 'ghcr.io/sbordeyne/borgmatic:all-latest'}}
+                      command: ["/bin/sh", "-c"]
+                      args:
+                        - |-
+                          yq eval-all '. as $item ireduce ({}; . * $item )' /etc/borgmatic/config-generated/borgmatic.yml /etc/borgmatic/config-extra/*.yml /etc/borgmatic/config-extra/*.yaml > /config/borgmatic.yml
+                      volumeMounts:
+                        - name: config-generated
+                          mountPath: /etc/borgmatic/config-generated
+                          subPath: borgmatic.yml
+                        - name: config-extra
+                          mountPath: /etc/borgmatic/config-extra
+                        - name: config
+                          mountPath: /config
+                  containers:
+                    - name: borgmatic
+                      resources:
+                        requests:
+                          cpu: 100m
+                          memory: 128Mi
+                        limits:
+                          cpu: 200m
+                          memory: 256Mi
+                      image: ghcr.io/sbordeyne/borgmatic:all-1.0.0
+                      command: ["/bin/sh", "-c"]
+                      args:
+                        - |-
+                          borgmatic config validate --config /etc/borgmatic/borgmatic.yml
+                          borgmatic init --config /etc/borgmatic/borgmatic.yml
+                          borgmatic --config /etc/borgmatic/borgmatic.yml
+                      volumeMounts:
+                        - name:  data
+                          mountPath:  /data
+                        - name:  config
+                          mountPath:  /etc/borgmatic
+                          subPath: borgmatic.yml
+                        - name:  secrets
+                          mountPath:  /run/secrets
+                          subPath: ssh-key
+                          readOnly: true
+                        - name: secrets
+                          mountPath: /run/secrets
+                          subPath: encryption-key
+                          readOnly: true
+                        - name: borg
+                          mountPath: /borg
+                  volumes:
+                    - name: data
+                      persistentVolumeClaim:
+                        claimName: '{{request.object.metadata.name}}'
+                    - name: config-generated
+                      configMap:
+                        name: "borgmatic-{{request.object.metadata.name}}-config"
+                    - name: config-extra
+                      configMap:
+                        name: |-
+                          {{request.object.metadata.annotations."borgmatic.torsion.org/extra-config" || 'borgmatic-default-extra-config'}}
+                    - name: config
+                      emptyDir: {}
+                    - name: borg
+                      emptyDir: {}
+                    - name: ssh-key
+                      secret:
+                        secretName: '{{ request.object.metadata.annotations."borgmatic.torsion.org/ssh-key-secret"}}'
+                  restartPolicy: OnFailure
+                  terminationGracePeriodSeconds: 30
+    - name: create-borgmatic-config-postgresql
+      match:
+        any:
+          - resources:
+              kinds:
+                - Service
+            annotations:
+              borgmatic.torsion.org/database-type: postgresql
+
+      preconditions:
+        all:
+          - key: '{{request.object.metadata.annotations."borgmatic.torsion.org/ssh-key-secret" || null}}'
+            operator: NotEquals
+            value: null
+          - key: '{{request.object.metadata.annotations."borgmatic.torsion.org/schedule" || null}}'
+            operator: NotEquals
+            value: null
+          - key: '{{request.object.metadata.annotations."borgmatic.torsion.org/repository-path" || null}}'
+            operator: NotEquals
+            value: null
+          - key: '{{request.object.metadata.annotations."borgmatic.torsion.org/database-credentials" || null}}'
+            operator: NotEquals
+            value: null
+
+      generate:
+        apiVersion: v1
+        kind: ConfigMap
+        name: "borgmatic-{{request.object.metadata.name}}-config"
+        namespace: "{{request.object.metadata.namespace}}"
+        synchronize: true
+        data:
+          data:
+            borgmatic.yml: |-
+              source_directories:
+                - /data
+              repositories:
+                - path: '{{request.object.metadata.annotations."borgmatic.torsion.org/repository-path"}}'
+                  encryption: repokey-blake2
+              archive_name_format: 'archive-{{request.object.metadata.name}}-{now}'
+              keep_daily: 7
+              ssh_command: 'ssh -i /run/secrets/ssh-key'
+              encryption_passphrase: credential container encryption-passphrase
+              borg_base_directory: /borg
+              borg_config_directory: /borg/config
+              borg_cache_directory: /borg/cache
+              borg_security_directory: /borg/security
+              borg_keys_directory: /borg/keys
+              checks:
+                - name: repository
+                  frequency: 2 weeks
+                  only_run_on:
+                    - Saturday
+                    - Sunday
+                  max_duration: 3600
+                - name: archives
+                  frequency: 4 weeks
+                  only_run_on:
+                    - Saturday
+                    - Sunday
+                  max_duration: 3600
+                - name: spot
+                  frequency: 1 week
+                  only_run_on:
+                    - Saturday
+                    - Sunday
+                  max_duration: 3600
+                  count_tolerance_percentage: 10
+                  data_sample_percentage: 1
+                  data_tolerance_percentage: 0.5
+                - name: extract
+                  frequency: 1 month
+                  only_run_on:
+                    - Monday
+              check_last: 3
+              verbosity: 1
+              log_json: true
+              statistics: true
+              list_details: true
+              default_actions: true
+              postgresql_databases:
+                - name: {{request.object.metadata.annotations."borgmatic.torsion.org/database-name" || 'all'}}
+                  hostname: {{request.object.metadata.name}}.{{request.object.metadata.namespace}}.svc.cluster.local
+                  port: {{request.object.spec.ports[0].port || 5432}}
+                  username: credential container database-username
+                  password: credential container database-password
+                  ssl_mode: {{request.object.metadata.annotations."borgmatic.torsion.org/database-ssl-mode" || 'disable'}}
+                  format: directory
+
+    - name: create-borgmatic-cronjob-databases
+      match:
+        any:
+          - resources:
+              kinds:
+                - Service
+
+      preconditions:
+        all:
+          - key: '{{request.object.metadata.annotations."borgmatic.torsion.org/ssh-key-secret" || null}}'
+            operator: NotEquals
+            value: null
+          - key: '{{request.object.metadata.annotations."borgmatic.torsion.org/schedule" || null}}'
+            operator: NotEquals
+            value: null
+          - key: '{{request.object.metadata.annotations."borgmatic.torsion.org/repository-path" || null}}'
+            operator: NotEquals
+            value: null
+          - key: '{{request.object.metadata.annotations."borgmatic.torsion.org/database-type" || null}}'
+            operator: In
+            value: [ "postgresql", "mongodb", "sqlite", "mariadb", "mysql" ]
+          - key: '{{request.object.metadata.annotations."borgmatic.torsion.org/database-credentials" || null}}'
+            operator: NotEquals
+            value: null
+
+      generate:
+        apiVersion: batch/v1
+        kind: CronJob
+        name: "backup-{{request.object.metadata.name}}-databases"
+        namespace: "{{request.object.metadata.namespace}}"
+        synchronize: true
+        data:
+          schedule: '{{request.object.metadata.annotations."borgmatic.torsion.org/schedule"}}'
+          concurencyPolicy: Replace
+          startingDeadlineSeconds: 10
+          jobTemplate:
+            spec:
+              completions: 1
+              template:
+                spec:
+                  serviceAccountName: borgmatic
+                  initContainers:
+                    - name: borgmatic
+                      image: |-
+                        {{request.object.metadata.annotations."borgmatic.torsion.org/image" || 'ghcr.io/sbordeyne/borgmatic:all-latest'}}
+                      command: ["/bin/sh", "-c"]
+                      args:
+                        - |-
+                          yq eval-all '. as $item ireduce ({}; . * $item )' /etc/borgmatic/config-generated/borgmatic.yml /etc/borgmatic/config-extra/*.yml /etc/borgmatic/config-extra/*.yaml > /config/borgmatic.yml
+                      volumeMounts:
+                        - name: config-generated
+                          mountPath: /etc/borgmatic/config-generated
+                          subPath: borgmatic.yml
+                        - name: config-extra
+                          mountPath: /etc/borgmatic/config-extra
+                        - name: config
+                          mountPath: /config
+                  containers:
+                    - name: borgmatic
+                      resources:
+                        requests:
+                          cpu: 100m
+                          memory: 128Mi
+                        limits:
+                          cpu: 200m
+                          memory: 256Mi
+                      image: ghcr.io/sbordeyne/borgmatic:all-1.0.0
+                      command: ["/bin/sh", "-c"]
+                      args:
+                        - |-
+                          borgmatic config validate --config /etc/borgmatic/borgmatic.yml
+                          borgmatic init --config /etc/borgmatic/borgmatic.yml
+                          borgmatic --config /etc/borgmatic/borgmatic.yml
+                      volumeMounts:
+                        - name:  data
+                          mountPath:  /data
+                        - name:  config
+                          mountPath:  /etc/borgmatic
+                          subPath: borgmatic.yml
+                        - name:  secrets
+                          mountPath:  /run/secrets
+                          subPath: ssh-key
+                          readOnly: true
+                        - name: secrets
+                          mountPath: /run/secrets
+                          subPath: encryption-key
+                          readOnly: true
+                        - name: borg
+                          mountPath: /borg
+                        - name: database-credentials
+                          mountPath: /run/secrets
+                          subPath: database-username
+                          readOnly: true
+                        - name: database-credentials
+                          mountPath: /run/secrets
+                          subPath: database-password
+                          readOnly: true
+                  volumes:
+                    - name: data
+                      emptyDir: {}
+                    - name: config-generated
+                      configMap:
+                        name: "borgmatic-{{request.object.metadata.name}}-config"
+                    - name: config-extra
+                      configMap:
+                        name: |-
+                          {{request.object.metadata.annotations."borgmatic.torsion.org/extra-config" || 'borgmatic-default-extra-config'}}
+                    - name: config
+                      emptyDir: {}
+                    - name: borg
+                      emptyDir: {}
+                    - name: ssh-key
+                      secret:
+                        secretName: '{{ request.object.metadata.annotations."borgmatic.torsion.org/ssh-key-secret"}}'
+                    - name: database-credentials
+                      secret:
+                        secretName: '{{ request.object.metadata.annotations."borgmatic.torsion.org/database-credentials"}}'
+                  restartPolicy: OnFailure
+                  terminationGracePeriodSeconds: 30
