@@ -7,10 +7,12 @@ variable "vault_address" {
 variable "vault_token" {
   description = "Vault authentication token"
   type        = string
-  sensitive = true
+  sensitive   = true
 }
 
 module "vault-access" {
+  for_each = yamldecode(file("${path.module}/data/vault-access.yaml"))
+
   source = "../../modules/vault-access"
 
   vault = {
@@ -18,10 +20,7 @@ module "vault-access" {
     token   = var.vault_token
   }
 
-  service_account_name   = "external-dns"
-  service_account_namespace = "operators"
-  secret_access = {
-    "external-dns/txt-encrypt" = "reader",
-    "cloudflare/credentials" = "reader",
-  }
+  service_account_name   = each.value.service_account
+  service_account_namespace = each.value.namespace
+  secret_access = each.value.access
 }

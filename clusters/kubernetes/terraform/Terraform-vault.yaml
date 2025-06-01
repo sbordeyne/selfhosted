@@ -1,12 +1,12 @@
 apiVersion: infra.contrib.fluxcd.io/v1alpha2
 kind: Terraform
 metadata:
-  name: external-dns
+  name: vault
   namespace: flux-system
 spec:
   approvePlan: auto
-  interval: 1m
-  path: ./terraform/workspaces/external-dns
+  interval: 10m
+  path: ./terraform/workspaces/vault
   sourceRef:
     kind: GitRepository
     name: flux-system
