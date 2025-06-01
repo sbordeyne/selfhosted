@@ -11,13 +11,3 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  vars:
-
-  varsFrom:
-  - kind: ConfigMap
-    name: cluster-config
-    varsKeys:
-    - nodeCount
-    - instanceType
-  - kind: Secret
-    name: cluster-creds
