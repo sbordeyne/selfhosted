@@ -9,6 +9,7 @@ resources:
   - ServiceAccount-external-dns.yaml
   - ClusterRole-external-dns.yaml
   - ClusterRoleBinding-external-dns-viewer.yaml
+  - ClusterRoleBinding-external-dns-tokenreview-binding.yaml
   - SecretStore-external-dns.yaml
 
 secretGenerator:
