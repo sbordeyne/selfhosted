@@ -50,7 +50,7 @@ jobs:
           docker build \
             $build_args \
             -t ${{ matrix.name }}:${{ matrix.tag }} \
-            --label "org.opencontainers.image.source=https://github.com/sbordeyne/selfhosted"
+            --label "org.opencontainers.image.source=https://github.com/sbordeyne/selfhosted" \
             ./docker/${{ matrix.name }}
 
       - name: Push Docker image to ghcr.io
