@@ -2,15 +2,9 @@ terraform {
   required_providers {
     vault = {
       source = "hashicorp/vault"
-      version = var.vault_provider_version
+      version = "5.0.0"
     }
   }
-}
-
-variable "vault_provider_version" {
-  description = "Version of the Vault provider to use"
-  type        = string
-  default     = "5.0.0"
 }
 
 variable "service_account_name" {
