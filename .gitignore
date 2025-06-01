@@ -8,3 +8,7 @@ private_key
 values.yaml
 bundle.yaml
 kubernetes/smtp-relay/credentials.json
+
+# Ignore Terraform files
+*.tfstate
+.terraform
