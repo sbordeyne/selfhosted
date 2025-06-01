@@ -1,17 +1,22 @@
 terraform {}
 
-variable "vault" {
-  description = "Vault configuration"
-  type = object({
-    address = string
-    token   = string
-  })
+variable "vault_address" {
+  description = "Vault server address"
+  type        = string
+}
+variable "vault_token" {
+  description = "Vault authentication token"
+  type        = string
+  sensitive = true
 }
 
 module "vault-access" {
   source = "../../modules/vault-access"
 
-  vault = var.vault
+  vault = {
+    address = var.vault_address
+    token   = var.vault_token
+  }
 
   service_account_name   = "external-dns"
   service_account_namespace = "operators"
