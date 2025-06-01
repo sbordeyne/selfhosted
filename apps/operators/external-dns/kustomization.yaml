@@ -20,3 +20,8 @@ secretGenerator:
         kubernetes.io/service-account.name: external-dns
     type: kubernetes.io/service-account-token
     literals: []
+
+images:
+  - name: external-dns
+    newName: k8s.gcr.io/external-dns/external-dns
+    newTag: v0.17.0
