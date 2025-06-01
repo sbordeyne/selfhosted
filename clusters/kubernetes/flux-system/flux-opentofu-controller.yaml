@@ -38,7 +38,8 @@ spec:
       tag: "v0.16.0-rc.5"
     runner:
       image:
-        tag: v0.15.1
+        repository: ghcr.io/sbordeyne/tf-runner
+        tag: 1.11.4
       grpc:
         maxMessageSize: 5
     metrics:
