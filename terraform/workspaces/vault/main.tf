@@ -18,7 +18,7 @@ resource "vault_auth_backend" "kubernetes" {
 }
 
 resource "vault_kubernetes_auth_backend_role" "roles" {
-  for_each = yamldecode(file(".terraform/workspaces/vault/data/vault-roles.yaml"))
+  for_each = yamldecode(file("./terraform/workspaces/vault/data/vault-roles.yaml"))
 
   backend                          = vault_auth_backend.kubernetes.path
   role_name                        = "${each.value.namespace}-${each.value.service_account}"
