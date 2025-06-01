@@ -1,6 +1,4 @@
-terraform {
-  required_version = ">= 1.9.0"
-}
+terraform {}
 
 module "vault-access" {
   source = "../../modules/vault-access"
