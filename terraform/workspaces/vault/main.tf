@@ -1,26 +1,29 @@
-terraform {}
-
-variable "vault_address" {
-  description = "Vault server address"
-  type        = string
-}
-variable "vault_token" {
-  description = "Vault authentication token"
-  type        = string
-  sensitive   = true
-}
-
-module "vault-access" {
-  for_each = yamldecode(file("${path.module}/data/vault-access.yaml"))
-
-  source = "../../modules/vault-access"
-
-  vault = {
-    address = var.vault_address
-    token   = var.vault_token
+terraform {
+  required_providers {
+    vault = {
+      source = "hashicorp/vault"
+      version = "5.0.0"
+    }
   }
+}
 
-  service_account_name   = each.value.service_account
-  service_account_namespace = each.value.namespace
-  secret_access = each.value.access
+import {
+  to   = vault_auth_backend.kubernetes
+  id = "kubernetes"
+}
+
+resource "vault_auth_backend" "kubernetes" {
+  type = "kubernetes"
+  path = "kubernetes"
+}
+
+resource "vault_kubernetes_auth_backend_role" "roles" {
+  for_each = yamldecode(file("${path.module}/data/vault-roles.yaml"))
+
+  backend                          = vault_auth_backend.kubernetes.path
+  role_name                        = "${each.value.namespace}-${each.value.service_account}"
+  bound_service_account_names      = [each.value.service_account]
+  bound_service_account_namespaces = [each.value.namespace]
+  token_ttl                        = 3600
+  token_policies                   = [for path, access in each.value.access : "${replace(path, "/", "-")}-${access}"]
 }
