@@ -12,6 +12,8 @@ spec:
   timeout: 5m
   dependsOn:
     - name: operator-external-secrets
+  components:
+    - ./cloudflare
   sourceRef:
     kind: GitRepository
     name: flux-system
