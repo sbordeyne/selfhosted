@@ -35,7 +35,7 @@ spec:
     caCertValidityDuration: 24h
     certRotationCheckFrequency: 30m
     image:
-      tag: "v0.16.0-rc.5"
+      tag: "v0.16.0-rc.3"
     runner:
       image:
         repository: ghcr.io/sbordeyne/tf-runner
