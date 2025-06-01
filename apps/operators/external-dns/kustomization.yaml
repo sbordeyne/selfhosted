@@ -10,4 +10,3 @@ resources:
   - ClusterRole-external-dns.yaml
   - ClusterRoleBinding-external-dns-viewer.yaml
   - SecretStore-external-dns.yaml
-  - Terraform-external-dns.yaml

@@ -2,7 +2,7 @@ apiVersion: infra.contrib.fluxcd.io/v1alpha2
 kind: Terraform
 metadata:
   name: external-dns
-  namespace: operators
+  namespace: flux-system
 spec:
   approvePlan: auto
   interval: 1m
