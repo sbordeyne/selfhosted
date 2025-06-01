@@ -10,3 +10,12 @@ resources:
   - ClusterRole-external-dns.yaml
   - ClusterRoleBinding-external-dns-viewer.yaml
   - SecretStore-external-dns.yaml
+
+secretGenerator:
+  - name: external-dns-jwt
+    options:
+      disableNameSuffixHash: true
+      annotations:
+        kubernetes.io/service-account.name: external-dns
+    type: kubernetes.io/service-account-token
+    literals: []
