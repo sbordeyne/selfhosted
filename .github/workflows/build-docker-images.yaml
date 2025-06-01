@@ -1,0 +1,38 @@
+name: Build Docker Images
+
+on:
+  push:
+    paths:
+      - '.github/workflows/build-docker-images.yaml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - name: tf-runner
+            build_args: |
+              TARGETARCH=amd64
+              TF_VERSION=1.11.4
+              TF_CONTROLLER_VERSION=0.15.1
+            tag: latest
+          - name: keycloak
+            build_args: |
+              KC_VERSION=22.0.5
+            tag: "22.0.5"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        run: |
+          build_args=""
+          while IFS= read -r line; do
+            build_args="$build_args --build-arg $line"
+          done <<< "${{ matrix.build_args }}"
+          docker build $build_args -t ${{ matrix.name }}:${{ matrix.tag }} ./docker/${{ matrix.name }}
