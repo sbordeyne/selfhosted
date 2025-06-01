@@ -1,0 +1,23 @@
+apiVersion: infra.contrib.fluxcd.io/v1alpha2
+kind: Terraform
+metadata:
+  name: external-dns
+  namespace: operators
+spec:
+  approvePlan: auto
+  interval: 1m
+  path: ./terraform/workspaces/external-dns
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  vars:
+
+  varsFrom:
+  - kind: ConfigMap
+    name: cluster-config
+    varsKeys:
+    - nodeCount
+    - instanceType
+  - kind: Secret
+    name: cluster-creds
