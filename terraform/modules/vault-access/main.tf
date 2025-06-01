@@ -6,6 +6,19 @@ terraform {
     }
   }
 }
+variable "vault" {
+  description = "Vault configuration"
+  type = object({
+    address = string
+    token   = string
+  })
+}
+
+provider "vault" {
+  address = var.vault.address
+  token   = var.vault.token
+}
+
 
 variable "service_account_name" {
   description = ""
