@@ -46,9 +46,3 @@ spec:
     branchPlanner:
       enabled: true
     allowCrossNamespaceRefs: true
-  valuesFrom:
-    - kind: Secret
-      name: tf-controller-env
-      optional: false
-      valuesKey: env.yaml
-      targetPath: extraEnv
