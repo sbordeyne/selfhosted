@@ -8,6 +8,6 @@ variable "vault_token" {
   sensitive   = true
 }
 provider "vault" {
-  address = var.vault.address
-  token   = var.vault.token
+  address = var.vault_address
+  token   = var.vault_token
 }
