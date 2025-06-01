@@ -35,4 +35,5 @@ jobs:
           while IFS= read -r line; do
             build_args="$build_args --build-arg $line"
           done <<< "${{ matrix.build_args }}"
+          echo "Building Docker image with args: $build_args"
           docker build $build_args -t ${{ matrix.name }}:${{ matrix.tag }} ./docker/${{ matrix.name }}
