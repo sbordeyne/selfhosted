@@ -38,12 +38,12 @@ locals {
   policies = [for path, access in var.secret_access : "${replace(path, "/", "-")}-${access}"]
 }
 
-resource "vault_auth_backend" "kubernetes" {
-  type = "kubernetes"
+data "vault_auth_backend" "kubernetes" {
+  path = "kubernetes"
 }
 
 resource "vault_kubernetes_auth_backend_role" "role" {
-  backend                          = vault_auth_backend.kubernetes.path
+  backend                          = data.vault_auth_backend.kubernetes.path
   role_name                        = local.role_name
   bound_service_account_names      = [var.service_account_name]
   bound_service_account_namespaces = [var.service_account_namespace]
