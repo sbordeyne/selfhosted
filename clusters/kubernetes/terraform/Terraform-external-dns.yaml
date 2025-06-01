@@ -14,5 +14,3 @@ spec:
   varsFrom:
     - kind: Secret
       name: vault-credentials
-      namespace: flux-system
-      
