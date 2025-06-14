@@ -14,15 +14,6 @@ spec:
         namespace: flux-system
       version: 0.2.1
       interval: 1m
-  values:
-    crds:
-      # -- manages CRD creation. Disables CRD creation only in combination with
-      # `crds.plain: false` due to helm dependency conditions limitation
-      enabled: true
-      plain: false
-    serviceMonitor:
-      enabled: true
-      vm: true
   releaseName: vm-operator-crds
   install:
     crds: Create
