@@ -6,4 +6,6 @@ namespace: operators
 
 resources:
   - Namespace-operators.yaml
-  - HelmRelease-vm-operator.yaml
+  - ServiceAccount-traefik.yaml
+  - PersistentVolumeClaim-plugins.yaml
+  - HelmRelease-traefik.yaml

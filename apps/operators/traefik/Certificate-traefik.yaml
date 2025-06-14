@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard-slfhst.io
+  namespace: operators
+spec:
+  secretName: wildcard-slfhst-io-tls
+  dnsNames:
+    - "slfhst.io"
+    - "*.slfhst.io"
+  issuerRef:
+    name: lets-encrypt
+    kind: ClusterIssuer

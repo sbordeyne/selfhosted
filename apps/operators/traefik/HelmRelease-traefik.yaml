@@ -1,0 +1,221 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: traefik
+  namespace: operators
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: traefik
+      version: 36.1.0
+      sourceRef:
+        kind: HelmRepository
+        name: traefik
+        namespace: flux-system
+  values:
+    deployment:
+      enabled: true
+      kind: Deployment
+      replicas: 1
+      additionalVolumes:
+        - name: plugins
+          persistentVolumeClaim:
+            claimName: plugins
+    additionalVolumeMounts:
+      - name: plugins
+        mountPath: /plugins-storage
+
+    podDisruptionBudget:
+      enabled: true
+      minAvailable: 1
+
+    ingressClass:
+      enabled: true
+      isDefaultClass: true
+      name: "traefik"
+
+    tlsStore:
+      default:
+        defaultCertificate:
+          secretName: wildcard-slfhst-io-tls
+
+    experimental:
+      abortOnPluginFailure: false
+      kubernetesGateway:
+        enabled: false
+      plugins:
+        keycloakopenid:
+          moduleName: github.com/Gwojda/keycloakopenid
+          version: v0.1.35
+        fail2ban:
+          moduleName: github.com/tomMoulard/fail2ban
+          version: v0.7.1
+        cloudflarewarp:
+          moduleName: "github.com/BetterCorp/cloudflarewarp"
+          version: "v1.3.3"
+        plugin-simplecache:
+          moduleName: "github.com/traefik/plugin-simplecache"
+          version: "v0.2.1"
+        plugin-log4shell:
+          moduleName: "github.com/traefik/plugin-log4shell"
+          version: "v0.1.2"
+
+    gateway:
+      enabled: false
+
+    gatewayClass:
+      enabled: false
+
+    providers:
+      kubernetesCRD:
+        enabled: true
+        allowCrossNamespace: true
+        allowExternalNameServices: true
+        allowEmptyServices: true
+
+      kubernetesIngress:
+        enabled: true
+        allowExternalNameServices: true
+        allowEmptyServices: true
+
+    logs:
+      general:
+        format:  json
+        level: "INFO"
+      access:
+        enabled: true
+        format:  json
+
+    metrics:
+      # -- Enable metrics for internal resources. Default: false
+      addInternals: false
+
+      ## Prometheus is enabled by default.
+      ## It can be disabled by setting "prometheus: null"
+      prometheus:
+        # -- Entry point used to expose metrics.
+        entryPoint: metrics
+        # -- Enable metrics on entry points. Default: true
+        addEntryPointsLabels: true
+        # -- Enable metrics on routers. Default: false
+        addRoutersLabels:  true
+        # -- Enable metrics on services. Default: true
+        addServicesLabels:  true
+        manualRouting: false
+        service:
+          # -- Create a dedicated metrics service to use with ServiceMonitor
+          enabled: true
+          labels:
+            app.kubernetes.io/name: traefik
+            app.kubernetes.io/component: metrics
+            app.kubernetes.io/part-of: monitoring
+            app.kubernetes.io/instance: monitoring-traefik-metrics
+        disableAPICheck: true
+
+    global:
+      checkNewVersion: true
+      # -- Please take time to consider whether or not you wish to share anonymous data with us
+      # See https://doc.traefik.io/traefik/contributing/data-collection/
+      sendAnonymousUsage: false
+
+    additionalArguments:
+      - "--entryPoints.torrent.address=:6881/tcp"
+      - "--entryPoints.ftp.address=:21/tcp"
+
+    ports:
+      web:
+        port: 8000
+        expose:
+          default: true
+        exposedPort: 80
+        protocol: TCP
+        nodePort:  30080
+        redirections:
+          entryPoint:
+            to: websecure
+            scheme: https
+            permanent: true
+      websecure:
+        port: 8443
+        expose:
+          default: true
+        exposedPort: 443
+        protocol: TCP
+        nodePort:  30443
+        # -- One can apply Middlewares on an entrypoint
+        # https://doc.traefik.io/traefik/middlewares/overview/
+        # https://doc.traefik.io/traefik/routing/entrypoints/#middlewares
+        # -- /!\ It introduces here a link between your static configuration and your dynamic configuration /!\
+        # It follows the provider naming convention: https://doc.traefik.io/traefik/providers/overview/#provider-namespace
+        #   - namespace-name1@kubernetescrd
+        #   - namespace-name2@kubernetescrd
+        middlewares: []
+
+    service:
+      enabled: true
+      ## -- Single service is using `MixedProtocolLBService` feature gate.
+      ## -- When set to false, it will create two Service, one for TCP and one for UDP.
+      single: true
+      type: NodePort
+      # -- Additional annotations applied to both TCP and UDP services (e.g. for cloud provider specific config)
+      annotations: {}
+      # -- Additional annotations for TCP service only
+      annotationsTCP: {}
+      # -- Additional annotations for UDP service only
+      annotationsUDP: {}
+      # -- Additional service labels (e.g. for filtering Service by custom labels)
+      labels: {}
+      # -- Additional entries here will be added to the service spec.
+      # -- Cannot contain type, selector or ports entries.
+      spec: {}
+      # externalTrafficPolicy: Cluster
+      # loadBalancerIP: "1.2.3.4"
+      # clusterIP: "2.3.4.5"
+      loadBalancerSourceRanges: []
+      # - 192.168.0.1/32
+      # - 172.16.0.0/16
+      ## -- Class of the load balancer implementation
+      # loadBalancerClass: service.k8s.aws/nlb
+      externalIPs: []
+      # - 1.2.3.4
+      ## One of SingleStack, PreferDualStack, or RequireDualStack.
+      # ipFamilyPolicy: SingleStack
+      ## List of IP families (e.g. IPv4 and/or IPv6).
+      ## ref: https://kubernetes.io/docs/concepts/services-networking/dual-stack/#services
+      # ipFamilies:
+      #   - IPv4
+      #   - IPv6
+      ##
+      additionalServices: {}
+      ## -- An additional and optional internal Service.
+      ## Same parameters as external Service
+      # internal:
+      #   type: ClusterIP
+      #   # labels: {}
+      #   # annotations: {}
+      #   # spec: {}
+      #   # loadBalancerSourceRanges: []
+      #   # externalIPs: []
+      #   # ipFamilies: [ "IPv4","IPv6" ]
+    resources:
+      limits:
+        cpu: 200m
+        memory: 100Mi
+
+    persistence:
+      enabled: true
+      name: data
+      accessMode: ReadWriteOnce
+      size: 128Mi
+      storageClass: "nfs-client"
+      path: /data
+
+    # -- The service account the pods will use to interact with the Kubernetes API
+    serviceAccount:  # @schema additionalProperties: false
+      # If set, an existing service account is used
+      # If not set, a service account is created automatically using the fullname template
+      name: "traefik"
+
+    namespaceOverride: "operators"
