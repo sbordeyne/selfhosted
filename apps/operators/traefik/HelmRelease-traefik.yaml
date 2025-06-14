@@ -107,11 +107,6 @@ spec:
         service:
           # -- Create a dedicated metrics service to use with ServiceMonitor
           enabled: true
-          labels:
-            app.kubernetes.io/name: traefik
-            app.kubernetes.io/component: metrics
-            app.kubernetes.io/part-of: monitoring
-            app.kubernetes.io/instance: monitoring-traefik-metrics
         disableAPICheck: true
 
     global:
