@@ -6,5 +6,12 @@ vault_access = {
       "external-dns/txt-encrypt" = "reader"
       "cloudflare/credentials"   = "reader"
     }
+  },
+  "cert-manager" = {
+    service_account = "cert-manager"
+    namespace       = "cert-manager"
+    access = {
+      "cloudflare/credentials"   = "reader"
+    }
   }
 }

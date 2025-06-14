@@ -1,14 +1,30 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: operator-cert-manager-operator
+  namespace: flux-system
+spec:
+  interval: 1m
+  path: ./apps/operators/cert-manager/operator
+  prune: true
+  wait: true
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: operator-cert-manager
+  name: operator-cert-manager-issuers
   namespace: flux-system
 spec:
-  interval: 10m
-  path: ./apps/operators/cert-manager
+  interval: 1m
+  path: ./apps/operators/cert-manager/issuers
   prune: true
   wait: true
+  dependsOn:
+    - name: operator-cert-manager-operator
   timeout: 5m
   sourceRef:
     kind: GitRepository

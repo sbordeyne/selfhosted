@@ -5,4 +5,4 @@ kind: Kustomization
 namespace: cert-manager
 
 resources:
-  - https://github.com/cert-manager/cert-manager/releases/download/v1.17.2/cert-manager.yaml
+  - HelmRelease-cert-manager.yaml
