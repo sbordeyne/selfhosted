@@ -13,5 +13,12 @@ vault_access = {
     access = {
       "cloudflare/credentials"   = "reader"
     }
+  },
+  "cloudflare-ddns" = {
+    service_account = "cloudflare-ddns"
+    namespace       = "cloudflare-ddns"
+    access = {
+      "cloudflare/credentials"   = "reader"
+    }
   }
 }
