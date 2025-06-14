@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   components:
-    runs-on: [ self-hosted, infra ]
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         cluster:
