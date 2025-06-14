@@ -1,0 +1,33 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: cloudflare-ddns
+
+resources:
+  - Namespace-cloudflare-ddns.yaml
+  - ServiceAccount-cloudflare-ddns.yaml
+  - ClusterRole-cloudflare-ddns.yaml
+  - ClusterRoleBinding-cloudflare-ddns.yaml
+  - SecretStore-cloudflare-ddns.yaml
+  - ExternalSecret-cloudflare-ddns.yaml
+  - Deployment-cloudflare-ddns.yaml
+
+
+configMapGenerator:
+  - name: cloudflare-ddns-config
+    options:
+      disableNameSuffixHash: true
+      labels:
+        app.kubernetes.io/name: cloudflare-ddns
+        app.kubernetes.io/instance: cloudflare-ddns
+        app.kubernetes.io/managed-by: kustomize
+        app.kubernetes.io/component: cloudflare-ddns
+        app.kubernetes.io/version: v1.0.3
+    files:
+      - config.json
+
+images:
+  - name: cloudflare-ddns
+    newName: timothyjmiller/cloudflare-ddns
+    newTag: v1.0.3
