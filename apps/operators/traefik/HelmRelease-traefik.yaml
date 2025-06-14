@@ -117,7 +117,6 @@ spec:
 
     additionalArguments:
       - "--entryPoints.torrent.address=:6881/tcp"
-      - "--entryPoints.ftp.address=:21/tcp"
 
     ports:
       web:
