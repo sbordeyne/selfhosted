@@ -5,4 +5,5 @@ kind: Kustomization
 namespace: cert-manager
 
 resources:
+  - Namespace-cert-manager.yaml
   - HelmRelease-cert-manager.yaml
