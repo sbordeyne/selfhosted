@@ -6,4 +6,5 @@ namespace: operators
 
 resources:
   - Namespace-operators.yaml
+  - HelmRelease-vm-operator-crds.yaml
   - HelmRelease-vm-operator.yaml

@@ -1,22 +1,19 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: vm-operator
+  name: vm-operator-crds
   namespace: operators
 spec:
   interval: 5m
   chart:
     spec:
-      chart: victoria-metrics-operator
+      chart: victoria-metrics-operator-crds
       sourceRef:
         kind: HelmRepository
         name: victoriametrics
         namespace: flux-system
-      version: 0.44.0
+      version: 0.2.1
       interval: 1m
-  dependsOn:
-      # -- depends on CRDs to be installed first
-    - name: vm-operator-crds
   values:
     crds:
       # -- manages CRD creation. Disables CRD creation only in combination with
@@ -26,7 +23,7 @@ spec:
     serviceMonitor:
       enabled: true
       vm: true
-  releaseName: vm-operator
+  releaseName: vm-operator-crds
   install:
     crds: Create
     remediation:
