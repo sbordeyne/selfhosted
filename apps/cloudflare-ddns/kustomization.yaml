@@ -7,8 +7,6 @@ namespace: cloudflare-ddns
 resources:
   - Namespace-cloudflare-ddns.yaml
   - ServiceAccount-cloudflare-ddns.yaml
-  - ClusterRole-cloudflare-ddns.yaml
-  - ClusterRoleBinding-cloudflare-ddns.yaml
   - SecretStore-cloudflare-ddns.yaml
   - ExternalSecret-cloudflare-ddns.yaml
   - Deployment-cloudflare-ddns.yaml
