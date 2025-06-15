@@ -8,6 +8,7 @@ on:
 
 permissions:
   packages: write
+  contents: read # to fetch the repository content
 
 jobs:
   build:

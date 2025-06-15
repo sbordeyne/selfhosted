@@ -1,5 +1,10 @@
 name: Check Kubernetes YAMLs with kube-linter
 
+permissions:
+  contents: read # to fetch the repository content
+  security-events: write # to upload SARIF reports
+  actions: read # to allow the upload-sarif action to access the results directory
+
 on:
   # Note that both `push` and `pull_request` triggers should be present for GitHub to consistently present kube-linter
   # SARIF reports.

@@ -1,5 +1,8 @@
 name: Check app file names
 
+permissions:
+  contents: read # to fetch the repository content
+
 on:
   push:
     branches:

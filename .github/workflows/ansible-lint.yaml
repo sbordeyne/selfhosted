@@ -1,5 +1,8 @@
 name: Lint Ansible files
 
+permissions:
+  contents: read # to fetch the repository content
+
 on:
   pull_request:
     branches: ["master"]
