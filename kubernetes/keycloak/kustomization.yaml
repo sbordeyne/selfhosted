@@ -26,4 +26,4 @@ secretGenerator:
 images:
   - name: keycloak
     newName: sbordeyne/keycloak
-    newTag: 22.0.5
+    newTag: 23.0.0
