@@ -23,7 +23,7 @@ configMapGenerator:
         app.kubernetes.io/component: cloudflare-ddns
         app.kubernetes.io/version: v1.0.3
     files:
-      - config.json
+      - config/config.json
 
 images:
   - name: cloudflare-ddns
