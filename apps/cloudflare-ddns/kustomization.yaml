@@ -13,7 +13,7 @@ resources:
 
 
 configMapGenerator:
-  - name: cloudflare-ddns-config
+  - name: cloudflare-ddns-config-template
     options:
       disableNameSuffixHash: true
       labels:

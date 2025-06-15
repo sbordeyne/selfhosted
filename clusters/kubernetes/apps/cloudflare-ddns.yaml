@@ -13,3 +13,6 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
+  dependsOn:
+    - name: operator-external-secrets
+    - name: vault
