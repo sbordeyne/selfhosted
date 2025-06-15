@@ -20,7 +20,7 @@ commonLabels:
 images:
   - name: homepage
     newName: ghcr.io/gethomepage/homepage
-    newTag: 0.7.3
+    newTag: 0.10.9
 
 configMapGenerator:
   - name: homepage
