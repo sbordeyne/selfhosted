@@ -20,5 +20,12 @@ vault_access = {
     access = {
       "cloudflare/credentials"   = "reader"
     }
+  },
+  "flux-receiver" = {
+    service_account = "notification-controller"
+    namespace       = "flux-system"
+    access = {
+      "github/receiver_token" = "reader"
+    }
   }
 }

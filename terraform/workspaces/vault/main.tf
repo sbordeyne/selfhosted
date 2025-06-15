@@ -4,6 +4,10 @@ terraform {
       source = "hashicorp/vault"
       version = "5.0.0"
     }
+    tls = {
+      source = "hashicorp/tls"
+      version = "4.1.0"
+    }
   }
 }
 
@@ -18,6 +22,9 @@ resource "vault_auth_backend" "kubernetes" {
 }
 
 resource "vault_kubernetes_auth_backend_role" "roles" {
+  depends_on = [
+    module.github_repository_deploy_key,
+  ]
   for_each = var.vault_access
 
   backend                          = vault_auth_backend.kubernetes.path
