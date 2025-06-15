@@ -48,4 +48,4 @@ images:
     newTag: release
   - name: exportarr
     newName: ghcr.io/onedr0p/exportarr
-    newTag: v1.5.3
+    newTag: v2.2.0
