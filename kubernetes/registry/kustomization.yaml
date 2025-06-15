@@ -22,7 +22,7 @@ namespace: registry
 images:
 - name: registry
   newName: registry
-  newTag: 2.8.3
+  newTag: 3.0.0
 
 configMapGenerator:
 - name: config
