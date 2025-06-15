@@ -8,5 +8,5 @@ resources:
   - Namespace-operators.yaml
   - ServiceAccount-traefik.yaml
   - PersistentVolumeClaim-plugins.yaml
-  - Certificate-traefik.yaml
+  - Certificate-wildcard-slfhst-io.yaml
   - HelmRelease-traefik.yaml

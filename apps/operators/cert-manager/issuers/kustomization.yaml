@@ -9,5 +9,5 @@ resources:
   - Certificate-selfsigned-ca.yaml
   - ClusterIssuer-ca.yaml
   - SecretStore-cert-manager.yaml
-  - ExternalSecret-cloudflare.yaml
+  - ExternalSecret-cert-manager-cloudflare.yaml
   - ClusterIssuer-lets-encrypt.yaml

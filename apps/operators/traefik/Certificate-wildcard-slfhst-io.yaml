@@ -1,7 +1,7 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: wildcard-slfhst.io
+  name: wildcard-slfhst-io
   namespace: operators
 spec:
   secretName: wildcard-slfhst-io-tls

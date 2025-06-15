@@ -1,0 +1,17 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: whisparroidc
+  namespace: traefik
+spec:
+  plugin:
+    keycloakopenid:
+      ClientIDEnv: KEYCLOAK_WHISPARR_CLIENT_ID
+      ClientSecretEnv: KEYCLOAK_WHISPARR_CLIENT_SECRET
+      KeycloakRealm: master
+      KeycloakURL: https://login.slfhst.io
+      Scope: openid profile email
+      TokenCookieName: AUTH_TOKEN
+      UseAuthHeader: "true"
+      UserClaimName: "preferred_username"
+      UserHeaderName: "X-Forwarded-User"

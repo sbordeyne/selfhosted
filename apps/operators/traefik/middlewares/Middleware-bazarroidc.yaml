@@ -1,0 +1,17 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: bazarroidc
+  namespace: traefik
+spec:
+  plugin:
+    keycloakopenid:
+      ClientIDEnv: KEYCLOAK_BAZARR_CLIENT_ID
+      ClientSecretEnv: KEYCLOAK_BAZARR_CLIENT_SECRET
+      KeycloakRealm: master
+      KeycloakURL: https://login.slfhst.io
+      Scope: openid profile email
+      TokenCookieName: AUTH_TOKEN
+      UseAuthHeader: "true"
+      UserClaimName: "preferred_username"
+      UserHeaderName: "X-Forwarded-User"

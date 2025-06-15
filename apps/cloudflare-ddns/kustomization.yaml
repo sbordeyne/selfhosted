@@ -8,7 +8,7 @@ resources:
   - Namespace-cloudflare-ddns.yaml
   - ServiceAccount-cloudflare-ddns.yaml
   - SecretStore-cloudflare-ddns.yaml
-  - ExternalSecret-cloudflare-ddns.yaml
+  - ExternalSecret-cloudflare-ddns-config.yaml
   - Deployment-cloudflare-ddns.yaml
 
 
