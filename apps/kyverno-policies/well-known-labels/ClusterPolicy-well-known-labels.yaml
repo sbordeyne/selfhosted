@@ -59,12 +59,9 @@ spec:
           - resources:
               kinds:
                 - Pod
-      generate:
-        kind: Pod
-        name: "{{request.object.metadata.name}}"
-        namespace: "{{request.object.metadata.namespace}}"
-        synchronize: true
-        data:
+      mutate:
+        mutateExistingOnPolicyUpdate: true
+        patchStrategicMerge:
           metadata:
             labels:
               app.kubernetes.io/instance: '{{request.object.metadata.labels."app.kubernetes.io/part-of"}}-{{request.object.metadata.labels."app.kubernetes.io/name"}}-{{request.object.metadata.labels."app.kubernetes.io/component"}}'

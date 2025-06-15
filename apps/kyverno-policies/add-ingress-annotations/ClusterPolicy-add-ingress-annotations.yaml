@@ -1,0 +1,21 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: add-ingress-annotations
+spec:
+  validationFailureAction: Audit
+  rules:
+    - name: add-ingress-annotations
+      match:
+        any:
+          - resources:
+              kinds:
+                - Ingress
+      mutate:
+        mutateExistingOnPolicyUpdate: true
+        patchStrategicMerge:
+          metadata:
+            annotations:
+              cert-manager.io/cluster-issuer: lets-encrypt
+              external-dns.alpha.kubernetes.io/target: slfhst.io
+              external-dns.alpha.kubernetes.io/hostname: "{{ request.object.spec.tls[].hosts[] | join(',', @) }}"
