@@ -54,4 +54,4 @@ secretGenerator:
 images:
 - name: openldap
   newName: bitnami/openldap
-  newTag: 2.6.7
+  newTag: 2.6.10
