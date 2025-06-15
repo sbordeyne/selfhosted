@@ -23,5 +23,5 @@ secretGenerator:
 
 images:
   - name: external-dns
-    newName: k8s.gcr.io/external-dns/external-dns
+    newName: registry.k8s.io/external-dns/external-dns
     newTag: v0.17.0
