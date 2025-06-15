@@ -1,0 +1,21 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: flux-receiver
+  namespace: flux-system
+spec:
+  interval: 1m
+  path: ./apps/flux-receiver
+  prune: true
+  wait: true
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  dependsOn:
+    - name: operator-cert-manager-issuers
+    - name: operator-traefik
+    - name: cloudflare-ddns
+    - name: operator-external-secrets
+    - name: terraform
