@@ -15,5 +15,5 @@ spec:
   dependsOn:
     - name: operator-kyverno
   components:
-    - ./ingress-host-match-tls.yaml
-    - ./add-ingress-annotations.yaml
+    - ./ingress-host-match-tls
+    - ./add-ingress-annotations
