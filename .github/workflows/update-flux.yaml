@@ -18,7 +18,7 @@ jobs:
           - kubernetes
     steps:
       - name: Check out code
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Setup Flux CLI
         uses: fluxcd/flux2/action@main
@@ -32,7 +32,7 @@ jobs:
           VERSION="$(flux -v)"
           echo "flux_version=$VERSION" >> $GITHUB_OUTPUT
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7.0.8
+        uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
         with:
             branch: update-flux-${{matrix.cluster}}
             commit-message: Update ${{matrix.cluster}} to ${{ steps.update.outputs.flux_version }}
