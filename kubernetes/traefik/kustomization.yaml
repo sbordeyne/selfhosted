@@ -32,7 +32,7 @@ resources:
 images:
   - name: traefik
     newName: traefik
-    newTag: v2.10
+    newTag: v2.11
 
 configMapGenerator:
   - name: traefik-config
