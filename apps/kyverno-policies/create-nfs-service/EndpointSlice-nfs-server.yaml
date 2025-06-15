@@ -1,0 +1,16 @@
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: nfs-server
+  namespace: arr-stack
+  labels:
+    kubernetes.io/service-name: nfs-server
+addressType: IPv4
+ports:
+  - name: nfs # should match with the name of the service port defined above
+    appProtocol: nfs
+    protocol: TCP
+    port: 2049
+endpoints:
+  - addresses:
+      - "192.168.1.42"

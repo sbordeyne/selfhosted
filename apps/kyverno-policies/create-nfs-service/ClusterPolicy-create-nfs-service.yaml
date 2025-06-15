@@ -1,0 +1,20 @@
+# TODO:
+# Kyverno policy to create the NFS service for this cluster.
+# This is to have an FQDN for the NFS server that servers all the data/pvcs in the cluster.
+# The process is as follows:
+# 1. Create an EndpointSlice object for the NFS server.
+#   a. The EndpointSlice is constructed from a ConfigMap that contains the NFS server's IP addresses.
+#      The ConfigMap is created/updated by ansible, when installing the server, if it has the "nfs_server" role.
+#      ConfigMap example:
+#        apiVersion: v1
+#        kind: ConfigMap
+#        metadata:
+#          name: nfs-server-ips
+#          namespace: kube-system
+#          annotations:
+#            policy.slfhst.io/generate-nfs-service: "true"
+#        data:
+#          ips: "x.y.z.a,x.y.z.b"
+# 2. Create a Service object that selects the EndpointSlice.
+# The service is named "nfs-server" and has a port named "nfs" that matches the EndpointSlice port.
+# The service is created in the "kube-system" namespace.

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nfs-server
+  namespace: arr-stack
+spec:
+  type: ClusterIP
+  ports:
+    - port: 2049
+      targetPort: 2049
+      protocol: TCP
+      name: nfs

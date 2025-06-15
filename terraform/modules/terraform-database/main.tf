@@ -39,16 +39,26 @@ resource "postgresql_database" "databases" {
   owner    = each.value.user
 }
 
-data "vault_mount" "databases_kvv2" {
-  path = "databases"
+module "secret" {
+  for_each = local.databases
+  source = "../vault-secret"
+
+  secret_data = {
+    username = local.databases[each.key].user
+    password = random_password.password[each.key].result
+  }
+  secret_path = "/"
+}
+
+data "vault_mount" "secrets" {
+  path = "secrets"
   type        = "kv"
   options     = { version = "2" }
-  description = "KV Version 2 secret engine mount"
 }
 
 resource "vault_kv_secret_v2" "database_secret" {
   for_each = local.databases
-  mount                      = data.vault_mount.databases_kvv2.path
+  mount                      = data.vault_mount.secrets.path
   name                       = "postgresql/${each.key}"
   cas                        = 1
   delete_all_versions        = false
