@@ -13,6 +13,11 @@ spec:
                 - Ingress
       mutate:
         mutateExistingOnPolicyUpdate: true
+        targets:
+          - apiVersion: networking.k8s.io/v1
+            kind: Ingress
+            name: "{{ request.object.metadata.name }}"
+            namespace: "{{ request.object.metadata.namespace }}"
         patchStrategicMerge:
           metadata:
             annotations:
