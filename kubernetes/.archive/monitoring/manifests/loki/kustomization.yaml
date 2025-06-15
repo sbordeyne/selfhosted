@@ -45,7 +45,7 @@ configMapGenerator:
       - files/loki-operational-dashboard.json
 images:
   - name: grafana/loki
-    newTag: 2.8.5
+    newTag: 2.9.15
   - name: memcached
     newTag: 1.6.38-alpine
   - name: prom/memcached-exporter
