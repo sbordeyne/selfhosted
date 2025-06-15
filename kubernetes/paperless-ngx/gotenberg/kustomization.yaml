@@ -9,7 +9,7 @@ resources:
 images:
   - name: gotenberg
     newName: docker.io/gotenberg/gotenberg
-    newTag: '7.10'
+    newTag: '8.21'
 
 namespace: paperless-ngx
 
