@@ -1,0 +1,10 @@
+checks:
+  addAllBuiltIn: true
+  ignorePaths:
+    - ansible/**/*
+    - kubernetes/**/*
+    - docker/**/*
+    - terraform/**/*
+    - scripts/**/*
+    - .github/**/*
+    - docs/**/*
