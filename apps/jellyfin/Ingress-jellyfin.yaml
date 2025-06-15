@@ -6,12 +6,12 @@ metadata:
   annotations:
     external-dns.alpha.kubernetes.io/hostname: jellyfin.slfhst.io
     external-dns.alpha.kubernetes.io/target: slfhst.io
-    cert-manager.io/cluster-issuer: cluster-issuer
+    cert-manager.io/cluster-issuer: lets-encrypt
 spec:
   tls:
   - hosts:
     - jellyfin.slfhst.io
-    secretName: jellyfin-cert-prod
+    secretName: jellyfin-tls
   rules:
   - host: jellyfin.slfhst.io
     http:
