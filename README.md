@@ -1,44 +1,20 @@
-# Self-hosted apps
+# selfhosted
 
-Repository including all of the kubernetes manifests I wrote to deploy my self hosted stack
+Flux v2 repository for my self hosted stack. Everything runs with kubernetes on Debian 12 nodes.
 
-## Apps
+## Stack
 
-### Media Server
+- Flux: GitOps controller for kubernetes
+- GitHub Actions:
+  - build-docker-images.yaml: builds the docker images with buildx for the customizations this repo needs
+- Terraform: terraform workspaces and modules to configure the stack before / after a deployment
+- Ansible: configure master/worker kubernetes nodes from my laptop.
 
-- [x] Jellyfin
-- [ ] Jellyseerr
-- [ ] Sonarr
-- [ ] Radarr
-- [ ] Prowlarr
-- [ ] Recyclarr
-- [ ] Readarr
-- [ ] Lidarr
-- [ ] QBittorrent
-- [ ] Flaresolverr
-- [x] Jellystat
+## Operators
 
-### Infra
-
-- [x] Cert-manager
-- [x] External DNS
-- [x] Grafana
-- [x] Prometheus
-- [ ] Grafana Loki
-- [ ] MinIO (S3 like storage)
-- [ ] Grafana Mimir (long term metrics storage)
-- [x] Promtail
-- [ ] Grafana Tempo
-- [x] cloud native postgresql
-- [x] nfs-provisioner
-- [x] metallb
-- [x] keycloak
-- [x] lldap
-- [x] traefik
-- [x] homepage
-
-### Code
-
-- [ ] gitea
-- [ ] jenkins
-- [ ] MinIO
+- cert-manager: for certificate generation for ingresses mostly
+- external-dns: to manage local and remote DNS records
+- external-secrets: to centralize secret management in Hashicorp Vault
+- kyverno: to write cluster policies for automated backups to borgbackup
+- victoriametrics: for perfomant monitoring
+- flux-iac/tofu-controller: gitops'd terraform for configuration of my self-hosted stack
