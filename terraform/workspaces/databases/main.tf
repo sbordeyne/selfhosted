@@ -20,8 +20,8 @@ variable "vault_token" {
 }
 
 data "vault_kv_secret_v2" "postgres" {
-  mount = "databases"
-  name  = "postgresql/root"
+  mount = "secrets"
+  name  = "databases/postgresql/root"
 }
 
 
@@ -29,7 +29,7 @@ module "database" {
   source = "../../modules/terraform-database"
 
   postgresql = {
-    host = "localhost" // "192.168.1.42"
+    host = "http://postgresql.databases.cluster.local"
     port = 5432
     username = data.vault_kv_secret_v2.postgres.data.username
     password = data.vault_kv_secret_v2.postgres.data.password
