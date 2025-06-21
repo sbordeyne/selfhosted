@@ -7,6 +7,12 @@ terraform {
   }
 }
 
+provider "vault" {
+  address        = "http://vault.vault.svc.cluster.local:8200"
+  skip_tls_verify = true
+  token          = var.vault_token
+}
+
 variable "vault_token" {
   description = "Vault authentication token"
   type        = string
