@@ -44,11 +44,10 @@ module "secret" {
   source = "../vault-secret"
 
   secret_data = {
-    username = each.key
-    password = random_password.password[each.key].result
-    database = each.value.databases
+    username = each.key,
+    password = random_password.password[each.key].result,
     host           = var.postgresql.host,
-    port           = var.postgresql.port,
+    port           = tostring(var.postgresql.port),
   }
   secret_path = "postgresql/${each.key}"
 }
