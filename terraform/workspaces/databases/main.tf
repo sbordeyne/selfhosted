@@ -7,6 +7,11 @@ terraform {
   }
 }
 
+variable "vault_token" {
+  description = "Vault authentication token"
+  type        = string
+  sensitive   = true
+}
 
 data "vault_kv_secret_v2" "postgres" {
   mount = "databases"
@@ -23,6 +28,8 @@ module "database" {
     username = data.vault_kv_secret_v2.postgres.data.username
     password = data.vault_kv_secret_v2.postgres.data.password
   }
+
+  vault_token = var.vault_token
 
   users = {
     "keycloak" = {

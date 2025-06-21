@@ -27,5 +27,5 @@ provider "postgresql" {
 provider "vault" {
   address = "http://vault.vault.svc.cluster.local:8200"
   skip_tls_verify = true
-  token   = var.vault.token
+  token   = var.vault_token
 }

@@ -16,3 +16,9 @@ variable "postgresql" {
   })
   sensitive = true
 }
+
+variable "vault_token" {
+  description = "Vault authentication token"
+  type        = string
+  sensitive   = true
+}
