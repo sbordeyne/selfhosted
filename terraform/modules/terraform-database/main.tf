@@ -1,33 +1,33 @@
 locals {
   databases = {
-    for dbname, dbdata in var.databases:
-      dbname => {
-        user     = dbdata.user
-        database = dbname
-        accessors = [
-          for accessor in dbdata.accessors:
+    for data in flatten([
+        for user, data in var.users : [
+          for db in data.databases: [
             {
-              service_account = accessor.service_account
-              namespace       = accessor.namespace
+              database = db
+              user     = user
+              key     = "${user}-${db}"
             }
+          ]
         ]
-        role_name = "secret-accessor-${dbname}"
-      }
+    ]): data.key => {
+      database  = data.database
+      owner     = data.user
+    }
   }
-
 }
 
 resource "random_password" "password" {
-  for_each = local.databases
+  for_each = var.users
   length           = 32
   special          = true
   override_special = "_%@"
 }
 
 resource "postgresql_role" "roles" {
-  for_each = local.databases
+  for_each = var.users
 
-  name     = each.value.user
+  name     = each.key
   password = random_password.password[each.key].result
   login = true
 }
@@ -36,49 +36,19 @@ resource "postgresql_database" "databases" {
   for_each = local.databases
 
   name     = each.value.database
-  owner    = each.value.user
+  owner    = each.value.owner
 }
 
 module "secret" {
-  for_each = local.databases
+  for_each = var.users
   source = "../vault-secret"
 
   secret_data = {
-    username = local.databases[each.key].user
+    username = each.key
     password = random_password.password[each.key].result
+    database = each.value.databases
+    host           = var.postgresql.host,
+    port           = var.postgresql.port,
   }
-  secret_path = "/"
-}
-
-data "vault_mount" "secrets" {
-  path = "secrets"
-  type        = "kv"
-  options     = { version = "2" }
-}
-
-resource "vault_kv_secret_v2" "database_secret" {
-  for_each = local.databases
-  mount                      = data.vault_mount.secrets.path
-  name                       = "postgresql/${each.key}"
-  cas                        = 1
-  delete_all_versions        = false
-  data_json                  = jsonencode(
-    {
-      username       = each.value.user,
-      password       = random_password.password[each.key].result
-    }
-  )
-}
-
-data "vault_auth_backend" "kubernetes" {
-  path = "kubernetes"
-}
-
-resource "vault_kubernetes_auth_backend_role" "secret_access" {
-  for_each = local.databases
-  backend                          = data.vault_auth_backend.kubernetes.path
-  role_name                        = each.value.role_name
-  bound_service_account_names      = [for accessor in each.value.accessors : accessor.service_account]
-  bound_service_account_namespaces = [for accessor in each.value.accessors : accessor.namespace]
-  token_ttl                        = 3600
+  secret_path = "postgresql/${each.key}"
 }

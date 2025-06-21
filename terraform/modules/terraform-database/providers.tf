@@ -6,6 +6,14 @@ terraform {
       source = "cyrilgdn/postgresql"
       version = "1.25.0"
     }
+    vault = {
+      source  = "hashicorp/vault"
+      version = "5.0.0"
+    }
+    random = {
+      source  = "hashicorp/random"
+      version = "3.5.1"
+    }
   }
 }
 

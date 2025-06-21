@@ -27,5 +27,62 @@ vault_access = {
     access = {
       "github/receiver_token" = "reader"
     }
+  },
+  "radarr" = {
+    service_account = "radarr"
+    namespace       = "arr-stack"
+    access = {
+      "arr-stack/radarr" = "reader",
+      "postgresql/radarr" = "reader"
+    }
+  },
+  "sonarr" = {
+    service_account = "sonarr"
+    namespace       = "arr-stack"
+    access = {
+      "arr-stack/sonarr" = "reader"
+      "postgresql/sonarr" = "reader"
+    }
+  },
+  "readarr" = {
+    service_account = "readarr"
+    namespace       = "arr-stack"
+    access = {
+      "arr-stack/readarr" = "reader"
+      "postgresql/readarr" = "reader"
+    }
+  },
+  "prowlarr" = {
+    service_account = "prowlarr"
+    namespace       = "arr-stack"
+    access = {
+      "arr-stack/prowlarr" = "reader"
+      "postgresql/prowlarr" = "reader"
+    }
+  },
+  "whisparr" = {
+    service_account = "whisparr"
+    namespace       = "arr-stack"
+    access = {
+      "arr-stack/whisparr" = "reader"
+      "postgresql/whisparr" = "reader"
+    }
+  },
+  "bazarr" = {
+    service_account = "bazarr"
+    namespace       = "arr-stack"
+    access = {
+      "arr-stack/bazarr" = "reader",
+      "arr-stack/sonarr" = "reader",
+      "arr-stack/radarr" = "reader",
+      "postgresql/bazarr" = "reader",
+    }
+  },
+  "transmission" = {
+    service_account = "transmission"
+    namespace       = "arr-stack"
+    access = {
+      "arr-stack/transmission" = "reader",
+    }
   }
 }

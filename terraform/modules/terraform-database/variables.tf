@@ -1,7 +1,7 @@
-variable "databases" {
-  description = "Databases to create"
+variable "users" {
+  description = "Users and databases to create"
   type        = map(object({
-    user = string
+    databases = list(string)
   }))
   sensitive = false
 }

@@ -24,6 +24,12 @@ resource "vault_auth_backend" "kubernetes" {
 resource "vault_kubernetes_auth_backend_role" "roles" {
   depends_on = [
     module.github_repository_deploy_key,
+    module.radarr_api_key,
+    module.prowlarr_api_key,
+    module.bazarr_api_key,
+    module.sonarr_api_key,
+    module.readarr_api_key,
+    module.whisparr_api_key,
   ]
   for_each = var.vault_access
 

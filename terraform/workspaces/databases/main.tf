@@ -1,3 +1,13 @@
+terraform {
+  required_providers {
+    vault = {
+      source = "hashicorp/vault"
+      version = "5.0.0"
+    }
+  }
+}
+
+
 data "vault_kv_secret_v2" "postgres" {
   mount = "databases"
   name  = "postgresql/root"
@@ -14,15 +24,33 @@ module "database" {
     password = data.vault_kv_secret_v2.postgres.data.password
   }
 
-  databases = {
+  users = {
     "keycloak" = {
-      user = "keycloak"
-      accessors = [
-        {
-          service_account = "keycloak"
-          namespace = "keycloak"
-        }
-      ]
+      databases = ["keycloak"]
+    },
+    "sonarr" = {
+      databases = ["sonarr", "sonarr_log"]
+    },
+    "radarr" = {
+      databases = ["radarr", "radarr_log"]
+    },
+    "readarr" = {
+      databases = ["readarr", "readarr_log"]
+    },
+    "prowlarr" = {
+      databases = ["prowlarr", "prowlarr_log"]
+    },
+    "whisparr" = {
+      databases = ["whisparr", "whisparr_log"]
+    },
+    "bazarr" = {
+      databases = ["bazarr", "bazarr_log"]
+    },
+    "sonarr" = {
+      databases = ["sonarr", "sonarr_log"]
+    },
+    "sonarr" = {
+      databases = ["sonarr", "sonarr_log"]
     }
   }
 }
