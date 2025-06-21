@@ -28,5 +28,5 @@ spec:
     metrics:
       enabled: true
     serviceAccount:
-      create: true
+      create: false
       name: postgresql
