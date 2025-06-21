@@ -89,7 +89,7 @@ vault_access = {
     service_account = "postgresql"
     namespace       = "databases"
     access = {
-      "postgresql/root" = "reader",
+      "databases/postgresql/root" = "reader",
     }
   }
 }
