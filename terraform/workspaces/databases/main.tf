@@ -31,8 +31,8 @@ module "database" {
   postgresql = {
     host = "http://postgresql.databases.cluster.local"
     port = 5432
-    username = data.vault_kv_secret_v2.postgres.data.username
-    password = data.vault_kv_secret_v2.postgres.data.password
+    username = "postgres"
+    password = data.vault_kv_secret_v2.postgres.data.postgresql_password
   }
 
   vault_token = var.vault_token
