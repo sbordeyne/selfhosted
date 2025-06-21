@@ -84,5 +84,12 @@ vault_access = {
     access = {
       "arr-stack/transmission" = "reader",
     }
+  },
+  "postgres" = {
+    service_account = "postgres"
+    namespace       = "databases"
+    access = {
+      "postgresql/root" = "reader",
+    }
   }
 }
