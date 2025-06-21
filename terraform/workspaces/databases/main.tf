@@ -29,7 +29,7 @@ module "database" {
   source = "../../modules/terraform-database"
 
   postgresql = {
-    host = "http://postgresql.databases.cluster.local"
+    host = "http://postgresql.databases.svc.cluster.local"
     port = 5432
     username = "postgres"
     password = data.vault_kv_secret_v2.postgres.data.postgresql_password
