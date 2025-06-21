@@ -2,7 +2,7 @@ resource "random_password" "transmission_password" {
   length  = 32
 }
 
-module "sonarr_api_key" {
+module "transmission_credentials" {
   source = "../../modules/vault-secret"
 
   secret_path = "arr-stack/transmission"
