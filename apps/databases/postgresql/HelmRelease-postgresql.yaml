@@ -1,0 +1,32 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: postgresql
+  namespace: databases
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: postgresql
+      version: 16.7.13
+      sourceRef:
+        kind: HelmRepository
+        name: bitnami
+        namespace: flux-system
+  values:
+    global:
+      defaultStorageClass: "nfs-client"
+    namespaceOverride: databases
+    auth:
+      enablePostgresUser: true
+      existingSecret: postgresql-root-passwords
+      secretKeys:
+        adminPasswordKey: postgresql-password
+        userPasswordKey: password
+        replicationPasswordKey: replication-password
+    metrics:
+      enabled: true
+    serviceAccount:
+      create: true
+      name: postgresql
