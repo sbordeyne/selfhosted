@@ -1,0 +1,13 @@
+hotKeys:
+  flux-kustomizations:
+    shortCut: Shift-K
+    description: Go to flux-system namespace and list kustomizations
+    command: kustomizations.kustomize.toolkit.fluxcd.io flux-system
+  monitoring-alloy-pods:
+    shortCut: Ctrl-Y
+    description: Go to monitoring namespace and list alloy pods
+    command: pods monitoring app.kubernetes.io/name=alloy
+  gitrepo:
+    shortCut: Shift-G
+    description: Check all gitrepos
+    command: gitrepo all
