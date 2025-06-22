@@ -76,6 +76,7 @@ vault_access = {
       "arr-stack/sonarr" = "reader",
       "arr-stack/radarr" = "reader",
       "postgresql/bazarr" = "reader",
+      "anticaptcha/credentials" = "reader",
     }
   },
   "transmission" = {
