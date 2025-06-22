@@ -62,7 +62,7 @@ configMapGenerator:
     options:
       disableNameSuffixHash: true
     files:
-      - config/bazarr/config.xml
+      - config/bazarr/config.yaml
   - name: radarr-config-template
     options:
       disableNameSuffixHash: true
