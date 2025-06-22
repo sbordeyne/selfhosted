@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: transmission-torrent
+  labels:
+    app.kubernetes.io/name: transmission
+    app.kubernetes.io/part-of: starr
+    app.kubernetes.io/component: torrent
+spec:
+  selector:
+    app.kubernetes.io/name: transmission
+  type: NodePort
+  ports:
+    - name: torrent-tcp
+      protocol: TCP
+      port: 51413
+      targetPort: 51413
+      nodePort: 30413
+    - name: torrent-udp
+      protocol: UDP
+      port: 51413
+      targetPort: 51413
+      nodePort: 30413

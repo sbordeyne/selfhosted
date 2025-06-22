@@ -1,0 +1,20 @@
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: transmission
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: transmission
+      app.kubernetes.io/component: app
+  endpoints:
+    - port: metrics
+      interval: 5m
+      scrapeTimeout: 90s
+      path: /metrics
+      scheme: http
+      tlsConfig:
+        insecureSkipVerify: true
+  namespaceSelector:
+    matchNames:
+      - arr-stack

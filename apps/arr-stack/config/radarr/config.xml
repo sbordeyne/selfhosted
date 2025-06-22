@@ -1,0 +1,23 @@
+<Config>
+  <BindAddress>*</BindAddress>
+  <Port>7878</Port>
+  <SslPort>9898</SslPort>
+  <EnableSsl>False</EnableSsl>
+  <LaunchBrowser>True</LaunchBrowser>
+  <ApiKey>{{ .radarr_api_key }}</ApiKey>
+  <AuthenticationMethod>Forms</AuthenticationMethod>
+  <AuthenticationRequired>Enabled</AuthenticationRequired>
+  <Branch>master</Branch>
+  <LogLevel>info</LogLevel>
+  <SslCertPath></SslCertPath>
+  <SslCertPassword></SslCertPassword>
+  <UrlBase></UrlBase>
+  <InstanceName>Radarr</InstanceName>
+  <UpdateMechanism>Docker</UpdateMechanism>
+  <PostgresUser>{{ .radarr_postgres_user }}</PostgresUser>
+  <PostgresPassword>{{ .radarr_postgres_password }}</PostgresPassword>
+  <PostgresPort>5432</PostgresPort>
+  <PostgresHost>postgresql.databases.svc.cluster.local</PostgresHost>
+  <PostgresMainDb>radarr</PostgresMainDb>
+  <PostgresLogDb>radarr_log</PostgresLogDb>
+</Config>

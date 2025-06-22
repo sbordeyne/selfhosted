@@ -1,0 +1,121 @@
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: arr-stack
+
+resources:
+  - Namespace-arr-stack.yaml
+  - ServiceAccount-bazarr.yaml
+  - ServiceAccount-radarr.yaml
+  - ServiceAccount-prowlarr.yaml
+  - ServiceAccount-readarr.yaml
+  - ServiceAccount-sonarr.yaml
+  - ServiceAccount-whisparr.yaml
+  - ServiceAccount-transmission.yaml
+  - SecretStore-bazarr.yaml
+  - SecretStore-radarr.yaml
+  - SecretStore-prowlarr.yaml
+  - SecretStore-readarr.yaml
+  - SecretStore-sonarr.yaml
+  - SecretStore-whisparr.yaml
+  - SecretStore-transmission.yaml
+  - ExternalSecret-bazarr-config.yaml
+  - ExternalSecret-radarr-config.yaml
+  - ExternalSecret-prowlarr-config.yaml
+  - ExternalSecret-readarr-config.yaml
+  - ExternalSecret-sonarr-config.yaml
+  - ExternalSecret-whisparr-config.yaml
+  - ExternalSecret-transmission-config.yaml
+  - ExternalSecret-transmission-credentials.yaml
+  - PersistentVolumeClaim-bazarr-config.yaml
+  - PersistentVolumeClaim-radarr-config.yaml
+  - PersistentVolumeClaim-prowlarr-config.yaml
+  - PersistentVolumeClaim-readarr-config.yaml
+  - PersistentVolumeClaim-sonarr-config.yaml
+  - PersistentVolumeClaim-whisparr-config.yaml
+  - PersistentVolumeClaim-transmission-config.yaml
+  - Deployment-bazarr.yaml
+  - Deployment-radarr.yaml
+  - Deployment-prowlarr.yaml
+  - Deployment-readarr.yaml
+  - Deployment-sonarr.yaml
+  - Deployment-whisparr.yaml
+  - Deployment-transmission.yaml
+  - Service-bazarr.yaml
+  - Service-radarr.yaml
+  - Service-prowlarr.yaml
+  - Service-readarr.yaml
+  - Service-sonarr.yaml
+  - Service-whisparr.yaml
+  - Service-transmission.yaml
+  - Service-transmission-torrent.yaml
+  - VMServiceScrape-prowlarr.yaml
+  - VMServiceScrape-radarr.yaml
+  - VMServiceScrape-readarr.yaml
+  - VMServiceScrape-sonarr.yaml
+  - VMServiceScrape-whisparr.yaml
+  - VMServiceScrape-transmission.yaml
+
+configMapGenerator:
+  - name: bazarr-config-template
+    options:
+      disableNameSuffixHash: true
+    files:
+      - config/bazarr/config.xml
+  - name: radarr-config-template
+    options:
+      disableNameSuffixHash: true
+    files:
+      - config/radarr/config.xml
+  - name: prowlarr-config-template
+    options:
+      disableNameSuffixHash: true
+    files:
+      - config/prowlarr/config.xml
+  - name: readarr-config-template
+    options:
+      disableNameSuffixHash: true
+    files:
+      - config/readarr/config.xml
+  - name: sonarr-config-template
+    options:
+      disableNameSuffixHash: true
+    files:
+      - config/sonarr/config.xml
+  - name: whisparr-config-template
+    options:
+      disableNameSuffixHash: true
+    files:
+      - config/whisparr/config.xml
+  - name: transmission-config-template
+    options:
+      disableNameSuffixHash: true
+    files:
+      - config/transmission/settings.json
+
+images:
+  - name: bazarr
+    newName: ghcr.io/hotio/bazarr
+    newTag: release-1.5.2
+  - name: radarr
+    newName: ghcr.io/hotio/radarr
+    newTag: release-5.26.2.10099
+  - name: exportarr
+    newName: ghcr.io/onedr0p/exportarr
+    newTag: v1.5.3
+  - name: readarr
+    newName: ghcr.io/hotio/readarr
+    newTag: latest
+  - name: sonarr
+    newName: hotio/sonarr
+    newTag: release
+  - name: whisparr
+    newName: ghcr.io/hotio/whisparr
+    newTag: latest
+  - name: transmission
+    newName: jaymoulin/transmission
+    newTag: latest
+  - name: transmission-exporter
+    newName: evanofslack/transmission-exporter
+    newTag: latest

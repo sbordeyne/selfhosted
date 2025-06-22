@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  transmission
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: transmission
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: transmission
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+      - image: transmission-exporter
+        name: transmission-exporter
+        resources:
+          limits:
+            cpu: "100m"
+            memory: "256M"
+          requests:
+            cpu: "2m"
+            memory: "55M"
+        env:
+          - name: TRANSMISSION_ADDR
+            value: "http://transmission:9091"
+          - name: TRANSMISSION_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: transmission-credentials
+                key: password
+          - name: TRANSMISSION_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: transmission-credentials
+                key: username
+        ports:
+          - containerPort:  19091
+            name:  metrics
+      - image: transmission
+        name: transmission
+        resources:
+          limits:
+            cpu: "100m"
+            memory: "256M"
+          requests:
+            cpu: "20m"
+            memory: "55M"
+        env:
+          - name: TZ
+            value: Europe/Paris
+          - name: PUID
+            value: "1000"
+          - name: PGID
+            value: "1000"
+          - name: PEERPORT
+            value: "51413"
+        ports:
+          - containerPort:  9091
+            name:  web
+          - containerPort: 51413
+            name: peer
+        volumeMounts:
+          - mountPath: /output
+            name: output
+          - mountPath: /to_download
+            name: input
+          - mountPath: /config
+            name: config
+          - mountPath: /config/settings.json
+            name: transmission-config
+            subPath: settings.json
+      volumes:
+        - name: output
+          nfs:
+            path: /tank/media
+            server: "192.168.1.42"
+        - name: input
+          nfs:
+            path: /tank/media/torrents
+            server: "192.168.1.42"
+        - name: config
+          persistentVolumeClaim:
+            claimName: transmission-config
+        - name: transmission-config
+          secret:
+            secretName: transmission-config

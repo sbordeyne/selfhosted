@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  bazarr
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: bazarr
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: bazarr
+    spec:
+      serviceAccountName: bazarr
+      containers:
+        - image: bazarr
+          name: bazarr
+          resources:
+            limits:
+              cpu: "50m"
+              memory: "110M"
+            requests:
+              cpu: "1m"
+              memory: "10M"
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "Europe/Paris"
+          ports:
+          - containerPort:  6767
+            name:  http
+          volumeMounts:
+          - mountPath: /media
+            name: media
+          - mountPath: /config
+            name: config-pvc
+          - mountPath: /config/config.xml
+            name: config
+            subPath: config.xml
+
+      volumes:
+        - name: media
+          nfs:
+            path: /tank/media
+            server: "192.168.1.42"
+        - name: config-pvc
+          persistentVolumeClaim:
+            claimName: bazarr-config
+        - name: config
+          secret:
+            secretName: bazarr-config

@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  prowlarr
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: arr-stack-prowlarr-app
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/part-of: arr-stack
+        app.kubernetes.io/name:  prowlarr
+        app.kubernetes.io/component: app
+        app.kubernetes.io/instance: arr-stack-prowlarr-app
+    spec:
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+        fsGroup: 1000
+      serviceAccountName: prowlarr
+      containers:
+        - name:  prowlarr
+          image:  prowlarr
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: 10m
+              memory: 20Mi
+            limits:
+              cpu: 100m
+              memory: 200Mi
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "Europe/Paris"
+          ports:
+            - containerPort:  9696
+              name:  prowlarr
+          volumeMounts:
+            - mountPath: /config
+              name: config-pvc
+            - mountPath: /config/config.xml
+              name: config
+              subPath: config.xml
+        - name: exportarr
+          image: exportarr
+          imagePullPolicy: IfNotPresent
+          args: [prowlarr]
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: exportarr
+            failureThreshold: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: exportarr
+            failureThreshold: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 10m
+              memory: 20Mi
+            limits:
+              cpu: 20m
+              memory: 40Mi
+          env:
+            - name: PORT
+              value: "9707"
+            - name: URL
+              value: "http://prowlarr:9696"
+            - name: CONFIG
+              value: "/config/config.xml"
+            - name: DISABLE_SSL_VERIFY
+              value: "true"
+            - name: PROWLARR__BACKFILL
+              value: "true"
+          ports:
+            - containerPort:  9707
+              name:  exportarr
+          volumeMounts:
+            - name: config
+              mountPath: /config/config.xml
+              subPath: config.xml
+
+      volumes:
+        - name: config-pvc
+          persistentVolumeClaim:
+            claimName: prowlarr-config
+        - name: config
+          secret:
+            secretName: prowlarr-config
+      restartPolicy: Always
