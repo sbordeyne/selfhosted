@@ -19,8 +19,8 @@ spec:
       serviceAccountName: radarr
       securityContext:
         fsGroup: 1000
-        runAsUser: 1000
-        runAsGroup: 1000
+        runAsUser: 0
+        runAsGroup: 0
       initContainers:
         - name: init-radarr
           image: busybox

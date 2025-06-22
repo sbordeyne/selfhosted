@@ -21,8 +21,8 @@ spec:
         app.kubernetes.io/instance: arr-stack-prowlarr-app
     spec:
       securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
+        runAsUser: 0
+        runAsGroup: 0
         fsGroup: 1000
       serviceAccountName: prowlarr
       initContainers:
