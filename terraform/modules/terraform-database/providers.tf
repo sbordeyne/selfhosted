@@ -22,6 +22,7 @@ provider "postgresql" {
   port = try(var.postgresql.port, 5432)
   username = try(var.postgresql.username, "postgres")
   password = var.postgresql.password
+  sslmode = "disable"
 }
 
 provider "vault" {
