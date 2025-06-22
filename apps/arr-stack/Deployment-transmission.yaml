@@ -29,10 +29,10 @@ spec:
             - -c
             - cp -f /cfg/settings.json /config/settings.json
           volumeMounts:
-            - name: config
+            - name: transmission-config
               mountPath: /cfg/settings.json
               subPath: settings.json
-            - name: config-pvc
+            - name: config
               mountPath: /config
       containers:
       - image: transmission-exporter
