@@ -104,6 +104,9 @@ images:
   - name: radarr
     newName: ghcr.io/hotio/radarr
     newTag: release-5.26.2.10099
+  - name: prowlarr
+    newName: ghcr.io/hotio/prowlarr
+    newTag: release-1.37.0.5076
   - name: exportarr
     newName: ghcr.io/onedr0p/exportarr
     newTag: v1.5.3

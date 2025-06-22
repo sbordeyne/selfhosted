@@ -27,7 +27,7 @@ spec:
           command: ["sh"]
           args:
             - -c
-            - cp -f /cfg/settings.json /config/settings.json
+            - rm -f /config/settings.json && cp -f /cfg/settings.json /config/settings.json
           volumeMounts:
             - name: transmission-config
               mountPath: /cfg/settings.json

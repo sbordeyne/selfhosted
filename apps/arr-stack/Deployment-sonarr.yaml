@@ -27,7 +27,7 @@ spec:
           command: ["sh"]
           args:
             - -c
-            - cp -f /cfg/config.xml /config/config.xml
+            - rm -f /config/config.xml && cp -f /cfg/config.xml /config/config.xml
           volumeMounts:
             - name: config
               mountPath: /cfg/config.xml

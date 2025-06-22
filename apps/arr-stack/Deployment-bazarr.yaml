@@ -27,7 +27,7 @@ spec:
           command: ["sh"]
           args:
             - -c
-            - cp -f /cfg/config.yaml /config/config/config.yaml
+            - mkdir -p /config/config && rm -f /config/config/config.yaml && cp -f /cfg/config.yaml /config/config/config.yaml
           volumeMounts:
             - name: config
               mountPath: /cfg/config.yaml
