@@ -95,6 +95,9 @@ configMapGenerator:
       - config/transmission/settings.json
 
 images:
+  - name: busybox
+    newName: busybox
+    newTag: 1.37.0
   - name: bazarr
     newName: ghcr.io/hotio/bazarr
     newTag: release-1.5.2
@@ -108,7 +111,7 @@ images:
     newName: ghcr.io/hotio/readarr
     newTag: latest
   - name: sonarr
-    newName: hotio/sonarr
+    newName: ghcr.io/hotio/sonarr
     newTag: release
   - name: whisparr
     newName: ghcr.io/hotio/whisparr

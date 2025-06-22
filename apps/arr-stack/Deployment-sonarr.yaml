@@ -17,6 +17,18 @@ spec:
         app.kubernetes.io/name: sonarr
     spec:
       serviceAccountName: sonarr
+      initContainers:
+        - name: init-sonarr
+          image: busybox
+          command: ["sh"]
+          args:
+            - -c
+            - ln -s /cfg/config.xml /config/config.xml
+          volumeMounts:
+            - name: config
+              mountPath: /cfg/config.xml
+            - name: config-pvc
+              mountPath: /config
       containers:
         - image: sonarr
           name: sonarr
@@ -43,7 +55,7 @@ spec:
               name: media
             - mountPath: /config
               name: config-pvc
-            - mountPath: /config/config.xml
+            - mountPath: /cfg/config.xml
               name: config
               subPath: config.xml
         - name: exportarr
