@@ -114,8 +114,8 @@ images:
     newName: ghcr.io/hotio/readarr
     newTag: latest
   - name: sonarr
-    newName: ghcr.io/hotio/sonarr
-    newTag: release
+    newName: lscr.io/linuxserver/sonarr
+    newTag: 4.0.15.2941-ls285
   - name: whisparr
     newName: ghcr.io/hotio/whisparr
     newTag: latest

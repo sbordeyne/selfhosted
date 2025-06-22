@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name:  sonarr
+  namespace: arr-stack
 spec:
   selector:
     matchLabels:
@@ -18,22 +19,23 @@ spec:
     spec:
       securityContext:
         fsGroup: 1000
-        runAsUser: 0
-        runAsGroup: 0
+        runAsUser: 1000
+        runAsGroup: 1000
       serviceAccountName: sonarr
       initContainers:
         - name: init-sonarr
           image: busybox
           securityContext:
-            runAsUser: 0
-            runAsGroup: 0
+            runAsUser: 1000
+            runAsGroup: 1000
           command: ["sh"]
           args:
             - -c
-            - rm -f /config/config.xml && cp -f /cfg/config.xml /config/config.xml && chown -R 1000:1000 /config
+            - rm -f /config/config.xml && cp -f /cfg/config.xml /config/config.xml
           volumeMounts:
             - name: config
               mountPath: /cfg/config.xml
+              subPath: config.xml
             - name: config-pvc
               mountPath: /config
       containers:
