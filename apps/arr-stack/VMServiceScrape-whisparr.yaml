@@ -15,7 +15,7 @@ spec:
     scheme: http
     tlsConfig:
       insecureSkipVerify: true
-    metricRelabelings:
+    metricRelabelConfigs:
     - action: replace
       sourceLabels: [__name__]
       targetLabel: job
