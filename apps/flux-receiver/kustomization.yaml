@@ -6,6 +6,6 @@ namespace: flux-system
 
 resources:
   - SecretStore-flux-system.yaml
-  - ExternalSecret-github-deploy-key.yaml
+  - ExternalSecret-github-receiver-token.yaml
   - Receiver-github.yaml
   - Ingress-receiver.yaml
