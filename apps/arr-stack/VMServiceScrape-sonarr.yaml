@@ -1,8 +1,7 @@
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMServiceScrape
 metadata:
-  name: sonarr-monitor
-  namespace: arr
+  name: sonarr
 spec:
   selector:
     matchLabels:

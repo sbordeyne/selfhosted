@@ -119,3 +119,7 @@ images:
   - name: transmission-exporter
     newName: evanofslack/transmission-exporter
     newTag: latest
+
+labels:
+  - pairs:
+      app.kubernetes.io/part-of: starr
