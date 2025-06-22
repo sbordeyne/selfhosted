@@ -25,9 +25,12 @@ spec:
         - name: init-whisparr
           image: busybox
           command: ["sh"]
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
           args:
             - -c
-            - rm -f /config/config.xml && cp -f /cfg/config.xml /config/config.xml
+            - rm -f /config/config.xml && cp -f /cfg/config.xml /config/config.xml && chown -R 1000:1000 /config
           volumeMounts:
             - name: config
               mountPath: /cfg/config.xml

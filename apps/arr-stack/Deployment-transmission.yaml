@@ -25,9 +25,12 @@ spec:
         - name: init-transmission
           image: busybox
           command: ["sh"]
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
           args:
             - -c
-            - rm -f /config/settings.json && cp -f /cfg/settings.json /config/settings.json
+            - rm -f /config/settings.json && cp -f /cfg/settings.json /config/settings.json && chown -R 1000:1000 /config
           volumeMounts:
             - name: transmission-config
               mountPath: /cfg/settings.json
