@@ -2,6 +2,30 @@ import {
   to = module.database.postgresql_role.roles["prowlarr"]
   id = "prowlarr"
 }
+import {
+  to = module.database.postgresql_role.roles["bazarr"]
+  id = "bazarr"
+}
+import {
+  to = module.database.postgresql_role.roles["keycloak"]
+  id = "keycloak"
+}
+import {
+  to = module.database.postgresql_role.roles["radarr"]
+  id = "radarr"
+}
+import {
+  to = module.database.postgresql_role.roles["readarr"]
+  id = "readarr"
+}
+import {
+  to = module.database.postgresql_role.roles["sonarr"]
+  id = "sonarr"
+}
+import {
+  to = module.database.postgresql_role.roles["whisparr"]
+  id = "whisparr"
+}
 
 import {
   to = module.database.postgresql_database.databases["keycloak-keycloak"]
