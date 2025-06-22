@@ -17,6 +17,23 @@ spec:
         app.kubernetes.io/name: radarr
     spec:
       serviceAccountName: radarr
+      securityContext:
+        fsGroup: 1000
+        runAsUser: 1000
+        runAsGroup: 1000
+      initContainers:
+        - name: init-radarr
+          image: busybox
+          command: ["sh"]
+          args:
+            - -c
+            - cp -f /cfg/config.xml /config/config.xml
+          volumeMounts:
+            - name: config
+              mountPath: /cfg/config.xml
+              subPath: config.xml
+            - name: config-pvc
+              mountPath: /config
       containers:
         - image: radarr
           name: radarr

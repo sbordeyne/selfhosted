@@ -16,7 +16,24 @@ spec:
       labels:
         app.kubernetes.io/name: bazarr
     spec:
+      securityContext:
+        fsGroup: 1000
+        runAsUser: 1000
+        runAsGroup: 1000
       serviceAccountName: bazarr
+      initContainers:
+        - name: init-bazarr
+          image: busybox
+          command: ["sh"]
+          args:
+            - -c
+            - cp -f /cfg/config.yaml /config/config/config.yaml
+          volumeMounts:
+            - name: config
+              mountPath: /cfg/config.yaml
+              subPath: config.yaml
+            - name: config-pvc
+              mountPath: /config
       containers:
         - image: bazarr
           name: bazarr
@@ -42,9 +59,6 @@ spec:
             name: media
           - mountPath: /config
             name: config-pvc
-          - mountPath: /config/config.xml
-            name: config
-            subPath: config.xml
 
       volumes:
         - name: media

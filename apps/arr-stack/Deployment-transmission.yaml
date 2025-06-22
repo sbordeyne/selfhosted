@@ -18,6 +18,22 @@ spec:
     spec:
       securityContext:
         fsGroup: 1000
+        runAsUser: 1000
+        runAsGroup: 1000
+      serviceAccountName: transmission
+      initContainers:
+        - name: init-transmission
+          image: busybox
+          command: ["sh"]
+          args:
+            - -c
+            - cp -f /cfg/settings.json /config/settings.json
+          volumeMounts:
+            - name: config
+              mountPath: /cfg/settings.json
+              subPath: settings.json
+            - name: config-pvc
+              mountPath: /config
       containers:
       - image: transmission-exporter
         name: transmission-exporter

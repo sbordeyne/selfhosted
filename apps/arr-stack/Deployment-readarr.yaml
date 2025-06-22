@@ -16,7 +16,24 @@ spec:
       labels:
         app.kubernetes.io/name: readarr
     spec:
+      securityContext:
+        fsGroup: 1000
+        runAsUser: 1000
+        runAsGroup: 1000
       serviceAccountName: readarr
+      initContainers:
+        - name: init-readarr
+          image: busybox
+          command: ["sh"]
+          args:
+            - -c
+            - cp -f /cfg/config.xml /config/config.xml
+          volumeMounts:
+            - name: config
+              mountPath: /cfg/config.xml
+              subPath: config.xml
+            - name: config-pvc
+              mountPath: /config
       containers:
         - image: readarr
           name: readarr
@@ -43,9 +60,6 @@ spec:
               name: media
             - mountPath: /config
               name: config-pvc
-            - mountPath: /config/config.xml
-              name: config
-              subPath: config.xml
         - name: exportarr
           image: exportarr
           imagePullPolicy: IfNotPresent

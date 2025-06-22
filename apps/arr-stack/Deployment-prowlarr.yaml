@@ -21,10 +21,23 @@ spec:
         app.kubernetes.io/instance: arr-stack-prowlarr-app
     spec:
       securityContext:
-        runAsUser: 0
-        runAsGroup: 0
+        runAsUser: 1000
+        runAsGroup: 1000
         fsGroup: 1000
       serviceAccountName: prowlarr
+      initContainers:
+        - name: init-prowlarr
+          image: busybox
+          command: ["sh"]
+          args:
+            - -c
+            - cp -f /cfg/config.xml /config/config.xml
+          volumeMounts:
+            - name: config
+              mountPath: /cfg/config.xml
+              subPath: config.xml
+            - name: config-pvc
+              mountPath: /config
       containers:
         - name:  prowlarr
           image:  prowlarr
