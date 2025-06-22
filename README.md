@@ -89,3 +89,15 @@ Tools required:
 - `kube-lint`
 - `terraform`
 - `terraform-docs`
+
+## Outside secrets
+
+- `secrets/cloudflare/credentials`:
+  - `email`: CloudFlare account Email
+  - `token`: CloudFlare API token
+  - `api_key`: CloudFlare API key
+- `secrets/anticaptcha/credentials`:
+  - `email`: AntiCaptcha account Email
+  - `api_key`: AntiCaptcha API key
+- `secrets/borgbase/credentials`
+  - `api_key`: Borgbase API key (Full Access)
