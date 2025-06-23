@@ -75,7 +75,7 @@ images:
     newTag: 1.37.0
   - name: exportarr
     newName: ghcr.io/onedr0p/exportarr
-    newTag: v1.5.3
+    newTag: v2.2.0
   - name: transmission
     newName: ghcr.io/home-operations/transmission
     newTag: 4.0.6
