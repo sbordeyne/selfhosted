@@ -85,8 +85,6 @@ spec:
                 secretKeyRef:
                   name: prowlarr-config
                   key: PROWLARR__AUTH__APIKEY
-            - name: CONFIG
-              value: "/config/config.xml"
             - name: DISABLE_SSL_VERIFY
               value: "true"
             - name: PROWLARR__BACKFILL

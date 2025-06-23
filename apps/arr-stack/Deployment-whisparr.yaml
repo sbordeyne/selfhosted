@@ -83,8 +83,6 @@ spec:
                   key: WHISPARR__AUTH__APIKEY
             - name: URL
               value: "http://whisparr:6969"
-            - name: CONFIG
-              value: "/config/config.xml"
             - name: DISABLE_SSL_VERIFY
               value: "true"
           ports:

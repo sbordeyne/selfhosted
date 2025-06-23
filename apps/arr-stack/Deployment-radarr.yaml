@@ -82,8 +82,6 @@ spec:
                   key: RADARR__AUTH__APIKEY
             - name: URL
               value: "http://radarr:7878"
-            - name: CONFIG
-              value: "/config/config.xml"
             - name: DISABLE_SSL_VERIFY
               value: "true"
           ports:
