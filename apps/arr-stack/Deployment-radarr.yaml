@@ -19,24 +19,8 @@ spec:
       serviceAccountName: radarr
       securityContext:
         fsGroup: 1000
-        runAsUser: 0
-        runAsGroup: 0
-      initContainers:
-        - name: init-radarr
-          image: busybox
-          command: ["sh"]
-          securityContext:
-            runAsUser: 0
-            runAsGroup: 0
-          args:
-            - -c
-            - rm -f /config/config.xml && cp -f /cfg/config.xml /config/config.xml && chown -R 1000:1000 /config
-          volumeMounts:
-            - name: config
-              mountPath: /cfg/config.xml
-              subPath: config.xml
-            - name: config-pvc
-              mountPath: /config
+        runAsUser: 1000
+        runAsGroup: 1000
       containers:
         - image: radarr
           name: radarr
@@ -54,6 +38,9 @@ spec:
               value: "1000"
             - name: TZ
               value: "Europe/Paris"
+          envFrom:
+            - secretRef:
+                name: radarr-config
           ports:
             - containerPort:  7878
               name:  radarr
@@ -61,10 +48,7 @@ spec:
             - mountPath: /media
               name: media
             - mountPath: /config
-              name: config-pvc
-            - mountPath: /config/config.xml
               name: config
-              subPath: config.xml
         - name: exportarr
           image: exportarr
           imagePullPolicy: IfNotPresent
@@ -91,6 +75,11 @@ spec:
           env:
             - name: PORT
               value: "9707"
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: radarr-config
+                  key: RADARR__AUTH__APIKEY
             - name: URL
               value: "http://radarr:7878"
             - name: CONFIG
@@ -100,19 +89,12 @@ spec:
           ports:
             - containerPort:  9707
               name:  exportarr
-          volumeMounts:
-            - name: config
-              mountPath: /config/config.xml
-              subPath: config.xml
 
       volumes:
         - name: media
           nfs:
             path: /tank/media
             server: "192.168.1.42"
-        - name: config-pvc
+        - name: config
           persistentVolumeClaim:
             claimName: radarr-config
-        - name: config
-          secret:
-            secretName: radarr-config

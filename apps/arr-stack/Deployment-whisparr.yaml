@@ -18,25 +18,9 @@ spec:
     spec:
       securityContext:
         fsGroup: 1000
-        runAsUser: 0
-        runAsGroup: 0
+        runAsUser: 1000
+        runAsGroup: 1000
       serviceAccountName: whisparr
-      initContainers:
-        - name: init-whisparr
-          image: busybox
-          command: ["sh"]
-          securityContext:
-            runAsUser: 0
-            runAsGroup: 0
-          args:
-            - -c
-            - rm -f /config/config.xml && cp -f /cfg/config.xml /config/config.xml && chown -R 1000:1000 /config
-          volumeMounts:
-            - name: config
-              mountPath: /cfg/config.xml
-              subPath: config.xml
-            - name: config-pvc
-              mountPath: /config
       containers:
         - image: whisparr
           name: whisparr
@@ -54,6 +38,9 @@ spec:
               value: "1000"
             - name: PGID
               value: "1000"
+          envFrom:
+            - secretRef:
+                name: whisparr-config
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort:  6969
@@ -62,7 +49,7 @@ spec:
             - mountPath: /media
               name: media
             - mountPath: /config
-              name: config-pvc
+              name: config
         - name: exportarr
           image: exportarr
           imagePullPolicy: IfNotPresent
@@ -89,6 +76,11 @@ spec:
           env:
             - name: PORT
               value: "9707"
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: whisparr-config
+                  key: WHISPARR__AUTH__APIKEY
             - name: URL
               value: "http://whisparr:6969"
             - name: CONFIG
@@ -98,19 +90,11 @@ spec:
           ports:
             - containerPort:  9707
               name:  exportarr
-          volumeMounts:
-            - name: config
-              mountPath: /config/config.xml
-              subPath: config.xml
-
       volumes:
         - name: media
           nfs:
             path: /tank/media
             server: "192.168.1.42"
-        - name: config-pvc
+        - name: config
           persistentVolumeClaim:
             claimName: whisparr-config
-        - name: config
-          secret:
-            secretName: whisparr-config

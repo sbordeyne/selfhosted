@@ -21,26 +21,10 @@ spec:
         app.kubernetes.io/instance: arr-stack-prowlarr-app
     spec:
       securityContext:
-        runAsUser: 0
-        runAsGroup: 0
+        runAsUser: 1000
+        runAsGroup: 1000
         fsGroup: 1000
       serviceAccountName: prowlarr
-      initContainers:
-        - name: init-prowlarr
-          image: busybox
-          securityContext:
-            runAsUser: 0
-            runAsGroup: 0
-          command: ["sh"]
-          args:
-            - -c
-            - rm -f /config/config.xml && cp -f /cfg/config.xml /config/config.xml && chown 1000:1000 /config
-          volumeMounts:
-            - name: config
-              mountPath: /cfg/config.xml
-              subPath: config.xml
-            - name: config-pvc
-              mountPath: /config
       containers:
         - name:  prowlarr
           image:  prowlarr
@@ -59,15 +43,15 @@ spec:
               value: "1000"
             - name: TZ
               value: "Europe/Paris"
+          envFrom:
+            - secretRef:
+                name: prowlarr-config
           ports:
             - containerPort:  9696
               name:  prowlarr
           volumeMounts:
             - mountPath: /config
-              name: config-pvc
-            - mountPath: /config/config.xml
               name: config
-              subPath: config.xml
         - name: exportarr
           image: exportarr
           imagePullPolicy: IfNotPresent
@@ -96,6 +80,11 @@ spec:
               value: "9707"
             - name: URL
               value: "http://prowlarr:9696"
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: prowlarr-config
+                  key: PROWLARR__AUTH__APIKEY
             - name: CONFIG
               value: "/config/config.xml"
             - name: DISABLE_SSL_VERIFY
@@ -105,16 +94,8 @@ spec:
           ports:
             - containerPort:  9707
               name:  exportarr
-          volumeMounts:
-            - name: config
-              mountPath: /config/config.xml
-              subPath: config.xml
-
       volumes:
-        - name: config-pvc
+        - name: config
           persistentVolumeClaim:
             claimName: prowlarr-config
-        - name: config
-          secret:
-            secretName: prowlarr-config
       restartPolicy: Always

@@ -63,26 +63,6 @@ configMapGenerator:
       disableNameSuffixHash: true
     files:
       - config/bazarr/config.yaml
-  - name: radarr-config-template
-    options:
-      disableNameSuffixHash: true
-    files:
-      - config/radarr/config.xml
-  - name: prowlarr-config-template
-    options:
-      disableNameSuffixHash: true
-    files:
-      - config/prowlarr/config.xml
-  - name: readarr-config-template
-    options:
-      disableNameSuffixHash: true
-    files:
-      - config/readarr/config.xml
-  - name: whisparr-config-template
-    options:
-      disableNameSuffixHash: true
-    files:
-      - config/whisparr/config.xml
   - name: transmission-config-template
     options:
       disableNameSuffixHash: true
@@ -93,33 +73,33 @@ images:
   - name: busybox
     newName: busybox
     newTag: 1.37.0
-  - name: bazarr
-    newName: ghcr.io/hotio/bazarr
-    newTag: release-1.5.2
-  - name: radarr
-    newName: ghcr.io/hotio/radarr
-    newTag: release-5.26.2.10099
-  - name: prowlarr
-    newName: ghcr.io/hotio/prowlarr
-    newTag: release-1.37.0.5076
   - name: exportarr
     newName: ghcr.io/onedr0p/exportarr
     newTag: v1.5.3
-  - name: readarr
-    newName: ghcr.io/hotio/readarr
+  - name: transmission
+    newName: ghcr.io/home-operations/transmission
+    newTag: 4.0.6
+  - name: transmission-exporter
+    newName: evanofslack/transmission-exporter
     newTag: latest
+  - name: bazarr
+    newName: ghcr.io/home-operations/bazarr
+    newTag: 1.5.2
+  - name: radarr
+    newName: ghcr.io/home-operations/radarr
+    newTag: 5.27.0.10101
+  - name: prowlarr
+    newName: ghcr.io/home-operations/prowlarr
+    newTag: 2.0.0.5094
+  - name: readarr
+    newName: ghcr.io/home-operations/readarr
+    newTag: 0.4.18.2805
   - name: sonarr
     newName: ghcr.io/home-operations/sonarr
     newTag: 4.0.15.2940@sha256:ca6c735014bdfb04ce043bf1323a068ab1d1228eea5bab8305ca0722df7baf78
   - name: whisparr
-    newName: ghcr.io/hotio/whisparr
-    newTag: latest
-  - name: transmission
-    newName: jaymoulin/transmission
-    newTag: latest
-  - name: transmission-exporter
-    newName: evanofslack/transmission-exporter
-    newTag: latest
+    newName: ghcr.io/home-operations/whisparr
+    newTag: 2.0.0.1112
 
 labels:
   - pairs:
