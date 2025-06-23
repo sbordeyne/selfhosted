@@ -22,22 +22,6 @@ spec:
         runAsUser: 1000
         runAsGroup: 1000
       serviceAccountName: sonarr
-      initContainers:
-        - name: init-sonarr
-          image: busybox
-          securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
-          command: ["sh"]
-          args:
-            - -c
-            - rm -f /config/config.xml && cp -f /cfg/config.xml /config/config.xml
-          volumeMounts:
-            - name: config
-              mountPath: /cfg/config.xml
-              subPath: config.xml
-            - name: config-pvc
-              mountPath: /config
       containers:
         - image: sonarr
           name: sonarr
@@ -56,6 +40,9 @@ spec:
               value: "1000"
             - name: PGID
               value: "1000"
+          envFrom:
+            - secretRef:
+                name: sonarr-config
           ports:
             - containerPort:  8989
               name:  sonarr
@@ -63,7 +50,7 @@ spec:
             - mountPath: /media
               name: media
             - mountPath: /config
-              name: config-pvc
+              name: config
         - name: exportarr
           image: exportarr
           imagePullPolicy: IfNotPresent
@@ -92,26 +79,22 @@ spec:
               value: "9707"
             - name: URL
               value: "http://sonarr:8989"
-            - name: CONFIG
-              value: "/config/config.xml"
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: sonarr-config
+                  key: SONARR__AUTH__APIKEY
             - name: DISABLE_SSL_VERIFY
               value: "true"
           ports:
             - containerPort:  9707
               name:  exportarr
-          volumeMounts:
-            - name: config
-              mountPath: /config/config.xml
-              subPath: config.xml
 
       volumes:
         - name: media
           nfs:
             path: /tank/media
             server: "192.168.1.42"
-        - name: config-pvc
+        - name: config
           persistentVolumeClaim:
             claimName: sonarr-config
-        - name: config
-          secret:
-            secretName: sonarr-config

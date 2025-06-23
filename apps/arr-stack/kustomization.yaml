@@ -78,11 +78,6 @@ configMapGenerator:
       disableNameSuffixHash: true
     files:
       - config/readarr/config.xml
-  - name: sonarr-config-template
-    options:
-      disableNameSuffixHash: true
-    files:
-      - config/sonarr/config.xml
   - name: whisparr-config-template
     options:
       disableNameSuffixHash: true
@@ -114,8 +109,8 @@ images:
     newName: ghcr.io/hotio/readarr
     newTag: latest
   - name: sonarr
-    newName: lscr.io/linuxserver/sonarr
-    newTag: 4.0.15.2941-ls285
+    newName: ghcr.io/home-operations/sonarr
+    newTag: 4.0.15.2940@sha256:ca6c735014bdfb04ce043bf1323a068ab1d1228eea5bab8305ca0722df7baf78
   - name: whisparr
     newName: ghcr.io/hotio/whisparr
     newTag: latest
