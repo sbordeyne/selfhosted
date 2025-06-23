@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/part-of: starr
 spec:
   selector:
-    app.kubernetes.io/instance: starr-prowlarr-app
+    app.kubernetes.io/instance: arr-stack-prowlarr-app
   type: ClusterIP
   sessionAffinity: None
   sessionAffinityConfig:
