@@ -87,7 +87,7 @@ images:
     newTag: 1.5.2
   - name: radarr
     newName: ghcr.io/home-operations/radarr
-    newTag: 5.27.0.10101
+    newTag: 5.27.1.10122
   - name: prowlarr
     newName: ghcr.io/home-operations/prowlarr
     newTag: 2.0.0.5094
