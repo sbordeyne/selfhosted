@@ -90,7 +90,7 @@ images:
     newTag: 5.27.1.10122
   - name: prowlarr
     newName: ghcr.io/home-operations/prowlarr
-    newTag: 2.0.0.5094
+    newTag: 2.0.1.5101
   - name: readarr
     newName: ghcr.io/home-operations/readarr
     newTag: 0.4.18.2805
