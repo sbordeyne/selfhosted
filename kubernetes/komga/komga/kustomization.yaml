@@ -33,4 +33,4 @@ configMapGenerator:
 images:
 - name: komga
   newName: gotson/komga
-  newTag: 1.22.0
+  newTag: 1.22.1
