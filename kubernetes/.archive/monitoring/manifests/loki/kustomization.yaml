@@ -47,6 +47,6 @@ images:
   - name: grafana/loki
     newTag: 3.5.3
   - name: memcached
-    newTag: 1.6.38-alpine
+    newTag: 1.6.39-alpine
   - name: prom/memcached-exporter
     newTag: v0.15.3
